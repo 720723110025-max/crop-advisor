@@ -1,0 +1,441 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - Crop Advisory System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Profile Sidebar -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-user-circle fa-5x text-success"></i>
+                    </div>
+                    <h4 id="fullNameDisplay">{{ user.full_name }}</h4>
+                    <p class="text-muted">@{{ user.username }}</p>
+                    
+                    <div class="mb-3">
+                        <span class="badge bg-{{ 'success' if user.is_active else 'danger' }}">
+                            {{ 'Active' if user.is_active else 'Inactive' }}
+                        </span>
+                        {% if user.is_admin %}
+                            <span class="badge bg-primary ms-1">
+                                <i class="fas fa-user-shield me-1"></i>Admin
+                            </span>
+                        {% endif %}
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="row text-start">
+                        <div class="col-12 mb-2">
+                            <small class="text-muted d-block">Member Since</small>
+                            <p class="mb-0">{{ user.created_at.strftime('%B %d, %Y') if user.created_at else 'N/A' }}</p>
+                        </div>
+                        <div class="col-12 mb-2">
+                            <small class="text-muted d-block">Farm Size</small>
+                            <p class="mb-0">{{ user.farm_size or 'Not specified' }} acres</p>
+                        </div>
+                        <div class="col-12">
+                            <small class="text-muted d-block">Farm Location</small>
+                            <p class="mb-0">{{ user.farm_location or 'Not specified' }}</p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Quick Stats -->
+                    <div class="row">
+                        <div class="col-6">
+                            <small class="text-muted d-block">Soil Tests</small>
+                            <h5 id="soilTestsCount">0</h5>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted d-block">Disease Reports</small>
+                            <h5 id="diseaseReportsCount">0</h5>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <small class="text-muted d-block">Predictions</small>
+                            <h5 id="predictionsCount">0</h5>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted d-block">Irrigation Plans</small>
+                            <h5 id="irrigationCount">0</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile Edit Form -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>Edit Profile
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('auth.profile') }}" id="profileForm">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-user me-2"></i>Full Name
+                                </label>
+                                <input type="text" class="form-control" name="full_name" 
+                                       value="{{ user.full_name }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-user-tag me-2"></i>Username
+                                </label>
+                                <input type="text" class="form-control" value="{{ user.username }}" disabled>
+                                <small class="text-muted">Username cannot be changed</small>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-envelope me-2"></i>Email
+                            </label>
+                            <input type="email" class="form-control" value="{{ user.email }}" disabled>
+                            <small class="text-muted">Email cannot be changed</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-phone me-2"></i>Phone Number
+                            </label>
+                            <input type="tel" class="form-control" name="phone" 
+                                   value="{{ user.phone or '' }}" placeholder="Enter your phone number">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-home me-2"></i>Address
+                            </label>
+                            <textarea class="form-control" name="address" rows="2" 
+                                      placeholder="Enter your address">{{ user.address or '' }}</textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-tractor me-2"></i>Farm Size (acres)
+                                </label>
+                                <input type="number" class="form-control" name="farm_size" 
+                                       value="{{ user.farm_size or '' }}" placeholder="e.g., 25" step="0.1" min="0">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Farm Location
+                                </label>
+                                <input type="text" class="form-control" name="farm_location" 
+                                       value="{{ user.farm_location or '' }}" placeholder="City, State, or Country">
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success" id="updateProfileBtn">
+                                <i class="fas fa-save me-2"></i>Update Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Change Password Card -->
+            <div class="card border-0 shadow mt-4">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-key me-2"></i>Change Password
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('auth.change_password') }}" id="passwordForm">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-lock me-2"></i>Current Password
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="current_password" 
+                                       id="currentPassword" required>
+                                <button class="btn btn-outline-secondary" type="button" 
+                                        onclick="togglePassword('currentPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-key me-2"></i>New Password
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="new_password" 
+                                       id="newPassword" required minlength="8">
+                                <button class="btn btn-outline-secondary" type="button" 
+                                        onclick="togglePassword('newPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <small class="text-muted">At least 8 characters with uppercase, lowercase, and numbers</small>
+                            <div id="passwordStrength" class="mt-1"></div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-check-circle me-2"></i>Confirm New Password
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="confirm_password" 
+                                       id="confirmPassword" required>
+                                <button class="btn btn-outline-secondary" type="button" 
+                                        onclick="togglePassword('confirmPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div id="passwordMatch" class="mt-1"></div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger" id="changePasswordBtn">
+                                <i class="fas fa-key me-2"></i>Change Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Account Actions -->
+            <div class="card border-0 shadow mt-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cog me-2"></i>Account Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <button class="btn btn-outline-primary w-100" onclick="exportData()">
+                                <i class="fas fa-download me-2"></i>Export My Data
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <button class="btn btn-outline-danger w-100" onclick="confirmDelete()">
+                                <i class="fas fa-trash me-2"></i>Delete Account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Delete Account
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Are you sure you want to delete your account?</strong></p>
+                <p>This action <strong>cannot be undone</strong>. All your data including:</p>
+                <ul>
+                    <li>Soil test records</li>
+                    <li>Disease reports</li>
+                    <li>Crop recommendations</li>
+                    <li>Irrigation schedules</li>
+                    <li>Yield predictions</li>
+                </ul>
+                <p>will be permanently deleted.</p>
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" id="confirmDeleteCheck">
+                    <label class="form-check-label" for="confirmDeleteCheck">
+                        I understand this action cannot be undone
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn" disabled>
+                    <i class="fas fa-trash me-2"></i>Delete Account
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Toggle password visibility
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    const icon = input.parentElement.querySelector('button i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+// Password strength checker
+document.getElementById('newPassword').addEventListener('input', function() {
+    const password = this.value;
+    const strengthDiv = document.getElementById('passwordStrength');
+    
+    if (password.length === 0) {
+        strengthDiv.innerHTML = '';
+        return;
+    }
+    
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+    if (/\d/.test(password)) score++;
+    if (/[^a-zA-Z0-9]/.test(password)) score++;
+    
+    const levels = ['Weak', 'Fair', 'Good', 'Strong'];
+    const colors = ['danger', 'warning', 'info', 'success'];
+    const level = Math.min(score, 3);
+    
+    const percentage = (score / 4) * 100;
+    strengthDiv.innerHTML = `
+        <div class="progress" style="height: 5px;">
+            <div class="progress-bar bg-${colors[level]}" style="width: ${percentage}%"></div>
+        </div>
+        <small class="text-${colors[level]}">${levels[level]}</small>
+    `;
+});
+
+// Password match checker
+document.getElementById('confirmPassword').addEventListener('input', function() {
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = this.value;
+    const matchDiv = document.getElementById('passwordMatch');
+    
+    if (confirmPassword.length === 0) {
+        matchDiv.innerHTML = '';
+        return;
+    }
+    
+    if (newPassword === confirmPassword) {
+        matchDiv.innerHTML = '<small class="text-success"><i class="fas fa-check-circle me-1"></i>Passwords match</small>';
+    } else {
+        matchDiv.innerHTML = '<small class="text-danger"><i class="fas fa-times-circle me-1"></i>Passwords do not match</small>';
+    }
+});
+
+// Delete account confirmation
+function confirmDelete() {
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+}
+
+document.getElementById('confirmDeleteCheck').addEventListener('change', function() {
+    document.getElementById('confirmDeleteBtn').disabled = !this.checked;
+});
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    alert('Account deletion functionality coming soon. Please contact support.');
+    bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+});
+
+// Export data
+function exportData() {
+    alert('Data export functionality coming soon.');
+}
+
+// Load user stats on page load
+$(document).ready(function() {
+    loadUserStats();
+    
+    // Profile form submission
+    $('#profileForm').on('submit', function() {
+        const btn = $('#updateProfileBtn');
+        btn.prop('disabled', true);
+        btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Saving...');
+        setTimeout(() => {
+            btn.prop('disabled', false);
+            btn.html('<i class="fas fa-save me-2"></i>Update Profile');
+        }, 3000);
+    });
+    
+    // Password form submission
+    $('#passwordForm').on('submit', function(e) {
+        e.preventDefault();
+        const newPassword = $('#newPassword').val();
+        const confirmPassword = $('#confirmPassword').val();
+        
+        if (newPassword !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+        }
+        
+        if (newPassword.length < 8) {
+            alert('Password must be at least 8 characters long.');
+            return;
+        }
+        
+        const btn = $('#changePasswordBtn');
+        btn.prop('disabled', true);
+        btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Changing...');
+        
+        // Submit the form via AJAX
+        $.ajax({
+            url: '{{ url_for("auth.change_password") }}',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                // Since the server redirects, we handle success differently
+                btn.prop('disabled', false);
+                btn.html('<i class="fas fa-key me-2"></i>Change Password');
+                alert('Password changed successfully!');
+                $('#passwordForm')[0].reset();
+                $('#passwordStrength').html('');
+                $('#passwordMatch').html('');
+            },
+            error: function(xhr) {
+                btn.prop('disabled', false);
+                btn.html('<i class="fas fa-key me-2"></i>Change Password');
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    alert(xhr.responseJSON.message);
+                } else {
+                    alert('Failed to change password. Please try again.');
+                }
+            }
+        });
+    });
+});
+
+function loadUserStats() {
+    $.ajax({
+        url: '{{ url_for("auth.get_user_data") }}',
+        method: 'GET',
+        success: function(data) {
+            // Update stats
+            $('#soilTestsCount').text(data.soil_tests || 0);
+            $('#diseaseReportsCount').text(data.disease_reports || 0);
+            $('#predictionsCount').text(data.predictions || 0);
+            $('#irrigationCount').text(data.irrigation || 0);
+        },
+        error: function() {
+            console.error('Error loading user stats');
+        }
+    });
+}
+</script>
+{% endblock %}

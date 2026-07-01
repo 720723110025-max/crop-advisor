@@ -1,0 +1,403 @@
+{% extends "base.html" %}
+
+{% block title %}Disease Detection - Crop Advisory System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-stethoscope me-2"></i>AI Disease Detection
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Left Column: Inputs -->
+                        <div class="col-lg-6">
+                            <form id="diseaseForm" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-leaf me-2"></i>Crop Type
+                                    </label>
+                                    <select class="form-select" id="cropType" required>
+                                        <option value="">Select crop type...</option>
+                                        <option value="rice">Rice</option>
+                                        <option value="wheat">Wheat</option>
+                                        <option value="maize">Maize</option>
+                                        <option value="sugarcane">Sugarcane</option>
+                                        <option value="cotton">Cotton</option>
+                                        <option value="vegetables">Vegetables</option>
+                                        <option value="fruits">Fruits</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-image me-2"></i>Image Input Method
+                                    </label>
+                                    
+                                    <!-- Input Mode Tabs -->
+                                    <ul class="nav nav-pills mb-3 justify-content-center" id="inputMethodTabs" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="upload-tab" data-bs-toggle="pill" data-bs-target="#uploadMethod" type="button" role="tab">
+                                                <i class="fas fa-upload me-2"></i>Upload File
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="camera-tab" data-bs-toggle="pill" data-bs-target="#cameraMethod" type="button" role="tab">
+                                                <i class="fas fa-camera me-2"></i>Webcam Capture
+                                            </button>
+                                        </li>
+                                    </ul>
+                                    
+                                    <div class="tab-content" id="inputMethodTabsContent">
+                                        <!-- Upload Tab -->
+                                        <div class="tab-pane fade show active" id="uploadMethod" role="tabpanel">
+                                            <div class="mb-3">
+    <label class="form-label">Upload Leaf Image</label>
+
+    <input
+        type="file"
+        id="leafImage"
+        name="leaf_image"
+        class="form-control"
+        accept="image/*">
+
+    <div id="imagePreview" class="mt-3" style="display:none;">
+        <img id="previewImg"
+             class="img-fluid rounded"
+             style="max-height:200px;">
+    </div>
+</div>
+                                        </div>
+                                        
+                                        <!-- Webcam Tab -->
+                                        <div class="tab-pane fade" id="cameraMethod" role="tabpanel">
+                                            <div class="webcam-container border rounded-3 p-3 text-center bg-light">
+                                                <video id="webcamVideo" width="100%" height="auto" autoplay playsinline class="rounded mb-2" style="max-height: 240px; background-color: #000;"></video>
+                                                <canvas id="webcamCanvas" class="d-none" width="640" height="480"></canvas>
+                                                <div>
+                                                    <button type="button" class="btn btn-outline-success btn-sm" id="startWebcamBtn">
+                                                        <i class="fas fa-power-off me-1"></i>Start Camera
+                                                    </button>
+                                                    <button type="button" class="btn btn-success btn-sm d-none" id="captureBtn">
+                                                        <i class="fas fa-camera me-1"></i>Capture Photo
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Image Preview Area -->
+                                    <div id="imagePreview" class="mt-3 text-center" style="display: none;">
+                                        <img id="previewImg" src="#" alt="Preview" class="img-fluid rounded border p-1" style="max-height: 200px;">
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-danger" id="removeImage">
+                                                <i class="fas fa-times me-1"></i>Remove & Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-danger btn-lg w-100" id="detectBtn">
+                                    <i class="fas fa-search me-2"></i>Detect Disease
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <!-- Right Column: Results -->
+                        <div class="col-lg-6 mt-4 mt-lg-0">
+                            <div id="resultSection" style="display:none;">
+                                <!-- Results will be dynamically populated here -->
+                            </div>
+
+                            <div id="loadingSection" style="display: none;">
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-danger" role="status" style="width: 4rem; height: 4rem;">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-3 text-muted">AI is analyzing the leaf image...</p>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" 
+                                             role="progressbar" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end row -->
+                </div> <!-- end card-body -->
+            </div> <!-- end card -->
+        </div> <!-- end col-12 -->
+    </div> <!-- end row -->
+</div> <!-- end container -->
+
+<style>
+.dropzone {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.dropzone:hover {
+    background-color: #f8f9fa;
+    border-color: #dc3545 !important;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: #dc3545;
+}
+.nav-pills .nav-link {
+    color: #dc3545;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function () {
+    let localStream = null;
+    let cameraImageData = null;
+    let currentMode = 'upload'; // 'upload' or 'camera'
+
+    // Handle tab switches
+    $('#upload-tab').on('click', function() {
+        currentMode = 'upload';
+        stopWebcam();
+        resetPreview();
+    });
+
+    $('#camera-tab').on('click', function() {
+        currentMode = 'camera';
+        resetPreview();
+    });
+    document.getElementById("leafImage").addEventListener("change", function () {
+    const file = this.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        document.getElementById("previewImg").src = e.target.result;
+        document.getElementById("imagePreview").style.display = "block";
+    };
+
+    reader.readAsDataURL(file);
+});
+
+    // Preview uploaded image
+    $('#leafImage').on('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $('#previewImg').attr('src', e.target.result);
+            $('#imagePreview').show();
+            $('#dropzone').hide();
+            $('#inputMethodTabs').hide();
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Start Webcam video stream
+    $('#startWebcamBtn').on('click', function() {
+        const video = document.getElementById('webcamVideo');
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                .then(function(stream) {
+                    localStream = stream;
+                    video.srcObject = stream;
+                    video.play();
+                    $('#startWebcamBtn').addClass('d-none');
+                    $('#captureBtn').removeClass('d-none');
+                })
+                .catch(function(err) {
+                    alert('Error accessing webcam: ' + err.message);
+                    console.error(err);
+                });
+        } else {
+            alert('Webcam access not supported in this browser.');
+        }
+    });
+
+    // Capture snapshot from webcam video
+    $('#captureBtn').on('click', function() {
+        const video = document.getElementById('webcamVideo');
+        const canvas = document.getElementById('webcamCanvas');
+        const context = canvas.getContext('2d');
+
+        if (localStream) {
+            // Draw current video frame to canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            cameraImageData = canvas.toDataURL('image/jpeg');
+
+            // Show captured image as preview
+            $('#previewImg').attr('src', cameraImageData);
+            $('#imagePreview').show();
+            
+            // Hide camera input tab elements
+            stopWebcam();
+            $('#cameraMethod').hide();
+            $('#inputMethodTabs').hide();
+        }
+    });
+
+    // Stop Webcam stream helper
+    function stopWebcam() {
+        if (localStream) {
+            localStream.getTracks().forEach(track => track.stop());
+            localStream = null;
+        }
+        const video = document.getElementById('webcamVideo');
+        if (video) {
+            video.srcObject = null;
+        }
+        $('#startWebcamBtn').removeClass('d-none');
+        $('#captureBtn').addClass('d-none');
+    }
+
+    // Reset preview
+    function resetPreview() {
+        $('#leafImage').val('');
+        cameraImageData = null;
+        $('#imagePreview').hide();
+        $('#dropzone').show();
+        $('#cameraMethod').show();
+        $('#inputMethodTabs').show();
+        $('#resultSection').hide();
+    }
+
+    // Remove / Reset Image action
+    $('#removeImage').on('click', function () {
+        resetPreview();
+        stopWebcam();
+    });
+
+    // Submit form
+    $('#diseaseForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const cropType = $('#cropType').val();
+        if (!cropType) {
+            alert('Please select a crop type');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('crop_type', cropType);
+        formData.append('image_source', currentMode);
+
+        if (currentMode === 'camera') {
+            if (!cameraImageData) {
+                alert('Please capture a photo first');
+                return;
+            }
+            formData.append('image_data', cameraImageData);
+        } else {
+            const file = $('#leafImage')[0].files[0];
+            if (!file) {
+                alert('Please upload a leaf image');
+                return;
+            }
+            formData.append('leaf_image', file);
+        }
+
+        $('#loadingSection').show();
+        $('#resultSection').hide();
+
+        $('#detectBtn')
+            .prop('disabled', true)
+            .html('<i class="fas fa-spinner fa-spin me-2"></i>Analyzing...');
+
+        $.ajax({
+            url: "{{ url_for('disease.detect_disease') }}",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $('#loadingSection').hide();
+                $('#detectBtn')
+                    .prop('disabled', false)
+                    .html('<i class="fas fa-search me-2"></i>Detect Disease');
+
+                if (!response.success) {
+                    alert(response.error || "Detection failed");
+                    return;
+                }
+                updateResults(response);
+            },
+            error: function (xhr) {
+                $('#loadingSection').hide();
+                $('#detectBtn')
+                    .prop('disabled', false)
+                    .html('<i class="fas fa-search me-2"></i>Detect Disease');
+                alert(
+                    (xhr.responseJSON && xhr.responseJSON.error) ||
+                    "Server Error. Please try again."
+                );
+            }
+        });
+    });
+
+    function updateResults(data) {
+        let alertClass =
+            data.severity === 'High'
+                ? 'danger'
+                : data.severity === 'Medium'
+                ? 'warning'
+                : 'success';
+
+        let confidence = (parseFloat(data.confidence) * 100).toFixed(1);
+
+        let html = `
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h4 class="text-center text-danger mb-4">
+                    <i class="fas fa-virus-slash me-2"></i>AI Analysis Report
+                </h4>
+
+                <div class="alert alert-${alertClass} border-0 shadow-sm mb-4">
+                    <h5 class="alert-heading d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-biohazard me-2"></i>${data.disease}</span>
+                        <span class="badge bg-light text-dark">${data.severity} Severity</span>
+                    </h5>
+                    <p class="mb-0 mt-2">
+                        <strong>Confidence:</strong> ${confidence}%
+                    </p>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="text-secondary fw-bold">
+                        <i class="fas fa-exclamation-circle text-warning me-2"></i>Symptoms
+                    </h6>
+                    <p class="bg-light p-2 rounded">${data.symptoms || 'N/A'}</p>
+
+                    <h6 class="text-secondary fw-bold">
+                        <i class="fas fa-microscope text-info me-2"></i>Causes
+                    </h6>
+                    <p class="bg-light p-2 rounded">${data.causes || 'N/A'}</p>
+
+                    <h6 class="text-secondary fw-bold">
+                        <i class="fas fa-shield-alt text-success me-2"></i>Prevention
+                    </h6>
+                    <p class="bg-light p-2 rounded">${data.prevention || 'N/A'}</p>
+
+                    <h6 class="text-secondary fw-bold">
+                        <i class="fas fa-prescription-bottle text-danger me-2"></i>Treatment Recommendation
+                    </h6>
+                    <p class="bg-light p-2 rounded fw-bold text-success">${data.treatment || 'N/A'}</p>
+                </div>
+            </div>
+        </div>
+        `;
+
+        $('#resultSection').html(html).show();
+        
+        // Scroll to results
+        $('#resultSection')[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,558 @@
+{% extends "base.html" %}
+
+{% block title %}Irrigation Advisory - Crop Advisory System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-tint me-2"></i>Smart Irrigation Advisory
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <form id="irrigationForm">
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-seedling me-2"></i>Crop Type
+                                    </label>
+                                    <select class="form-select" id="cropType" required>
+                                        <option value="">Select crop...</option>
+                                        <option value="rice">Rice</option>
+                                        <option value="wheat">Wheat</option>
+                                        <option value="maize">Maize</option>
+                                        <option value="sugarcane">Sugarcane</option>
+                                        <option value="cotton">Cotton</option>
+                                        <option value="vegetables">Vegetables</option>
+                                        <option value="fruits">Fruits</option>
+                                        <option value="pulses">Pulses</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-tint me-2"></i>Soil Moisture (%)
+                                    </label>
+                                    <input type="number" class="form-control" id="soilMoisture" 
+                                           placeholder="e.g., 60" required min="0" max="100">
+                                    <small class="text-muted">Recommended: 50-80% for most crops</small>
+                                    <div class="mt-2">
+                                        <div class="progress" style="height: 10px;">
+                                            <div class="progress-bar bg-success" id="moistureBar" role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <small class="text-danger">Critical (&lt;30%)</small>
+                                            <small class="text-warning">Moderate (30-60%)</small>
+                                            <small class="text-success">Optimal (60-80%)</small>
+                                            <small class="text-info">High (&gt;80%)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-thermometer-half me-2"></i>Temperature (°C)
+                                        </label>
+                                        <input type="number" class="form-control" id="temperature" 
+                                               placeholder="e.g., 25" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-water me-2"></i>Humidity (%)
+                                        </label>
+                                        <input type="number" class="form-control" id="humidity" 
+                                               placeholder="e.g., 60" required min="0" max="100">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-cloud-rain me-2"></i>Recent Rainfall (mm)
+                                    </label>
+                                    <input type="number" class="form-control" id="rainfall" 
+                                           placeholder="e.g., 10" required min="0">
+                                </div>
+                                
+                                <button type="submit" class="btn btn-info btn-lg w-100" id="getAdviceBtn">
+                                    <i class="fas fa-microchip me-2"></i>Get Irrigation Advice
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <!-- Results Section -->
+                            <div id="resultSection" style="display: none;">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div id="irrigationAlert" class="alert alert-success">
+                                            <h5 class="alert-heading">
+                                                <i class="fas fa-check-circle me-2"></i>
+                                                Irrigation Analysis
+                                            </h5>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Water Requirement</small>
+                                                <p class="fw-bold" id="waterRequirement">-</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Soil Moisture</small>
+                                                <p class="fw-bold" id="currentMoisture">-</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Irrigation Timing</small>
+                                                <p class="fw-bold" id="irrigationTiming">-</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Duration</small>
+                                                <p class="fw-bold" id="irrigationDuration">-</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <small class="text-muted">Recommended Method</small>
+                                            <p id="irrigationMethod" class="mb-0">-</p>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <small class="text-muted">Notes</small>
+                                            <div id="irrigationNotes" class="p-2 bg-light rounded"></div>
+                                        </div>
+                                        
+                                        <button class="btn btn-success w-100" id="scheduleIrrigation" style="display: none;">
+                                            <i class="fas fa-calendar-plus me-2"></i>Schedule Irrigation
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Loading Section -->
+                            <div id="loadingSection" style="display: none;">
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-info" role="status" style="width: 4rem; height: 4rem;">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-3 text-muted">Analyzing soil and weather conditions...</p>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                             role="progressbar" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Upcoming Irrigation Schedule -->
+            <div class="card border-0 shadow mt-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-calendar-check me-2"></i>Upcoming Irrigation Schedule
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Crop</th>
+                                    <th>Date/Time</th>
+                                    <th>Water Required</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="upcomingSchedule">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">
+                                        <i class="fas fa-inbox me-2"></i>No upcoming irrigation scheduled
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Irrigation History -->
+            <div class="card border-0 shadow mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history me-2"></i>Irrigation History
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Crop</th>
+                                    <th>Date</th>
+                                    <th>Water Required</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="irrigationHistory">
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">
+                                        <i class="fas fa-inbox me-2"></i>No irrigation history
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Schedule Modal -->
+<div class="modal fade" id="scheduleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-calendar-plus me-2"></i>Schedule Irrigation
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Irrigation has been scheduled based on your soil and weather conditions.
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <small class="text-muted">Crop</small>
+                        <p id="scheduleCrop">-</p>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Date/Time</small>
+                        <p id="scheduleDateTime">-</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <small class="text-muted">Water Required</small>
+                        <p id="scheduleWater">-</p>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Duration</small>
+                        <p id="scheduleDuration">-</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <small class="text-muted">Method</small>
+                        <p id="scheduleMethod">-</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="confirmSchedule">
+                    <i class="fas fa-check me-2"></i>Confirm Schedule
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentAdvice = null;
+
+$(document).ready(function() {
+    // Load irrigation history
+    loadHistory();
+    loadUpcoming();
+    
+    // Soil moisture progress bar
+    $('#soilMoisture').on('input', function() {
+        const value = parseInt(this.value) || 0;
+        const bar = $('#moistureBar');
+        bar.css('width', value + '%');
+        
+        // Change color based on value
+        if (value < 30) {
+            bar.removeClass('bg-success bg-warning bg-info').addClass('bg-danger');
+        } else if (value < 60) {
+            bar.removeClass('bg-success bg-danger bg-info').addClass('bg-warning');
+        } else if (value < 80) {
+            bar.removeClass('bg-danger bg-warning bg-info').addClass('bg-success');
+        } else {
+            bar.removeClass('bg-success bg-warning bg-danger').addClass('bg-info');
+        }
+    });
+    
+    // Form submit
+    $('#irrigationForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            crop_type: $('#cropType').val(),
+            soil_moisture: $('#soilMoisture').val(),
+            temperature: $('#temperature').val(),
+            humidity: $('#humidity').val(),
+            rainfall: $('#rainfall').val()
+        };
+        
+        // Validate
+        for (let key in formData) {
+            if (!formData[key] || formData[key] < 0) {
+                alert('Please fill in all required fields with valid positive values.');
+                return;
+            }
+        }
+        
+        if (formData.soil_moisture > 100) {
+            alert('Soil moisture cannot exceed 100%.');
+            return;
+        }
+        
+        if (formData.humidity > 100) {
+            alert('Humidity cannot exceed 100%.');
+            return;
+        }
+        
+        // Show loading
+        $('#resultSection').hide();
+        $('#loadingSection').show();
+        $('#getAdviceBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Analyzing...');
+        
+        // Send AJAX request
+        $.ajax({
+            url: '{{ url_for("irrigation.irrigation_advice") }}',
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                $('#loadingSection').hide();
+                $('#getAdviceBtn').prop('disabled', false).html('<i class="fas fa-microchip me-2"></i>Get Irrigation Advice');
+                
+                if (response.success) {
+                    currentAdvice = response;
+                    $('#resultSection').show();
+                    updateResults(response);
+                    
+                    // Show schedule button if irrigation needed
+                    if (response.needs_irrigation) {
+                        $('#scheduleIrrigation').show();
+                    } else {
+                        $('#scheduleIrrigation').hide();
+                    }
+                    
+                    // Load updated history
+                    loadHistory();
+                    loadUpcoming();
+                } else {
+                    alert('Error: ' + response.error);
+                }
+            },
+            error: function(xhr) {
+                $('#loadingSection').hide();
+                $('#getAdviceBtn').prop('disabled', false).html('<i class="fas fa-microchip me-2"></i>Get Irrigation Advice');
+                alert('An error occurred: ' + (xhr.responseJSON?.error || 'Please try again.'));
+            }
+        });
+    });
+    
+    // Schedule irrigation button
+    $('#scheduleIrrigation').on('click', function() {
+        if (currentAdvice) {
+            $('#scheduleCrop').text($('#cropType').val());
+            $('#scheduleDateTime').text(new Date(currentAdvice.timing).toLocaleString());
+            $('#scheduleWater').text(currentAdvice.water_requirement + ' mm');
+            $('#scheduleDuration').text(currentAdvice.duration + ' hours');
+            $('#scheduleMethod').text(currentAdvice.method || 'Drip irrigation');
+            
+            const modal = new bootstrap.Modal(document.getElementById('scheduleModal'));
+            modal.show();
+        }
+    });
+    
+    // Confirm schedule
+    $('#confirmSchedule').on('click', function() {
+        bootstrap.Modal.getInstance(document.getElementById('scheduleModal')).hide();
+        alert('✅ Irrigation scheduled successfully!\n\nYou will receive a reminder before the scheduled time.');
+        loadUpcoming();
+    });
+});
+
+function updateResults(data) {
+    const alert = $('#irrigationAlert');
+    if (data.needs_irrigation) {
+        alert.removeClass('alert-success').addClass('alert-warning');
+        alert.html(`
+            <h5 class="alert-heading">
+                <i class="fas fa-tint me-2"></i>
+                Irrigation Recommended
+            </h5>
+            <p class="mb-0">Soil moisture is below optimal level. Irrigation is needed.</p>
+        `);
+    } else {
+        alert.removeClass('alert-warning').addClass('alert-success');
+        alert.html(`
+            <h5 class="alert-heading">
+                <i class="fas fa-check-circle me-2"></i>
+                No Irrigation Needed
+            </h5>
+            <p class="mb-0">${data.message || 'Soil moisture is at optimal level.'}</p>
+        `);
+    }
+    
+    $('#waterRequirement').text((data.water_requirement || 0) + ' mm/day');
+    $('#currentMoisture').text($('#soilMoisture').val() + '%');
+    $('#irrigationTiming').text(data.timing ? new Date(data.timing).toLocaleString() : 'Not needed');
+    $('#irrigationDuration').text((data.duration || 0) + ' hours');
+    $('#irrigationMethod').text(data.method || 'Not specified');
+    
+    const notes = (data.notes || '').split('\n');
+    let notesHtml = '';
+    notes.forEach(function(note) {
+        if (note.trim()) {
+            const icon = note.includes('⚠️') ? 'exclamation-triangle' : 
+                        note.includes('💧') ? 'tint' : 
+                        note.includes('✅') ? 'check-circle' : 'info-circle';
+            const color = note.includes('⚠️') ? 'warning' : 
+                          note.includes('✅') ? 'success' : 'info';
+            notesHtml += `<div class="mb-1"><i class="fas fa-${icon} text-${color} me-2"></i>${note.replace(/[⚠️💧✅]/g, '').trim()}</div>`;
+        }
+    });
+    $('#irrigationNotes').html(notesHtml || '<p class="text-muted mb-0">No additional notes</p>');
+}
+
+function loadHistory() {
+    $.ajax({
+        url: '{{ url_for("irrigation.api_history") }}',
+        method: 'GET',
+        success: function(data) {
+            const tbody = $('#irrigationHistory');
+            if (!data || data.length === 0) {
+                tbody.html(`
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            <i class="fas fa-inbox me-2"></i>No irrigation history
+                        </td>
+                    </tr>
+                `);
+                return;
+            }
+            
+            let html = '';
+            data.forEach(function(item) {
+                const date = new Date(item.timing);
+                html += `
+                    <tr>
+                        <td><strong>${item.crop_type}</strong></td>
+                        <td>${date.toLocaleDateString()} ${date.toLocaleTimeString()}</td>
+                        <td>${item.water_requirement} mm</td>
+                        <td>${item.method || 'N/A'}</td>
+                        <td>
+                            <span class="badge bg-${item.is_completed ? 'success' : 'warning'}">
+                                ${item.is_completed ? 'Completed' : 'Scheduled'}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.html(html);
+        },
+        error: function() {
+            console.error('Error loading irrigation history');
+        }
+    });
+}
+
+function loadUpcoming() {
+    $.ajax({
+        url: '{{ url_for("irrigation.api_upcoming") }}',
+        method: 'GET',
+        success: function(data) {
+            const tbody = $('#upcomingSchedule');
+            if (!data || data.length === 0) {
+                tbody.html(`
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">
+                            <i class="fas fa-inbox me-2"></i>No upcoming irrigation scheduled
+                        </td>
+                    </tr>
+                `);
+                return;
+            }
+            
+            let html = '';
+            data.forEach(function(item) {
+                const date = new Date(item.timing);
+                html += `
+                    <tr>
+                        <td><strong>${item.crop_type}</strong></td>
+                        <td>${date.toLocaleDateString()} ${date.toLocaleTimeString()}</td>
+                        <td>${item.water_requirement} mm</td>
+                        <td>${item.method || 'N/A'}</td>
+                        <td>
+                            <span class="badge bg-warning">Pending</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-success" onclick="completeIrrigation('${item.id}')">
+                                <i class="fas fa-check me-1"></i>Complete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.html(html);
+        },
+        error: function() {
+            console.error('Error loading upcoming irrigation');
+        }
+    });
+}
+
+function completeIrrigation(id) {
+    if (!confirm('Mark this irrigation as completed?')) {
+        return;
+    }
+    
+    $.ajax({
+        url: `/irrigation/api/complete/${id}`,
+        method: 'POST',
+        success: function(response) {
+            if (response.success) {
+                alert('✅ Irrigation marked as completed!');
+                loadUpcoming();
+                loadHistory();
+            } else {
+                alert('Error: ' + response.error);
+            }
+        },
+        error: function() {
+            alert('Error completing irrigation. Please try again.');
+        }
+    });
+}
+</script>
+{% endblock %}
