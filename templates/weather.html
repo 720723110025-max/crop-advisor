@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+
+{% block title %}Weather Advisory - Crop Advisory System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-cloud-sun me-2"></i>Weather Advisory
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Location Search -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mx-auto">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="locationInput" 
+                                       placeholder="Enter location (e.g., New York, London, Tokyo)" 
+                                       value="{{ location or 'New York' }}">
+                                <button class="btn btn-primary" id="searchWeather">
+                                    <i class="fas fa-search me-1"></i>Search
+                                </button>
+                                <button class="btn btn-outline-secondary" id="useMyLocation">
+                                    <i class="fas fa-location-dot me-1"></i>My Location
+                                </button>
+                            </div>
+                            <small class="text-muted">Enter city name or use your current location</small>
+                        </div>
+                    </div>
+
+                    <!-- Current Weather -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <h5>
+                                                <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                                                <span id="locationName">{{ location or 'Location not set' }}</span>
+                                            </h5>
+                                            {% if current_weather %}
+                                                <h1 class="display-2" id="currentTemp">{{ current_weather.temperature }}°C</h1>
+                                                <p class="lead" id="weatherCondition">{{ current_weather.condition|capitalize }}</p>
+                                                <p class="text-muted" id="weatherDescription">
+                                                    <i class="fas fa-calendar-alt me-1"></i>
+                                                    {{ now.strftime('%A, %B %d, %Y') if now else 'Today' }}
+                                                    <span class="mx-2">|</span>
+                                                    <i class="fas fa-clock me-1"></i>
+                                                    {{ now.strftime('%I:%M %p') if now else '12:00 PM' }}
+                                                </p>
+                                            {% else %}
+                                                <p class="text-muted">Weather data unavailable. Please search for a location.</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {% if current_weather %}
+                                                <div class="row text-center">
+                                                    <div class="col-3">
+                                                        <small class="text-muted d-block">Humidity</small>
+                                                        <strong id="humidity">{{ current_weather.humidity }}%</strong>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <small class="text-muted d-block">Wind</small>
+                                                        <strong id="windSpeed">{{ current_weather.wind_speed }} km/h</strong>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <small class="text-muted d-block">Pressure</small>
+                                                        <strong id="pressure">{{ current_weather.pressure }} mb</strong>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <small class="text-muted d-block">Visibility</small>
+                                                        <strong id="visibility">{{ current_weather.visibility or '10' }} km</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3 text-center">
+                                                    <div class="col-6">
+                                                        <small class="text-muted d-block">
+                                                            <i class="fas fa-sun text-warning me-1"></i>Sunrise
+                                                        </small>
+                                                        <strong id="sunrise">{{ current_weather.sunrise or '06:30' }}</strong>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <small class="text-muted d-block">
+                                                            <i class="fas fa-moon text-secondary me-1"></i>Sunset
+                                                        </small>
+                                                        <strong id="sunset">{{ current_weather.sunset or '18:45' }}</strong>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 5-Day Forecast -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="mb-3">
+                                <i class="fas fa-calendar-alt me-2"></i>5-Day Forecast
+                            </h5>
+                            <div class="row" id="forecastContainer">
+                                {% if forecast %}
+                                    {% for day in forecast %}
+                                        <div class="col-md-2 col-4 mb-3">
+                                            <div class="card text-center h-100 hover-card">
+                                                <div class="card-body">
+                                                    <p class="mb-1"><strong>{{ day.day[:3] }}</strong></p>
+                                                    <p class="mb-1 small text-muted">{{ day.date }}</p>
+                                                    <i class="fas fa-{{ 'sun' if 'sunny' in day.condition|lower or 'clear' in day.condition|lower else 'cloud' }} fa-2x text-warning"></i>
+                                                    <p class="mb-0 mt-1"><strong>{{ day.temperature }}°C</strong></p>
+                                                    <small class="text-muted d-block text-truncate">{{ day.condition }}</small>
+                                                    {% if day.precipitation %}
+                                                        <small class="text-primary">
+                                                            <i class="fas fa-tint me-1"></i>{{ day.precipitation }}mm
+                                                        </small>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="col-12 text-center text-muted">
+                                        <i class="fas fa-cloud fa-3x mb-2 d-block"></i>
+                                        No forecast data available
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detailed Weather Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Weather Details</h6>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-sm table-borderless">
+                                        <tbody>
+                                            <tr>
+                                                <td><i class="fas fa-thermometer-half text-danger me-2"></i>Feels Like</td>
+                                                <td id="feelsLike">{{ current_weather.feels_like or current_weather.temperature or '--' }}°C</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fas fa-tint text-info me-2"></i>Humidity</td>
+                                                <td id="humidityDetail">{{ current_weather.humidity or '--' }}%</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fas fa-wind text-secondary me-2"></i>Wind Speed</td>
+                                                <td id="windDetail">{{ current_weather.wind_speed or '--' }} km/h</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fas fa-compass text-success me-2"></i>Wind Direction</td>
+                                                <td id="windDirection">{{ current_weather.wind_direction or '--' }}°</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fas fa-cloud text-muted me-2"></i>Cloudiness</td>
+                                                <td id="cloudiness">{{ current_weather.cloudiness or '--' }}%</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="fas fa-eye text-primary me-2"></i>Visibility</td>
+                                                <td id="visibilityDetail">{{ current_weather.visibility or '--' }} km</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0"><i class="fas fa-clock me-2"></i>Sun Information</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row text-center">
+                                        <div class="col-6">
+                                            <div class="p-3 bg-warning bg-opacity-10 rounded-3">
+                                                <i class="fas fa-sun text-warning fa-2x mb-2"></i>
+                                                <p class="mb-0"><small class="text-muted">Sunrise</small></p>
+                                                <h5 id="sunriseDetail">{{ current_weather.sunrise or '06:30' }}</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="p-3 bg-secondary bg-opacity-10 rounded-3">
+                                                <i class="fas fa-moon text-secondary fa-2x mb-2"></i>
+                                                <p class="mb-0"><small class="text-muted">Sunset</small></p>
+                                                <h5 id="sunsetDetail">{{ current_weather.sunset or '18:45' }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <small class="text-muted">Day Length: <span id="dayLength">12h 15m</span></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Farming Recommendations -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-lightbulb me-2"></i>Farming Recommendations
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    {% if recommendations %}
+                                        <ul class="list-group list-group-flush" id="recommendationsList">
+                                            {% for rec in recommendations %}
+                                                <li class="list-group-item">
+                                                    <i class="fas fa-chevron-right text-success me-2"></i>
+                                                    {{ rec }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <p class="text-muted text-center">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            No recommendations available. Please check your location settings.
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Search weather
+    $('#searchWeather').on('click', function() {
+        const location = $('#locationInput').val().trim();
+        if (location) {
+            loadWeather(location);
+        } else {
+            alert('Please enter a location');
+        }
+    });
+    
+    // Enter key for location input
+    $('#locationInput').on('keypress', function(e) {
+        if (e.which === 13) {
+            $('#searchWeather').click();
+        }
+    });
+    
+    // Use my location
+    $('#useMyLocation').on('click', function() {
+        if (navigator.geolocation) {
+            $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Getting location...');
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    loadWeatherByCoords(lat, lon);
+                    $('#useMyLocation').prop('disabled', false).html('<i class="fas fa-location-dot me-1"></i>My Location');
+                },
+                function(error) {
+                    alert('Unable to get your location. Please enter city name manually.');
+                    $('#useMyLocation').prop('disabled', false).html('<i class="fas fa-location-dot me-1"></i>My Location');
+                    console.error('Geolocation error:', error);
+                }
+            );
+        } else {
+            alert('Geolocation is not supported by your browser. Please enter city name manually.');
+        }
+    });
+});
+
+function loadWeather(location) {
+    $('#searchWeather').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Loading...');
+    
+    $.ajax({
+        url: '{{ url_for("weather.api_current_weather") }}',
+        method: 'GET',
+        data: { location: location },
+        success: function(response) {
+            updateWeatherUI(response, location);
+            loadForecast(location);
+            loadRecommendations(location);
+            $('#searchWeather').prop('disabled', false).html('<i class="fas fa-search me-1"></i>Search');
+        },
+        error: function(xhr) {
+            alert('Error loading weather data: ' + (xhr.responseJSON?.error || 'Please try again.'));
+            $('#searchWeather').prop('disabled', false).html('<i class="fas fa-search me-1"></i>Search');
+        }
+    });
+}
+
+function loadWeatherByCoords(lat, lon) {
+    $.ajax({
+        url: '{{ url_for("weather.api_current_weather") }}',
+        method: 'GET',
+        data: { lat: lat, lon: lon },
+        success: function(response) {
+            const location = response.location || 'Current Location';
+            updateWeatherUI(response, location);
+            loadForecast(location);
+            loadRecommendations(location);
+        },
+        error: function() {
+            alert('Error loading weather data for your location.');
+        }
+    });
+}
+
+function loadForecast(location) {
+    $.ajax({
+        url: '{{ url_for("weather.api_forecast") }}',
+        method: 'GET',
+        data: { location: location, days: 5 },
+        success: function(response) {
+            updateForecastUI(response);
+        },
+        error: function() {
+            console.error('Error loading forecast');
+        }
+    });
+}
+
+function loadRecommendations(location) {
+    $.ajax({
+        url: '{{ url_for("weather.api_recommendations") }}',
+        method: 'GET',
+        data: { location: location },
+        success: function(response) {
+            updateRecommendationsUI(response);
+        },
+        error: function() {
+            console.error('Error loading recommendations');
+        }
+    });
+}
+
+function updateWeatherUI(data, location) {
+    // Update location name
+    $('#locationName').text(location);
+    
+    // Update current weather
+    $('#currentTemp').text(data.temperature + '°C');
+    $('#weatherCondition').text(data.condition || 'Partly Cloudy');
+    
+    // Update weather details
+    $('#humidity').text(data.humidity + '%');
+    $('#windSpeed').text(data.wind_speed + ' km/h');
+    $('#pressure').text(data.pressure + ' mb');
+    $('#visibility').text(data.visibility + ' km');
+    
+    // Update detailed table
+    $('#feelsLike').text(data.feels_like + '°C');
+    $('#humidityDetail').text(data.humidity + '%');
+    $('#windDetail').text(data.wind_speed + ' km/h');
+    $('#windDirection').text(data.wind_direction + '°');
+    $('#cloudiness').text(data.cloudiness || '0%');
+    $('#visibilityDetail').text(data.visibility + ' km');
+    
+    // Update sun information
+    $('#sunrise').text(data.sunrise || '06:30');
+    $('#sunset').text(data.sunset || '18:45');
+    $('#sunriseDetail').text(data.sunrise || '06:30');
+    $('#sunsetDetail').text(data.sunset || '18:45');
+    
+    // Calculate day length
+    if (data.sunrise && data.sunset) {
+        const sunrise = new Date(`1970-01-01T${data.sunrise}:00`);
+        const sunset = new Date(`1970-01-01T${data.sunset}:00`);
+        const diff = sunset - sunrise;
+        const hours = Math.floor(diff / 3600000);
+        const minutes = Math.floor((diff % 3600000) / 60000);
+        $('#dayLength').text(`${hours}h ${minutes}m`);
+    }
+}
+
+function updateForecastUI(data) {
+    const container = $('#forecastContainer');
+    if (!data || data.length === 0) {
+        container.html(`
+            <div class="col-12 text-center text-muted">
+                <i class="fas fa-cloud fa-3x mb-2 d-block"></i>
+                No forecast data available
+            </div>
+        `);
+        return;
+    }
+    
+    let html = '';
+    data.forEach(function(day) {
+        const icon = day.condition && (day.condition.toLowerCase().includes('sunny') || day.condition.toLowerCase().includes('clear')) 
+            ? 'sun' : 'cloud';
+        html += `
+            <div class="col-md-2 col-4 mb-3">
+                <div class="card text-center h-100 hover-card">
+                    <div class="card-body">
+                        <p class="mb-1"><strong>${day.day.slice(0, 3)}</strong></p>
+                        <p class="mb-1 small text-muted">${day.date}</p>
+                        <i class="fas fa-${icon} fa-2x text-warning"></i>
+                        <p class="mb-0 mt-1"><strong>${day.temperature}°C</strong></p>
+                        <small class="text-muted d-block text-truncate">${day.condition || 'Partly Cloudy'}</small>
+                        ${day.precipitation ? `<small class="text-primary"><i class="fas fa-tint me-1"></i>${day.precipitation}mm</small>` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    container.html(html);
+}
+
+function updateRecommendationsUI(data) {
+    const list = $('#recommendationsList');
+    if (!data || data.length === 0) {
+        list.html(`
+            <li class="list-group-item text-center text-muted">
+                <i class="fas fa-info-circle me-2"></i>
+                No recommendations available
+            </li>
+        `);
+        return;
+    }
+    
+    let html = '';
+    data.forEach(function(rec) {
+        html += `
+            <li class="list-group-item">
+                <i class="fas fa-chevron-right text-success me-2"></i>
+                ${rec}
+            </li>
+        `;
+    });
+    list.html(html);
+}
+</script>
+{% endblock %}

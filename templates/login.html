@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Crop Advisory System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-success text-white text-center py-3">
+                    <h4 class="mb-0"><i class="fas fa-sign-in-alt me-2"></i>Welcome Back</h4>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted text-center mb-4">Sign in to access your smart farming dashboard</p>
+                    <form method="POST" action="{{ url_for('auth.login') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-user me-2"></i>Username</label>
+                            <input type="text" class="form-control form-control-lg" name="username" placeholder="Enter your username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-lock me-2"></i>Password</label>
+                            <input type="password" class="form-control form-control-lg" name="password" placeholder="Enter your password" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                            <label class="form-check-label" for="remember">Remember me</label>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg w-100">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </button>
+                    </form>
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <p class="mb-0">Don't have an account?</p>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-outline-success">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

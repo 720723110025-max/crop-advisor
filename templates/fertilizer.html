@@ -1,0 +1,466 @@
+{% extends "base.html" %}
+
+{% block title %}Fertilizer Recommendation - Crop Advisory System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">
+                        <i class="fas fa-flask me-2"></i>Fertilizer Recommendation
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <form id="fertilizerForm">
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-seedling me-2"></i>Crop Type
+                                    </label>
+                                    <select class="form-select" id="cropType" required>
+                                        <option value="">Select crop...</option>
+                                        <option value="rice">Rice</option>
+                                        <option value="wheat">Wheat</option>
+                                        <option value="maize">Maize</option>
+                                        <option value="sugarcane">Sugarcane</option>
+                                        <option value="cotton">Cotton</option>
+                                        <option value="vegetables">Vegetables</option>
+                                        <option value="fruits">Fruits</option>
+                                        <option value="pulses">Pulses</option>
+                                    </select>
+                                </div>
+                                
+                                <h6 class="mb-3 text-muted">
+                                    <i class="fas fa-microscope me-2"></i>Soil Nutrient Levels
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-leaf text-success me-1"></i>Nitrogen (ppm)
+                                        </label>
+                                        <input type="number" class="form-control" id="nitrogen" 
+                                               placeholder="e.g., 50" required min="0">
+                                        <small class="text-muted">Optimal: 60-120</small>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-leaf text-warning me-1"></i>Phosphorus (ppm)
+                                        </label>
+                                        <input type="number" class="form-control" id="phosphorus" 
+                                               placeholder="e.g., 30" required min="0">
+                                        <small class="text-muted">Optimal: 30-70</small>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-leaf text-danger me-1"></i>Potassium (ppm)
+                                        </label>
+                                        <input type="number" class="form-control" id="potassium" 
+                                               placeholder="e.g., 40" required min="0">
+                                        <small class="text-muted">Optimal: 20-60</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-flask me-2"></i>pH Level
+                                        </label>
+                                        <input type="number" class="form-control" id="ph" 
+                                               placeholder="e.g., 6.5" step="0.1" min="0" max="14" required>
+                                        <small class="text-muted">Optimal: 6.0-7.5</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-mound me-2"></i>Organic Matter (%)
+                                        </label>
+                                        <input type="number" class="form-control" id="organicMatter" 
+                                               placeholder="e.g., 2.5" step="0.1" min="0">
+                                        <small class="text-muted">Optimal: 2-5%</small>
+                                    </div>
+                                </div>
+                                
+                                <!-- Nutrient Deficiency Indicators -->
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>Nutrient Deficiency Indicators
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div id="nIndicator" class="p-2 text-center rounded border">
+                                                <small>N</small>
+                                                <div id="nStatus" class="badge bg-secondary">Normal</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div id="pIndicator" class="p-2 text-center rounded border">
+                                                <small>P</small>
+                                                <div id="pStatus" class="badge bg-secondary">Normal</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div id="kIndicator" class="p-2 text-center rounded border">
+                                                <small>K</small>
+                                                <div id="kStatus" class="badge bg-secondary">Normal</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-warning btn-lg w-100" id="getFertilizerBtn">
+                                    <i class="fas fa-microchip me-2"></i>Get Fertilizer Recommendation
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <!-- Results Section -->
+                            <div id="resultSection" style="display: none;">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h5 class="text-warning">
+                                            <i class="fas fa-flask me-2"></i>Recommended Fertilizer
+                                        </h5>
+                                        <h3 id="fertilizerName" class="mb-3 text-success">-</h3>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Quantity</small>
+                                                <p class="fw-bold" id="quantity">-</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Frequency</small>
+                                                <p class="fw-bold" id="frequency">-</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                <small class="text-muted">Application Method</small>
+                                                <p id="applicationMethod" class="mb-0">-</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Best Time</small>
+                                                <p id="bestTime" class="mb-0">-</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <small class="text-muted">Application Schedule</small>
+                                            <div id="applicationSchedule" class="p-2 bg-white rounded"></div>
+                                        </div>
+                                        
+                                        <div class="alert alert-success">
+                                            <i class="fas fa-chart-line me-2"></i>
+                                            <strong>Expected Improvement:</strong>
+                                            <span id="expectedImprovement">-</span>
+                                        </div>
+                                        
+                                        <button class="btn btn-success w-100" id="saveRecommendation">
+                                            <i class="fas fa-save me-2"></i>Save Recommendation
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Loading Section -->
+                            <div id="loadingSection" style="display: none;">
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-warning" role="status" style="width: 4rem; height: 4rem;">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-3 text-muted">Analyzing soil nutrients and crop requirements...</p>
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" 
+                                             role="progressbar" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fertilizer History -->
+            <div class="card border-0 shadow mt-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history me-2"></i>Fertilizer Recommendation History
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Crop</th>
+                                    <th>Recommended Fertilizer</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fertilizerHistory">
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">
+                                        <i class="fas fa-inbox me-2"></i>No fertilizer recommendations yet
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save Recommendation Modal -->
+<div class="modal fade" id="saveModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-save me-2"></i>Save Recommendation
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Your fertilizer recommendation has been saved!
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h6 id="saveFertilizer">-</h6>
+                        <p class="mb-1"><small class="text-muted">Quantity:</small> <span id="saveQuantity">-</span></p>
+                        <p class="mb-0"><small class="text-muted">Application:</small> <span id="saveMethod">-</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="viewHistoryBtn">
+                    <i class="fas fa-list me-2"></i>View History
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1) !important;
+}
+
+.nutrient-indicator {
+    transition: all 0.3s;
+}
+.nutrient-indicator.deficient {
+    border-color: #dc3545 !important;
+    background-color: #f8d7da !important;
+}
+.nutrient-indicator.optimal {
+    border-color: #198754 !important;
+    background-color: #d1e7dd !important;
+}
+.nutrient-indicator.excess {
+    border-color: #ffc107 !important;
+    background-color: #fff3cd !important;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentRecommendation = null;
+
+$(document).ready(function() {
+    // Load fertilizer history
+    loadHistory();
+    
+    // Real-time nutrient status update
+    $('#nitrogen, #phosphorus, #potassium').on('input', function() {
+        updateNutrientStatus();
+    });
+    
+    // Form submit
+    $('#fertilizerForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            crop_type: $('#cropType').val(),
+            nitrogen: $('#nitrogen').val(),
+            phosphorus: $('#phosphorus').val(),
+            potassium: $('#potassium').val(),
+            ph: $('#ph').val(),
+            organic_matter: $('#organicMatter').val() || 0
+        };
+        
+        // Validate
+        for (let key in formData) {
+            if (!formData[key] && key !== 'organic_matter') {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            if (['nitrogen', 'phosphorus', 'potassium', 'ph'].includes(key) && formData[key] < 0) {
+                alert('Values must be positive numbers.');
+                return;
+            }
+        }
+        
+        if (formData.ph < 0 || formData.ph > 14) {
+            alert('pH must be between 0 and 14.');
+            return;
+        }
+        
+        // Show loading
+        $('#resultSection').hide();
+        $('#loadingSection').show();
+        $('#getFertilizerBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Analyzing...');
+        
+        // Send AJAX request
+        $.ajax({
+            url: '{{ url_for("fertilizer.recommend_fertilizer") }}',
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                $('#loadingSection').hide();
+                $('#getFertilizerBtn').prop('disabled', false).html('<i class="fas fa-microchip me-2"></i>Get Fertilizer Recommendation');
+                
+                if (response.success) {
+                    currentRecommendation = response;
+                    $('#resultSection').show();
+                    updateResults(response);
+                    loadHistory();
+                } else {
+                    alert('Error: ' + response.error);
+                }
+            },
+            error: function(xhr) {
+                $('#loadingSection').hide();
+                $('#getFertilizerBtn').prop('disabled', false).html('<i class="fas fa-microchip me-2"></i>Get Fertilizer Recommendation');
+                alert('An error occurred: ' + (xhr.responseJSON?.error || 'Please try again.'));
+            }
+        });
+    });
+    
+    // Save recommendation
+    $('#saveRecommendation').on('click', function() {
+        if (currentRecommendation) {
+            $('#saveFertilizer').text('Fertilizer: ' + currentRecommendation.fertilizer_name);
+            $('#saveQuantity').text(currentRecommendation.quantity + ' ' + currentRecommendation.unit);
+            $('#saveMethod').text(currentRecommendation.application_method);
+            
+            const modal = new bootstrap.Modal(document.getElementById('saveModal'));
+            modal.show();
+        }
+    });
+    
+    // View history from modal
+    $('#viewHistoryBtn').on('click', function() {
+        bootstrap.Modal.getInstance(document.getElementById('saveModal')).hide();
+        document.querySelector('.card.border-0.shadow.mt-4').scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+function updateNutrientStatus() {
+    const n = parseInt($('#nitrogen').val()) || 0;
+    const p = parseInt($('#phosphorus').val()) || 0;
+    const k = parseInt($('#potassium').val()) || 0;
+    
+    updateSingleNutrient('n', n, 60, 120);
+    updateSingleNutrient('p', p, 30, 70);
+    updateSingleNutrient('k', k, 20, 60);
+}
+
+function updateSingleNutrient(element, value, optimalMin, optimalMax) {
+    const statusEl = $('#' + element + 'Status');
+    const indicatorEl = $('#' + element + 'Indicator');
+    
+    indicatorEl.removeClass('deficient optimal excess');
+    
+    if (value < optimalMin) {
+        statusEl.removeClass('bg-secondary bg-success').addClass('bg-danger');
+        statusEl.text('Deficient');
+        indicatorEl.addClass('deficient');
+    } else if (value > optimalMax) {
+        statusEl.removeClass('bg-secondary bg-danger').addClass('bg-warning');
+        statusEl.text('Excess');
+        indicatorEl.addClass('excess');
+    } else if (value > 0) {
+        statusEl.removeClass('bg-secondary bg-danger bg-warning').addClass('bg-success');
+        statusEl.text('Optimal');
+        indicatorEl.addClass('optimal');
+    } else {
+        statusEl.removeClass('bg-danger bg-warning bg-success').addClass('bg-secondary');
+        statusEl.text('Unknown');
+    }
+}
+
+function updateResults(data) {
+    $('#fertilizerName').text(data.fertilizer_name);
+    $('#quantity').text(data.quantity + ' ' + data.unit);
+    $('#frequency').text(data.frequency);
+    $('#applicationMethod').text(data.application_method);
+    $('#bestTime').text('Apply at planting');
+    $('#expectedImprovement').text(data.expected_improvement);
+    
+    // Application schedule
+    const schedule = (data.application_schedule || '').split('\n');
+    let scheduleHtml = '';
+    schedule.forEach(function(s) {
+        if (s.trim()) {
+            scheduleHtml += `<div class="mb-1"><i class="fas fa-check-circle text-success me-2"></i>${s}</div>`;
+        }
+    });
+    $('#applicationSchedule').html(scheduleHtml || '<p class="text-muted mb-0">No specific schedule provided</p>');
+}
+
+function loadHistory() {
+    $.ajax({
+        url: '{{ url_for("fertilizer.api_history") }}',
+        method: 'GET',
+        success: function(data) {
+            const tbody = $('#fertilizerHistory');
+            if (!data || data.length === 0) {
+                tbody.html(`
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            <i class="fas fa-inbox me-2"></i>No fertilizer recommendations yet
+                        </td>
+                    </tr>
+                `);
+                return;
+            }
+            
+            let html = '';
+            data.forEach(function(item) {
+                const date = new Date(item.created_at);
+                html += `
+                    <tr>
+                        <td>${date.toLocaleDateString()}</td>
+                        <td><strong>${item.crop_type}</strong></td>
+                        <td>${item.fertilizer}</td>
+                        <td>${item.quantity} ${item.unit}</td>
+                        <td>
+                            <span class="badge bg-success">Applied</span>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.html(html);
+        },
+        error: function() {
+            console.error('Error loading fertilizer history');
+        }
+    });
+}
+</script>
+{% endblock %}
