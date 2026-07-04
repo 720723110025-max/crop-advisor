@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Crop Recommendation - Crop Advisory System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-seedling me-2"></i>AI Crop Recommendation
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <form id="cropForm">
+                                <h5 class="mb-3">Soil Parameters</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Nitrogen (N)</label>
+                                        <input type="number" class="form-control" id="nitrogen" 
+                                               placeholder="e.g., 100" required min="0" max="200">
+                                        <small class="text-muted">Recommended: 60-120 ppm</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phosphorus (P)</label>
+                                        <input type="number" class="form-control" id="phosphorus" 
+                                               placeholder="e.g., 50" required min="0" max="150">
+                                        <small class="text-muted">Recommended: 30-70 ppm</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Potassium (K)</label>
+                                        <input type="number" class="form-control" id="potassium" 
+                                               placeholder="e.g., 40" required min="0" max="150">
+                                        <small class="text-muted">Recommended: 20-60 ppm</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">pH Level</label>
+                                        <input type="number" class="form-control" id="ph" 
+                                               placeholder="e.g., 6.5" required step="0.1" min="0" max="14">
+                                        <small class="text-muted">Recommended: 6.0-7.5</small>
+                                    </div>
+                                </div>
+
+                                <h5 class="mb-3">Climate Conditions</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Temperature (°C)</label>
+                                        <input type="number" class="form-control" id="temperature" 
+                                               placeholder="e.g., 25" required min="-10" max="50">
+                                        <small class="text-muted">Recommended: 20-30°C</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Humidity (%)</label>
+                                        <input type="number" class="form-control" id="humidity" 
+                                               placeholder="e.g., 70" required min="0" max="100">
+                                        <small class="text-muted">Recommended: 60-80%</small>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label">Rainfall (mm)</label>
+                                        <input type="number" class="form-control" id="rainfall" 
+                                               placeholder="e.g., 200" required min="0" max="500">
+                                        <small class="text-muted">Recommended: 100-300 mm</small>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-success btn-lg w-100">
+                                    <i class="fas fa-microchip me-2"></i>Get AI Recommendation
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div id="resultSection" style="display: none;">
+                                <div class="card bg-light border-success">
+                                    <div class="card-body text-center">
+                                        <h5 class="text-success">Recommended Crop</h5>
+                                        <h2 id="recommendedCrop" class="display-4 text-success mb-3">-</h2>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="text-muted mb-0">Confidence</p>
+                                                <h4 id="confidenceScore">-</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="text-muted mb-0">Category</p>
+                                                <h4 id="cropCategory">-</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mt-3">
+                                    <div class="card-header bg-info text-white">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-lightbulb me-2"></i>Farming Suggestions
+                                        </h6>
+                                    </div>
+                                    <div class="card-body" id="suggestions">
+                                        <div class="text-center text-muted">
+                                            <i class="fas fa-spinner fa-spin fa-2x"></i>
+                                            <p class="mt-2">Loading suggestions...</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mt-3">
+                                    <div class="card-header bg-success text-white">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-list me-2"></i>All Recommendations
+                                        </h6>
+                                    </div>
+                                    <div class="card-body" id="allRecommendations">
+                                        <div class="text-center text-muted">
+                                            <i class="fas fa-spinner fa-spin fa-2x"></i>
+                                            <p class="mt-2">Loading recommendations...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="loadingSection" style="display: none;">
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-success" role="status" style="width: 4rem; height: 4rem;">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-3 text-muted">AI is analyzing your data...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    $('#cropForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = {
+            nitrogen: $('#nitrogen').val(),
+            phosphorus: $('#phosphorus').val(),
+            potassium: $('#potassium').val(),
+            temperature: $('#temperature').val(),
+            humidity: $('#humidity').val(),
+            ph: $('#ph').val(),
+            rainfall: $('#rainfall').val()
+        };
+        
+        // Validate
+        for (let key in formData) {
+            if (!formData[key] || formData[key] < 0) {
+                alert('Please fill all fields with valid positive values.');
+                return;
+            }
+        }
+        
+        // Show loading
+        $('#resultSection').hide();
+        $('#loadingSection').show();
+        
+        // Send AJAX request
+        $.ajax({
+            url: '{{ url_for("crop.predict_crop") }}',
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                $('#loadingSection').hide();
+                $('#resultSection').show();
+                
+                if (response.success) {
+                    // Update results
+                    $('#recommendedCrop').text(response.crop);
+                    $('#confidenceScore').text((response.confidence * 100).toFixed(1) + '%');
+                    
+                    // Update suggestions
+                    let suggestionsHtml = '<ul class="list-unstyled">';
+                    const suggestions = response.suggestions.split('\n');
+                    suggestions.forEach(function(s) {
+                        if (s.trim()) {
+                            suggestionsHtml += `<li><i class="fas fa-check-circle text-success me-2"></i>${s}</li>`;
+                        }
+                    });
+                    suggestionsHtml += '</ul>';
+                    $('#suggestions').html(suggestionsHtml);
+                    
+                    // Update all recommendations
+                    let recHtml = '';
+                    if (response.all_recommendations && response.all_recommendations.length > 0) {
+                        recHtml = '<ul class="list-group">';
+                        response.all_recommendations.forEach(function(rec) {
+                            recHtml += `
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ${rec.crop}
+                                    <span class="badge bg-primary rounded-pill">${(rec.confidence * 100).toFixed(1)}%</span>
+                                </li>
+                            `;
+                        });
+                        recHtml += '</ul>';
+                    } else {
+                        recHtml = '<p class="text-muted text-center">No alternative recommendations available</p>';
+                    }
+                    $('#allRecommendations').html(recHtml);
+                } else {
+                    alert('Error: ' + response.error);
+                    $('#resultSection').hide();
+                }
+            },
+            error: function(xhr) {
+                $('#loadingSection').hide();
+                alert('An error occurred: ' + xhr.responseJSON?.error || 'Please try again.');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

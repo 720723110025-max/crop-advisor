@@ -1,0 +1,93 @@
+<div class="bg-dark text-white vh-100 p-3" style="width:250px;position:fixed;">
+
+    <h3 class="text-center mb-4">
+        🌿 Admin
+    </h3>
+
+    <ul class="nav flex-column">
+
+        <li class="nav-item mb-2">
+            <a href="/admin/dashboard" class="nav-link text-white">
+                🏠 Dashboard
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a href="/admin/users" class="nav-link text-white">
+                👥 Users
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a href="/admin/reports" class="nav-link text-white">
+                🦠 Disease Reports
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a href="/crop/recommend" class="nav-link text-white">
+                🌾 Crop Recommendation
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a href="/fertilizer/recommend" class="nav-link text-white">
+                🌱 Fertilizer
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a href="/weather/advisory" class="nav-link text-white">
+                🌦 Weather
+            </a>
+        </li>
+
+        <li class="nav-item mb-2">
+            <a href="/yield/predict" class="nav-link text-white">
+                📈 Yield
+            </a>
+        </li>
+         
+        <li class="nav-item mb-2">
+    <a href="/dashboard/chatbot" class="nav-link text-white">
+        🤖 AI Chatbot
+    </a>
+</li>
+        <li class="nav-item mb-2">
+    <a href="{{ url_for('disease.history') }}" class="nav-link text-white">
+        <i class="fas fa-history"></i>
+        Disease History
+    </a>
+</li>
+
+        <li class="nav-item mt-4">
+            <a href="/auth/logout" class="btn btn-danger w-100">
+                Logout
+            </a>
+        </li>
+        
+        <li class="nav-item mb-2">
+    <a href="/crop/history" class="nav-link text-white">
+        🌾 Crop History
+    </a>
+</li>
+          <li class="nav-item mb-2">
+    <a href="/fertilizer/history" class="nav-link text-white">
+        🌱 Fertilizer History
+    </a>
+</li>
+
+<li class="nav-item mb-2">
+    <a href="/yield/history" class="nav-link text-white">
+        📈 Yield History
+    </a>
+</li>
+
+<li class="nav-item mb-2">
+    <a href="/irrigation/history" class="nav-link text-white">
+        💧 Irrigation History
+    </a>
+</li>
+    </ul>
+
+</div>

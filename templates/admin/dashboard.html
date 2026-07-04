@@ -1,0 +1,458 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+{% include "admin/sidebar.html" %}
+
+<div style="margin-left:270px;">
+
+<nav class="navbar navbar-expand-lg bg-white shadow rounded mb-4">
+    <div class="container-fluid">
+        <h3 class="fw-bold text-success">
+            🌿 Crop Advisory Admin
+        </h3>
+
+        <div class="d-flex align-items-center">
+            <span class="me-3">Welcome Admin</span>
+
+            <img
+                src="https://ui-avatars.com/api/?name=Admin"
+                class="rounded-circle"
+                width="45">
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid mt-4">
+
+<div class="row">
+
+    <!-- Users -->
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card border-0 shadow-lg">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="text-muted">Total Users</h6>
+                        <h2 class="fw-bold">{{ users }}</h2>
+                    </div>
+
+                    <div class="text-success">
+                        <i class="fas fa-users fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disease -->
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card bg-danger text-white shadow">
+            <div class="card-body text-center">
+                <i class="fas fa-virus fa-3x mb-3"></i>
+                <h5>Disease Reports</h5>
+                <h1>{{ diseases }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crop -->
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card bg-warning text-dark shadow">
+            <div class="card-body text-center">
+                <i class="fas fa-seedling fa-3x mb-3"></i>
+                <h5>Crop Predictions</h5>
+                <h1>{{ crops }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yield -->
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card bg-info text-white shadow">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-3x mb-3"></i>
+                <h5>Yield Predictions</h5>
+                <h1>{{ yields }}</h1>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr>
+
+<div class="row">
+
+    <!-- Irrigation -->
+    <div class="col-md-3 mb-4">
+        <div class="card bg-primary text-white shadow">
+            <div class="card-body text-center">
+                <i class="fas fa-tint fa-3x mb-2"></i>
+                <h5>Irrigation</h5>
+                <h2>{{ irrigation }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weather -->
+    <div class="col-md-3 mb-4">
+        <div class="card bg-secondary text-white shadow">
+            <div class="card-body text-center">
+                <i class="fas fa-cloud-sun fa-3x mb-2"></i>
+                <h5>Weather</h5>
+                <h2>{{ weather }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="col-md-3">
+        <a href="/crop/recommend" class="btn btn-success w-100 p-3">
+            🌾 Crop Recommendation
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="/disease/detect" class="btn btn-danger w-100 p-3">
+            🦠 Disease Detection
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="/weather/advisory" class="btn btn-primary w-100 p-3">
+            🌦 Weather
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="/yield/predict" class="btn btn-warning w-100 p-3">
+            📈 Yield Prediction
+        </a>
+    </div>
+
+</div>
+
+<!-- Bar Chart -->
+
+<div class="card shadow mt-4">
+
+    <div class="card-header">
+        <h3>Prediction Statistics</h3>
+    </div>
+
+    <div class="card-body">
+        <canvas id="predictionChart" height="120"></canvas>
+    </div>
+
+</div>
+
+<!-- Extra Charts -->
+
+<div class="row mt-4">
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-success text-white">
+                Disease Distribution
+            </div>
+
+            <div class="card-body">
+                <canvas id="pieChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-primary text-white">
+                Monthly Predictions
+            </div>
+
+            <div class="card-body">
+                <canvas id="lineChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow mt-4">
+
+    <div class="card-header bg-warning">
+        System Usage
+    </div>
+
+    <div class="card-body">
+        <canvas id="doughnutChart"></canvas>
+    </div>
+
+</div>
+<!-- Recent Activity -->
+
+<div class="card shadow mt-4">
+
+    <div class="card-header">
+        <h4>Recent Activity</h4>
+    </div>
+
+    <div class="card-body">
+
+        <ul class="list-group">
+
+            {% for report in recent_reports %}
+
+            <li class="list-group-item">
+
+                <strong>{{ report.crop_type }}</strong>
+
+                -
+
+                {{ report.disease_name }}
+
+                <span class="badge bg-success float-end">
+
+                    {{ report.created_at.strftime('%d-%m-%Y') }}
+
+                </span>
+
+            </li>
+
+            {% else %}
+
+            <li class="list-group-item text-center">
+
+                No reports available
+
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+</div>
+
+<!-- Notifications -->
+
+<div class="card shadow mt-4">
+
+    <div class="card-header bg-primary text-white">
+        <h4>🔔 Notifications</h4>
+    </div>
+
+    <div class="card-body">
+
+        <ul class="list-group">
+
+            {% for note in notifications %}
+
+            <li class="list-group-item">
+
+                {{ note.message }}
+
+                <span class="badge bg-secondary float-end">
+
+                    {{ note.created_at.strftime('%d-%m-%Y %H:%M') }}
+
+                </span>
+
+            </li>
+
+            {% else %}
+
+            <li class="list-group-item text-center">
+
+                No notifications
+
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+</div>
+
+</div> <!-- container-fluid -->
+
+</div> <!-- margin-left -->
+
+{% endblock %}
+{% block extra_js %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+// ============================
+// Bar Chart
+// ============================
+
+const ctx = document.getElementById('predictionChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [
+            'Users',
+            'Disease',
+            'Crop',
+            'Yield',
+            'Weather',
+            'Irrigation'
+        ],
+        datasets: [{
+            label: 'System Statistics',
+            data: [
+                {{ users }},
+                {{ diseases }},
+                {{ crops }},
+                {{ yields }},
+                {{ weather }},
+                {{ irrigation }}
+            ],
+            backgroundColor: [
+                '#198754',
+                '#dc3545',
+                '#ffc107',
+                '#0dcaf0',
+                '#6c757d',
+                '#0d6efd'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+
+// ============================
+// Pie Chart
+// ============================
+
+new Chart(document.getElementById('pieChart'), {
+    type: 'pie',
+    data: {
+        labels: [
+            'Disease',
+            'Crop',
+            'Yield',
+            'Weather'
+        ],
+        datasets: [{
+            data: [
+                {{ diseases }},
+                {{ crops }},
+                {{ yields }},
+                {{ weather }}
+            ],
+            backgroundColor: [
+                '#dc3545',
+                '#198754',
+                '#ffc107',
+                '#0dcaf0'
+            ]
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+
+// ============================
+// Line Chart
+// ============================
+
+new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+        labels: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun'
+        ],
+        datasets: [{
+            label: 'Predictions',
+            data: [5, 10, 20, 18, 25, 30],
+            borderColor: '#198754',
+            backgroundColor: '#198754',
+            fill: false,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+
+// ============================
+// Doughnut Chart
+// ============================
+
+new Chart(document.getElementById('doughnutChart'), {
+    type: 'doughnut',
+    data: {
+        labels: [
+            'Disease',
+            'Crop',
+            'Yield',
+            'Irrigation'
+        ],
+        datasets: [{
+            data: [
+                {{ diseases }},
+                {{ crops }},
+                {{ yields }},
+                {{ irrigation }}
+            ],
+            backgroundColor: [
+                '#dc3545',
+                '#198754',
+                '#ffc107',
+                '#0d6efd'
+            ]
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+</script>
+<div class="row mt-3">
+
+<div class="col-md-3">
+
+<a href="/admin/export-users"
+class="btn btn-dark w-100">
+
+📄 Export Users PDF
+
+</a>
+
+</div>
+
+</div>
+{% endblock %}
