@@ -165,5 +165,9 @@ def register_error_handlers(app):
         return redirect(
             request.referrer or url_for("dashboard.index")
         )
+    
+    @app.route("/about")
+    def about():
+      return render_template("about.html")
 
     logger.info("Error handlers registered")

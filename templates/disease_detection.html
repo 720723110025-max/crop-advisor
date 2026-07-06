@@ -1,596 +1,187 @@
 {% extends "base.html" %}
 
-{% block title %}AI Disease Detection{% endblock %}
+{% block title %}Disease Detection{% endblock %}
 
 {% block content %}
-<div class="container py-4">
 
-    <div class="row justify-content-center">
+<div class="container py-5">
 
-        <div class="col-lg-10">
+<div class="row justify-content-center">
 
-            <div class="card shadow border-0">
+<div class="col-lg-8">
 
-                <div class="card-header bg-success text-white">
+<div class="card shadow-lg border-0">
 
-                    <h3 class="mb-0">
-                        <i class="fas fa-leaf me-2"></i>
-                        AI Crop Disease Detection
-                    </h3>
+<div class="card-header bg-success text-white text-center">
 
-                </div>
+<h2>🦠 AI Disease Detection</h2>
 
-                <div class="card-body">
-
-                    <div class="row">
-
-                        <!-- LEFT -->
-
-                        <div class="col-md-6">
-
-                            <form id="diseaseForm" enctype="multipart/form-data">
-
-                                <div class="mb-3">
-
-                                    <label class="form-label fw-bold">
-
-                                        Crop Type
-
-                                    </label>
-
-                                    <select
-                                        class="form-select"
-                                        id="cropType"
-                                        required>
-
-                                        <option value="">Select Crop</option>
-
-                                        <option value="Rice">Rice</option>
-
-                                        <option value="Maize">Maize</option>
-
-                                        <option value="Wheat">Wheat</option>
-
-                                        <option value="Cotton">Cotton</option>
-
-                                        <option value="Sugarcane">Sugarcane</option>
-
-                                        <option value="Other">Other</option>
-
-                                    </select>
-
-                                </div>
-
-                                <div class="mb-3">
-
-                                    <label class="form-label fw-bold">
-
-                                        Upload Leaf Image
-
-                                    </label>
-
-                                    <input
-                                        type="file"
-                                        class="form-control"
-                                        id="leafImage"
-                                        accept="image/*"
-                                        name="leaf_image">
-
-                                </div>
-
-                                <div class="text-center mb-3">
-
-                                    <h6 class="text-muted">
-                                        OR
-                                    </h6>
-
-                                </div>
-
-                                <div class="d-grid mb-3">
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        id="openCamera">
-
-                                        <i class="fas fa-camera me-2"></i>
-
-                                        Open Camera
-
-                                    </button>
-
-                                </div>
-
-                                <div
-                                    id="cameraSection"
-                                    style="display:none;">
-
-                                    <video
-                                        id="video"
-                                        autoplay
-                                        playsinline
-                                        class="w-100 rounded border">
-                                    </video>
-
-                                    <canvas
-                                        id="canvas"
-                                        style="display:none">
-                                    </canvas>
-
-                                    <div class="d-grid mt-2">
-
-                                        <button
-                                            type="button"
-                                            class="btn btn-warning"
-                                            id="captureBtn">
-
-                                            Capture Photo
-
-                                        </button>
-
-                                    </div>
-
-                                </div>
-
-                                <div
-                                    id="previewSection"
-                                    class="mt-4"
-                                    style="display:none;">
-
-                                    <img
-                                        id="previewImg"
-                                        class="img-fluid rounded border shadow">
-
-                                </div>
-
-                                <div class="d-grid mt-4">
-
-                                    <button
-                                        class="btn btn-success btn-lg"
-                                        type="submit"
-                                        id="detectBtn">
-
-                                        <i class="fas fa-search me-2"></i>
-
-                                        Detect Disease
-
-                                    </button>
-
-                                </div>
-
-                            </form>
-
-                        </div>
-
-                        <!-- RIGHT -->
-
-                        <div class="col-md-6">
-
-                            <div
-                                id="loading"
-                                style="display:none"
-                                class="text-center">
-
-                                <div
-                                    class="spinner-border
-                                           text-success"
-                                    role="status">
-
-                                </div>
-
-                                <h5 class="mt-3">
-
-                                    Detecting Disease...
-
-                                </h5>
-
-                            </div>
-
-                            <div id="result">
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+<p class="mb-0">
+Upload a crop leaf image to detect diseases
+</p>
 
 </div>
 
-{% endblock %}
+<div class="card-body">
 
-{% block extra_js %}
+<form id="uploadForm"
+      enctype="multipart/form-data">
+
+<div class="mb-4">
+
+<label class="form-label">
+
+Select Leaf Image
+
+</label>
+
+<input
+type="file"
+class="form-control"
+id="image"
+name="image"
+accept="image/*"
+onchange="previewImage(event)"
+required>
+
+</div>
+
+<div class="text-center mb-4">
+
+<img
+id="preview"
+src=""
+style="display:none;max-width:300px;border-radius:15px;"
+class="shadow">
+
+</div>
+
+<div class="d-grid">
+
+<button
+type="submit"
+class="btn btn-success btn-lg">
+
+🔍 Detect Disease
+
+</button>
+
+</div>
+
+</form>
+
+<hr>
+
+<div id="loading"
+style="display:none"
+class="text-center">
+
+<div class="spinner-border text-success"></div>
+
+<p class="mt-3">
+
+Analyzing Image...
+
+</p>
+
+</div>
+
+<div
+id="result"
+style="display:none">
+
+<div class="alert alert-success mt-4">
+
+<h3>
+
+Disease
+
+</h3>
+
+<h4 id="diseaseName"></h4>
+
+<hr>
+
+<h5>
+
+Confidence
+
+</h5>
+
+<h3 id="confidence"></h3>
+
+<hr>
+
+<h5>
+
+Treatment
+
+</h5>
+
+<p id="treatment"></p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 <script>
 
-let stream=null;
+function previewImage(event){
 
-let cameraImage=null;
-$(document).ready(function () {
+const img=document.getElementById("preview");
 
-    // Upload Preview
-    $('#leafImage').change(function () {
+img.src=URL.createObjectURL(event.target.files[0]);
 
-        const file = this.files[0];
+img.style.display="block";
 
-        if (!file) return;
-
-        cameraImage = null;
-
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-
-            $('#previewImg').attr('src', e.target.result);
-
-            $('#previewSection').show();
-
-        };
-
-        reader.readAsDataURL(file);
-
-    });
-
-
-    // Open Camera
-
-    $('#openCamera').click(async function () {
-
-        try {
-
-            stream = await navigator.mediaDevices.getUserMedia({
-
-                video: true
-
-            });
-
-            $('#cameraSection').show();
-
-            document.getElementById('video').srcObject = stream;
-
-        }
-
-        catch (err) {
-
-            alert("Unable to access camera");
-
-            console.log(err);
-
-        }
-
-    });
-
-
-    // Capture Photo
-
-    $('#captureBtn').click(function () {
-
-        const video = document.getElementById('video');
-
-        const canvas = document.getElementById('canvas');
-
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = video.videoWidth;
-
-        canvas.height = video.videoHeight;
-
-        ctx.drawImage(video,0,0);
-
-        cameraImage = canvas.toDataURL("image/jpeg");
-
-        $('#previewImg').attr('src',cameraImage);
-
-        $('#previewSection').show();
-
-        if(stream){
-
-            stream.getTracks().forEach(track=>track.stop());
-
-        }
-
-        $('#cameraSection').hide();
-
-    });
-
-
-    // Submit
-
-    $('#diseaseForm').submit(function(e){
-
-        e.preventDefault();
-
-        if($('#cropType').val()===""){
-
-            alert("Select Crop");
-
-            return;
-
-        }
-
-        let formData=new FormData();
-
-        formData.append("crop_type",$('#cropType').val());
-
-        if(cameraImage){
-
-            formData.append("image_source","camera");
-
-            formData.append("image_data",cameraImage);
-
-        }
-
-        else{
-
-            const file=$('#leafImage')[0].files[0];
-
-            if(!file){
-
-                alert("Choose image");
-
-                return;
-
-            }
-
-            formData.append("image_source","upload");
-
-            formData.append("leaf_image",file);
-
-        }
-
-        $('#loading').show();
-
-        $('#result').hide();
-
-        $('#detectBtn')
-
-            .prop("disabled",true)
-
-            .html('<i class="fas fa-spinner fa-spin me-2"></i>Detecting...');
-
-        $.ajax({
-
-            url:"{{ url_for('disease.detect_disease') }}",
-
-            type:"POST",
-
-            data:formData,
-
-            processData:false,
-
-            contentType:false,
-
-            success:function(response){
-
-                $('#loading').hide();
-
-                $('#detectBtn')
-
-                    .prop("disabled",false)
-
-                    .html('<i class="fas fa-search me-2"></i>Detect Disease');
-
-                if(!response.success){
-
-                    alert(response.error);
-
-                    return;
-
-                }
-
-                showResult(response);
-
-            },
-
-            error:function(xhr){
-
-                $('#loading').hide();
-
-                $('#detectBtn')
-
-                    .prop("disabled",false)
-
-                    .html('<i class="fas fa-search me-2"></i>Detect Disease');
-
-                alert(
-
-                    xhr.responseJSON?.error ||
-
-                    "Detection Failed"
-
-                );
-
-            }
-
-        });
-
-    });
-        // ===========================
-    // Show Detection Result
-    // ===========================
-
-    function showResult(data){
-
-        let color = "success";
-
-let progressColor = "bg-success";
-
-if(data.severity==="High"){
-    color="danger";
-    progressColor="bg-danger";
-}
-else if(data.severity==="Moderate"){
-    color="warning";
-    progressColor="bg-warning";
 }
 
-        let confidence = parseFloat(data.confidence);
+document.getElementById("uploadForm").onsubmit=function(e){
 
-if (confidence <= 1) {
-    confidence = (confidence * 100).toFixed(1);
-} else {
-    confidence = confidence.toFixed(1);
-}
+e.preventDefault();
 
-        let html=`
+document.getElementById("loading").style.display="block";
 
-        <div class="card shadow border-0">
+document.getElementById("result").style.display="none";
 
-            <div class="card-header bg-${color} text-white">
+let formData=new FormData(this);
 
-                <h4 class="mb-0">
+fetch("/disease/api/detect",{
 
-                    🌿 Disease Detection Result
+method:"POST",
 
-                </h4>
+body:formData
 
-            </div>
+})
 
-            <div class="card-body">
+.then(res=>res.json())
 
-                <div class="text-center mb-4">
+.then(data=>{
 
-                    <img
+document.getElementById("loading").style.display="none";
 
-                        src="${$('#previewImg').attr('src')}"
+document.getElementById("result").style.display="block";
 
-                        class="img-fluid rounded shadow"
+document.getElementById("diseaseName").innerHTML=data.disease;
 
-                        style="max-height:250px;">
+document.getElementById("confidence").innerHTML=data.confidence+"%";
 
-                </div>
-
-                <table class="table table-bordered">
-
-                    <tr>
-
-                        <th width="35%">Disease</th>
-
-                        <td>${data.disease}</td>
-
-                    </tr>
-
-                    <tr>
-
-<th>Confidence</th>
-
-<td>
-
-<div class="progress" style="height:25px;">
-
-<div
-class="progress-bar ${progressColor} progress-bar-striped progress-bar-animated"
-role="progressbar"
-style="width:${confidence}%">
-
-${confidence}%
-
-</div>
-
-</div>
-
-</td>
-
-</tr>
-
-                    <tr>
-
-                        <th>Severity</th>
-
-                        <td>${data.severity}</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <th>Symptoms</th>
-
-                        <td>${data.symptoms}</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <th>Causes</th>
-
-                        <td>${data.causes}</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <th>Prevention</th>
-
-                        <td>${data.prevention}</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <th>Treatment</th>
-
-                        <td class="text-success fw-bold">
-
-                            ${data.treatment}
-
-                        </td>
-
-                    </tr>
-
-                </table>
-
-            </div>
-
-        </div>
-
-        `;
-
-        $('#result')
-
-            .html(html)
-
-            .fadeIn();
-
-    }
+document.getElementById("treatment").innerHTML=data.treatment;
 
 });
+
+}
+
 </script>
-
-<style>
-
-.card{
-
-    border-radius:15px;
-
-}
-
-#previewImg{
-
-    border:3px solid #198754;
-
-    padding:5px;
-
-}
-
-table th{
-
-    background:#f8f9fa;
-
-}
-
-#video{
-
-    border-radius:10px;
-
-}
-
-</style>
 
 {% endblock %}

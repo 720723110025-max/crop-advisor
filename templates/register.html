@@ -3,68 +3,273 @@
 {% block title %}Register - Crop Advisory System{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-7">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-success text-white text-center py-3">
-                    <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Create Your Account</h4>
-                </div>
-                <div class="card-body p-4">
-                    <form method="POST" action="{{ url_for('auth.register') }}">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Full Name</label>
-                                <input type="text" class="form-control" name="full_name" value="{{ full_name or '' }}" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Username</label>
-                                <input type="text" class="form-control" name="username" value="{{ username or '' }}" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" value="{{ email or '' }}" required>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Password</label>
-                                <input type="password" class="form-control" name="password" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" name="confirm_password" required>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Phone</label>
-                                <input type="tel" class="form-control" name="phone" value="{{ phone or '' }}">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Farm Size (acres)</label>
-                                <input type="number" class="form-control" name="farm_size" value="{{ farm_size or '' }}" step="0.1">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Farm Location</label>
-                            <input type="text" class="form-control" name="farm_location" value="{{ farm_location or '' }}">
-                        </div>
-                        <button type="submit" class="btn btn-success btn-lg w-100">
-                            <i class="fas fa-user-plus me-2"></i>Create Account
-                        </button>
-                    </form>
-                    <hr class="my-4">
-                    <div class="text-center">
-                        <p class="mb-0">Already have an account?</p>
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-success">
-                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+<style>
+
+body{
+background:linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+url("https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1600");
+background-size:cover;
+background-position:center;
+}
+
+.register-card{
+
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(15px);
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.3);
+
+padding:35px;
+
+color:white;
+
+}
+
+.form-control{
+
+border-radius:12px;
+
+height:48px;
+
+}
+
+.btn-register{
+
+border-radius:12px;
+
+font-weight:bold;
+
+transition:.3s;
+
+}
+
+.btn-register:hover{
+
+transform:scale(1.05);
+
+}
+
+.logo{
+
+font-size:55px;
+
+}
+
+</style>
+
+<div class="container py-5">
+
+<div class="row justify-content-center align-items-center">
+
+<div class="col-lg-5 text-center text-white">
+
+<h1 class="display-4 fw-bold">
+
+🌿 Smart Farming
+
+</h1>
+
+<p class="lead">
+
+Artificial Intelligence Powered
+
+Crop Advisory System
+
+</p>
+
+<img
+src="https://cdn-icons-png.flaticon.com/512/2909/2909763.png"
+class="img-fluid"
+style="max-height:300px;">
+
 </div>
+
+<div class="col-lg-5">
+
+<div class="register-card">
+
+<div class="text-center mb-4">
+
+<div class="logo">
+
+👨‍🌾
+
+</div>
+
+<h2>Create Account</h2>
+
+</div>
+
+<form method="POST"
+action="{{ url_for('auth.register') }}">
+
+{{ form.hidden_tag() if form }}
+
+<div class="mb-3">
+
+<label>Name</label>
+
+<input
+type="text"
+name="name"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Email</label>
+
+<input
+type="email"
+name="email"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Phone</label>
+
+<input
+type="text"
+name="phone"
+class="form-control">
+
+</div>
+
+<div class="mb-3">
+
+<label>Location</label>
+
+<input
+type="text"
+name="location"
+class="form-control">
+
+</div>
+
+<div class="mb-3">
+
+<label>Password</label>
+
+<div class="input-group">
+
+<input
+type="password"
+id="password"
+name="password"
+class="form-control"
+onkeyup="checkPassword()"
+required>
+
+<button
+type="button"
+class="btn btn-light"
+onclick="togglePassword()">
+
+👁
+
+</button>
+
+</div>
+
+<small id="strength"></small>
+
+</div>
+
+<div class="mb-3">
+
+<label>Confirm Password</label>
+
+<input
+type="password"
+name="confirm_password"
+class="form-control"
+required>
+
+</div>
+
+<button
+class="btn btn-success w-100 btn-register">
+
+Create Account
+
+</button>
+
+<div class="text-center mt-3">
+
+Already have an account?
+
+<a href="{{ url_for('auth.login') }}"
+class="text-warning">
+
+Login
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+let x=document.getElementById("password");
+
+if(x.type==="password")
+x.type="text";
+else
+x.type="password";
+
+}
+
+function checkPassword(){
+
+let p=document.getElementById("password").value;
+
+let s=document.getElementById("strength");
+
+if(p.length<6){
+
+s.innerHTML="Weak Password";
+
+s.style.color="red";
+
+}
+
+else if(p.length<10){
+
+s.innerHTML="Medium Password";
+
+s.style.color="orange";
+
+}
+
+else{
+
+s.innerHTML="Strong Password";
+
+s.style.color="lightgreen";
+
+}
+
+}
+
+</script>
+
 {% endblock %}
