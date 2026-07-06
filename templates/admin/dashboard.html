@@ -1,12 +1,54 @@
 {% extends "base.html" %}
 
-{% block title %}Admin Dashboard{% endblock %}
-
 {% block content %}
 
-{% include "admin/sidebar.html" %}
+<div class="container mt-4">
 
-<div style="margin-left:270px;">
+<h2>Admin Dashboard</h2>
+
+<div class="row">
+
+<div class="col-md-3">
+<div class="card shadow text-center">
+<div class="card-body">
+<h3>{{ stats.farmers }}</h3>
+<p>Farmers</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow text-center">
+<div class="card-body">
+<h3>{{ stats.experts }}</h3>
+<p>Experts</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow text-center">
+<div class="card-body">
+<h3>{{ stats.lands }}</h3>
+<p>Lands</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow text-center">
+<div class="card-body">
+<h3>{{ stats.workshops }}</h3>
+<p>Workshops</p>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
 
 <!-- Navbar -->
 

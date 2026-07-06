@@ -8,11 +8,26 @@ import io
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 
+from flask import Blueprint, render_template
+from app.utils.database import count
+
 admin_bp = Blueprint("admin", __name__)
 
 @admin_bp.route("/dashboard")
-@login_required
 def dashboard():
+
+    stats = {
+        "farmers": count("farmers"),
+        "experts": count("experts"),
+        "lands": count("lands"),
+        "workshops": count("workshops"),
+        "feedback": count("feedback")
+    }
+
+    return render_template(
+        "admin/dashboard.html",
+        stats=stats
+    )
 
     users = db_instance.get_collection("users").count_documents({})
     diseases = db_instance.get_collection("disease_reports").count_documents({})
