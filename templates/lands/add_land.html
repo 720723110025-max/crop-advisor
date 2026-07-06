@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>Add New Land</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+<label>Land Name</label>
+<input type="text" class="form-control" name="land_name" required>
+</div>
+
+<div class="mb-3">
+<label>District</label>
+<input type="text" class="form-control" name="district" required>
+</div>
+
+<div class="mb-3">
+<label>Village</label>
+<input type="text" class="form-control" name="village" required>
+</div>
+
+<div class="mb-3">
+<label>Area (Acres)</label>
+<input type="number" class="form-control" name="area" required>
+</div>
+
+<div class="mb-3">
+<label>Soil Type</label>
+
+<select class="form-control" name="soil_type">
+
+<option>Clay</option>
+<option>Loamy</option>
+<option>Sandy</option>
+<option>Red</option>
+<option>Black</option>
+
+</select>
+
+</div>
+<div class="mb-3">
+<label>Previous Crop</label>
+<input
+class="form-control"
+name="previous_crop">
+</div>
+
+<div class="mb-3">
+<label>Current Crop</label>
+<input
+class="form-control"
+name="current_crop">
+</div>
+<button class="btn btn-success">
+Save Land
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

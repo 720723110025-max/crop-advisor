@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>My Lands</h2>
+
+<a href="/lands/add" class="btn btn-success mb-3">
++ Add Land
+</a>
+
+<table class="table table-striped">
+
+<tr>
+
+<th>Land</th>
+
+<th>District</th>
+
+<th>Village</th>
+
+<th>Area</th>
+
+<th>Soil</th>
+
+<th>Previous</th>
+
+<th>Current</th>
+
+<th>Actions</th>
+
+</tr>
+
+{% for land in lands %}
+
+<tr>
+
+<td>{{ land.land_name }}</td>
+
+<td>{{ land.district }}</td>
+
+<td>{{ land.village }}</td>
+
+<td>{{ land.area }}</td>
+
+<td>{{ land.soil_type }}</td>
+
+<td>{{ land.previous_crop }}</td>
+
+<td>{{ land.current_crop }}</td>
+
+<td>
+
+<a href="/lands/edit/{{ land._id }}"
+class="btn btn-warning btn-sm">
+Edit
+</a>
+
+<a href="/lands/delete/{{ land._id }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Delete this land?')">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+</div>
+
+{% endblock %}

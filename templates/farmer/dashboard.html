@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>🌾 Krushak Saathi - Farmer Dashboard</h2>
+
+<div class="row mt-4">
+
+<div class="col-md-3">
+<div class="card text-center shadow">
+<div class="card-body">
+<h3>{{ dashboard.lands }}</h3>
+<p>My Lands</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-center shadow">
+<div class="card-body">
+<h3>{{ dashboard.crop_predictions }}</h3>
+<p>Crop Recommendations</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-center shadow">
+<div class="card-body">
+<h3>{{ dashboard.disease_reports }}</h3>
+<p>Disease Reports</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-center shadow">
+<div class="card-body">
+<h3>{{ dashboard.workshops }}</h3>
+<p>Workshops</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<hr>
+
+<div class="row mt-4">
+
+<div class="col-md-4">
+<a href="/lands/" class="btn btn-success w-100 mb-3">
+🌱 My Lands
+</a>
+</div>
+
+<div class="col-md-4">
+<a href="/crop/recommend" class="btn btn-primary w-100 mb-3">
+🌾 Crop Recommendation
+</a>
+</div>
+
+<div class="col-md-4">
+<a href="/disease/detect" class="btn btn-danger w-100 mb-3">
+🦠 Disease Detection
+</a>
+</div>
+
+<div class="col-md-4">
+<a href="/weather/advisory" class="btn btn-info w-100 mb-3">
+☁ Weather
+</a>
+</div>
+
+<div class="col-md-4">
+<a href="/workshops/" class="btn btn-warning w-100 mb-3">
+📅 Workshops
+</a>
+</div>
+
+<div class="col-md-4">
+<a href="/farmer/profile" class="btn btn-dark w-100 mb-3">
+👤 My Profile
+</a>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

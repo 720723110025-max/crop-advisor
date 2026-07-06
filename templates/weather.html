@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Weather Advisory{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-8">
+
+<div class="card shadow-lg border-0">
+
+<div class="card-header bg-primary text-white text-center">
+
+<h2>🌦 Weather Advisory</h2>
+
+<p class="mb-0">Current Weather Information</p>
+
+</div>
+
+<div class="card-body">
+
+<div class="row text-center">
+
+<div class="col-md-3">
+
+<div class="card border-success shadow">
+
+<div class="card-body">
+
+<h1>🌡</h1>
+
+<h4>{{ weather.temperature }}°C</h4>
+
+<p>Temperature</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card border-info shadow">
+
+<div class="card-body">
+
+<h1>💧</h1>
+
+<h4>{{ weather.humidity }}%</h4>
+
+<p>Humidity</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card border-warning shadow">
+
+<div class="card-body">
+
+<h1>☁</h1>
+
+<h4>{{ weather.condition }}</h4>
+
+<p>Condition</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card border-danger shadow">
+
+<div class="card-body">
+
+<h1>🌬</h1>
+
+<h4>{{ weather.wind }} km/h</h4>
+
+<p>Wind</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="alert alert-success">
+
+<h4>🌱 Farming Advisory</h4>
+
+<ul>
+
+<li>Maintain proper irrigation.</li>
+
+<li>Monitor rainfall before fertilizer application.</li>
+
+<li>Protect crops if heavy rain is expected.</li>
+
+<li>Use disease-resistant seeds during humid weather.</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+
+{% include "admin/sidebar.html" %}
+
+<div style="margin-left:270px;">
+
+<div class="container-fluid mt-4">
+
+<h2>👥 User Management</h2>
+
+<input
+class="form-control mb-3"
+id="searchUser"
+placeholder="Search User...">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Username</th>
+
+<th>Email</th>
+
+<th>Role</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+<form method="GET">
+
+<div class="input-group mb-3">
+
+<input
+type="text"
+name="search"
+class="form-control"
+placeholder="Search Username">
+
+<button class="btn btn-success">
+
+Search
+
+</button>
+
+</div>
+
+</form>
+<tbody id="userTable">
+
+{% for user in users %}
+
+<tr>
+
+<td>{{ user.username }}</td>
+
+<td>{{ user.email }}</td>
+
+<td>
+
+{% if user.is_admin %}
+
+<span class="badge bg-danger">Admin</span>
+
+<a href="{{ url_for('admin.remove_admin', user_id=user._id|string) }}"
+class="btn btn-warning btn-sm ms-2">
+
+Remove Admin
+
+</a>
+
+{% else %}
+
+<span class="badge bg-primary">User</span>
+
+<a href="{{ url_for('admin.make_admin', user_id=user._id|string) }}"
+class="btn btn-success btn-sm ms-2">
+
+Make Admin
+
+</a>
+
+{% endif %}
+
+</td>
+
+{% if user.is_active %}
+
+<span class="badge bg-success">
+
+Active
+
+</span>
+
+{% else %}
+
+<span class="badge bg-secondary">
+
+Blocked
+
+</span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+<a href="{{ url_for('admin.delete_user', user_id=user._id|string) }}"
+   class="btn btn-danger btn-sm"
+   onclick="return confirm('Are you sure you want to delete this user?')">
+    Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}
