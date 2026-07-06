@@ -13,6 +13,7 @@ from app.farmer.routes import farmer_bp
 from app.expert.routes import expert_bp
 from app.lands.routes import lands_bp
 from app.workshops.routes import workshop_bp
+from app.notifications.routes import notification_bp
 
 # Extensions
 login_manager = LoginManager()
@@ -43,6 +44,8 @@ def create_app(config_name="default"):
     app.register_blueprint(lands_bp)
 
     app.register_blueprint(workshop_bp)
+    
+    app.register_blueprint(notification_bp)
 
     app.config.from_object(config[config_name])
 

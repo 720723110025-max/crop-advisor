@@ -12,14 +12,15 @@ model = WorkshopModel()
 @workshop_bp.route("/")
 def index():
 
-    workshops = model.all()
+    workshops = model.get_all()
 
     return render_template(
         "workshops/index.html",
         workshops=workshops
     )
 
-@workshop_bp.route("/add", methods=["GET", "POST"])
+
+@workshop_bp.route("/add", methods=["GET","POST"])
 def add():
 
     if request.method == "POST":
@@ -36,12 +37,30 @@ def add():
 
             "mode": request.form["mode"],
 
-            "capacity": request.form["capacity"]
+            "capacity": request.form["capacity"],
+
+            "description": request.form["description"]
 
         })
 
-        flash("Workshop Added", "success")
+        flash("Workshop Added Successfully","success")
 
         return redirect(url_for("workshops.index"))
 
     return render_template("workshops/add.html")
+
+
+@workshop_bp.route("/register/<workshop_id>")
+def register(workshop_id):
+
+    model.register({
+
+        "workshop_id": workshop_id,
+
+        "farmer": "demo_user"
+
+    })
+
+    flash("Workshop Registration Successful","success")
+
+    return redirect(url_for("workshops.index"))

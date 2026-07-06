@@ -127,6 +127,7 @@ class MongoDatabase:
     "weather_data",
     "experts",
     "appointments",
+    "workshop_registrations",
     "workshops",
     "notifications",
     "feedback",
