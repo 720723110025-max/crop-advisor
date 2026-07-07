@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>🌾 Market Prices</h2>
+
+<table class="table table-bordered">
+
+<tr>
+<th>Crop</th>
+<th>District</th>
+<th>Price (₹/Quintal)</th>
+</tr>
+
+{% for p in prices %}
+
+<tr>
+<td>{{ p.crop }}</td>
+<td>{{ p.district }}</td>
+<td>{{ p.price }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}
