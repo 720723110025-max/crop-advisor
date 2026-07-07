@@ -172,7 +172,8 @@ document.getElementById("cropName").innerHTML=data.crop;
 
 document.getElementById("confidence").innerHTML=(data.confidence*100).toFixed(1)+"%";
 
-document.getElementById("suggestions").innerHTML=data.suggestions;
+document.getElementById("suggestions").innerHTML =
+    data.suggestions.join("<br>");
 
 });
 

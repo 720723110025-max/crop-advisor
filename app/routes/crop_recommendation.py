@@ -34,38 +34,66 @@ def predict_crop():
         )
 
         # Save to database
+                # Save to database
         try:
             rec_data = {
-                'user_id': str(current_user.id),
-                'recommended_crop': crop,
-                'nitrogen': nitrogen,
-                'phosphorus': phosphorus,
-                'potassium': potassium,
-                'temperature': temperature,
-                'humidity': humidity,
-                'ph': ph,
-                'rainfall': rainfall,
-                'confidence': confidence,
-                'created_at': datetime.utcnow(),
+                "user_id": str(current_user.id),
+                "recommended_crop": crop,
+                "nitrogen": nitrogen,
+                "phosphorus": phosphorus,
+                "potassium": potassium,
+                "temperature": temperature,
+                "humidity": humidity,
+                "ph": ph,
+                "rainfall": rainfall,
+                "confidence": confidence,
+                "created_at": datetime.utcnow(),
             }
-            db_instance.get_collection('crop_predictions').insert_one(rec_data)
+
+            db_instance.get_collection(
+                "crop_predictions"
+            ).insert_one(rec_data)
+
         except Exception:
-            pass  # DB error should not break the response
+            pass
+
+        # Smart Suggestions
+        suggestions = []
+
+        if nitrogen < 50:
+            suggestions.append("Apply Nitrogen fertilizer.")
+
+        if phosphorus < 40:
+            suggestions.append("Apply Phosphorus fertilizer.")
+
+        if potassium < 40:
+            suggestions.append("Apply Potassium fertilizer.")
+
+        if rainfall < 100:
+            suggestions.append("Provide additional irrigation.")
+
+        if ph < 6:
+            suggestions.append("Apply agricultural lime.")
+
+        if ph > 8:
+            suggestions.append("Apply organic compost.")
+
+        if not suggestions:
+            suggestions.append("Your soil conditions look suitable.")
 
         return jsonify({
-            'success': True,
-            'crop': crop,
-            'confidence': confidence,
-            'suggestions': (
-                'Use certified quality seeds\n'
-                'Maintain proper irrigation\n'
-                'Apply fertilizers as recommended by soil test'
-            ),
-            'all_recommendations': all_recommendations,
+            "success": True,
+            "crop": crop,
+            "confidence": confidence,
+            "suggestions": suggestions,
+            "all_recommendations": all_recommendations
         })
 
     except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 
 def _predict(nitrogen, phosphorus, potassium, temperature, humidity, ph, rainfall):

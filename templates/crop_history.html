@@ -42,7 +42,11 @@
 <td>{{ item.humidity }}</td>
 <td>{{ item.ph }}</td>
 <td>{{ item.rainfall }}</td>
-<td>{{ item.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
+<td>{% if item.created_at %}
+{{ item.created_at.strftime('%d-%m-%Y %H:%M') }}
+{% else %}
+-
+{% endif %}</td>
 
 </tr>
 
