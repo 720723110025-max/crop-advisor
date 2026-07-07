@@ -1,31 +1,76 @@
 {% extends "base.html" %}
 
+{% block title %}Market Prices{% endblock %}
+
 {% block content %}
 
-<div class="container mt-4">
+<div class="container mt-5">
 
-<h2>🌾 Market Prices</h2>
+<h2>💰 Market Prices</h2>
 
-<table class="table table-bordered">
+<input
+id="searchCrop"
+class="form-control mb-3"
+placeholder="Search Crop">
+
+<table class="table table-striped">
+
+<thead class="table-success">
 
 <tr>
+
 <th>Crop</th>
-<th>District</th>
-<th>Price (₹/Quintal)</th>
+
+<th>Market</th>
+
+<th>Price</th>
+
 </tr>
 
-{% for p in prices %}
+</thead>
+
+<tbody id="marketTable">
+
+{% for item in prices %}
 
 <tr>
-<td>{{ p.crop }}</td>
-<td>{{ p.district }}</td>
-<td>{{ p.price }}</td>
+
+<td>{{ item.crop }}</td>
+
+<td>{{ item.market }}</td>
+
+<td>{{ item.price }}</td>
+
 </tr>
 
 {% endfor %}
 
+</tbody>
+
 </table>
 
 </div>
+
+<script>
+
+document.getElementById("searchCrop")
+.onkeyup=function(){
+
+let value=this.value.toLowerCase();
+
+document.querySelectorAll("#marketTable tr")
+.forEach(row=>{
+
+row.style.display=row.innerText
+.toLowerCase()
+.includes(value)
+? ""
+: "none";
+
+});
+
+};
+
+</script>
 
 {% endblock %}

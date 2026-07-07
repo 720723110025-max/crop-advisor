@@ -18,6 +18,8 @@ from app.market.routes import market_bp
 from app.soil.routes import soil_bp
 from app.feedback.routes import feedback_bp
 from app.crop_ai.routes import crop_ai_bp
+from app.routes.soil import soil_bp
+from app.chatbot.routes import chatbot_bp
 
 # Extensions
 login_manager = LoginManager()
@@ -58,6 +60,8 @@ def create_app(config_name="default"):
     app.register_blueprint(feedback_bp)
 
     app.register_blueprint(crop_ai_bp)
+
+    app.register_blueprint(chatbot_bp)    
 
     app.config.from_object(config[config_name])
 

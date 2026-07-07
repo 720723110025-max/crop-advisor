@@ -1,93 +1,118 @@
 {% extends "base.html" %}
 
+{% block title %}Admin Dashboard{% endblock %}
+
 {% block content %}
 
 <div class="container mt-4">
 
-<h2>🛠 Admin Dashboard</h2>
+<h2>📊 Admin Dashboard</h2>
 
 <div class="row">
 
-<div class="col-md-3">
-<div class="card text-center shadow">
-<div class="card-body">
-<h3>{{ stats.users }}</h3>
-<p>Farmers</p>
+<div class="col-md-4 mb-4">
+<div class="card bg-success text-white">
+<div class="card-body text-center">
+<h1>{{ stats.farmers }}</h1>
+<h5>Farmers</h5>
 </div>
 </div>
 </div>
 
-<div class="col-md-3">
-<div class="card text-center shadow">
-<div class="card-body">
-<h3>{{ stats.feedback }}</h3>
-<p>Feedback</p>
+<div class="col-md-4 mb-4">
+<div class="card bg-primary text-white">
+<div class="card-body text-center">
+<h1>{{ stats.experts }}</h1>
+<h5>Experts</h5>
 </div>
 </div>
 </div>
 
-<div class="col-md-3">
-<div class="card text-center shadow">
-<div class="card-body">
-<h3>{{ stats.workshops }}</h3>
-<p>Workshops</p>
+<div class="col-md-4 mb-4">
+<div class="card bg-warning text-dark">
+<div class="card-body text-center">
+<h1>{{ stats.lands }}</h1>
+<h5>Lands</h5>
 </div>
 </div>
 </div>
 
-<div class="col-md-3">
-<div class="card text-center shadow">
-<div class="card-body">
-<h3>{{ stats.notifications }}</h3>
-<p>Notifications</p>
+<div class="col-md-4 mb-4">
+<div class="card bg-danger text-white">
+<div class="card-body text-center">
+<h1>{{ stats.crop_predictions }}</h1>
+<h5>Crop Predictions</h5>
 </div>
 </div>
+</div>
+
+<div class="col-md-4 mb-4">
+<div class="card bg-info text-white">
+<div class="card-body text-center">
+<h1>{{ stats.disease_reports }}</h1>
+<h5>Disease Reports</h5>
+</div>
+</div>
+</div>
+
+<div class="col-md-4 mb-4">
+<div class="card bg-secondary text-white">
+<div class="card-body text-center">
+<h1>{{ stats.notifications }}</h1>
+<h5>Notifications</h5>
+</div>
+</div>
+</div>
+
 </div>
 
 </div>
 
 <hr>
 
-<div class="row mt-4">
+<canvas id="adminChart"></canvas>
 
-<div class="col-md-4">
-<a href="/expert/" class="btn btn-primary w-100 mb-3">
-👨‍🌾 Manage Experts
-</a>
-</div>
+<script>
 
-<div class="col-md-4">
-<a href="/workshops/" class="btn btn-warning w-100 mb-3">
-📅 Manage Workshops
-</a>
-</div>
+const ctx=document.getElementById("adminChart");
 
-<div class="col-md-4">
-<a href="/notifications/" class="btn btn-secondary w-100 mb-3">
-🔔 Notifications
-</a>
-</div>
+new Chart(ctx,{
 
-<div class="col-md-4">
-<a href="/feedback/" class="btn btn-success w-100 mb-3">
-💬 Feedback
-</a>
-</div>
+type:"bar",
 
-<div class="col-md-4">
-<a href="/market/" class="btn btn-info w-100 mb-3">
-💰 Market Prices
-</a>
-</div>
+data:{
 
-<div class="col-md-4">
-<a href="/soil/" class="btn btn-dark w-100 mb-3">
-🌱 Soil Reports
-</a>
-</div>
+labels:[
+"Farmers",
+"Experts",
+"Lands",
+"Crops",
+"Diseases"
+],
 
-</div>
+datasets:[{
 
-</div>
+label:"System Statistics",
 
+data:[
+
+{{ stats.farmers }},
+
+{{ stats.experts }},
+
+{{ stats.lands }},
+
+{{ stats.crop_predictions }},
+
+{{ stats.disease_reports }}
+
+]
+
+}]
+
+}
+
+});
+
+</script>
 {% endblock %}

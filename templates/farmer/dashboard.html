@@ -44,6 +44,59 @@
 </div>
 </div>
 
+<div class="card mt-4 shadow">
+
+<div class="card-body">
+
+<h4>☁ Today's Weather</h4>
+
+<p>
+
+Temperature : 29°C
+
+</p>
+
+<p>
+
+Humidity : 72%
+
+</p>
+
+<p>
+
+Condition : Cloudy
+
+</p>
+
+</div>
+
+</div>
+
+<div class="card mt-4">
+
+<div class="card-header">
+
+📋 Recent Activities
+
+</div>
+
+<div class="card-body">
+
+<ul>
+
+<li>✔ Crop Recommendation Completed</li>
+
+<li>✔ Disease Report Generated</li>
+
+<li>✔ Weather Updated</li>
+
+<li>✔ Soil Analysis Completed</li>
+
+</ul>
+
+</div>
+
+</div>
 </div>
 
 <hr>
@@ -86,6 +139,65 @@
     </div>
 </div>
 
+<hr>
+
+<h3>📊 Farm Analytics</h3>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<canvas id="cropChart"></canvas>
+
+</div>
+
+<div class="col-md-6">
+
+<canvas id="diseaseChart"></canvas>
+
+</div>
+
+</div>
+
+<script>
+
+new Chart(document.getElementById("cropChart"),{
+
+type:"pie",
+
+data:{
+
+labels:["Rice","Maize","Cotton","Groundnut"],
+
+datasets:[{
+
+data:[30,20,15,35]
+
+}]
+
+}
+
+});
+
+new Chart(document.getElementById("diseaseChart"),{
+
+type:"doughnut",
+
+data:{
+
+labels:["Healthy","Diseased"],
+
+datasets:[{
+
+data:[80,20]
+
+}]
+
+}
+
+});
+
+</script>
 </div>
 
 
@@ -128,6 +240,16 @@ receive weather alerts, and get AI-powered farming advice.
 <a href="/weather/advisory" class="btn btn-info w-100">
 ☁ Weather
 </a>
+</div>
+
+<div class="col-md-4">
+
+<a href="/chatbot/" class="btn btn-dark w-100 mb-3">
+
+🤖 AI Chatbot
+
+</a>
+
 </div>
 
 <div class="col-md-3 mb-3">

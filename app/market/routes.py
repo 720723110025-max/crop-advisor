@@ -7,12 +7,13 @@ market_bp = Blueprint(
     url_prefix="/market"
 )
 
-model = MarketModel()
+market_model = MarketModel()
+
 
 @market_bp.route("/")
 def index():
 
-    prices = model.get_all()
+    prices = market_model.get_prices()
 
     return render_template(
         "market/index.html",

@@ -1,12 +1,37 @@
-from app.utils.database import get_collection
-
 class MarketModel:
 
-    def __init__(self):
-        self.collection = get_collection("market_prices")
+    def get_prices(self):
 
-    def get_all(self):
-        return list(self.collection.find())
+        return [
 
-    def add_price(self, data):
-        return self.collection.insert_one(data)
+            {
+                "crop": "Rice",
+                "market": "Coimbatore",
+                "price": "₹2450 / Quintal"
+            },
+
+            {
+                "crop": "Maize",
+                "market": "Salem",
+                "price": "₹2150 / Quintal"
+            },
+
+            {
+                "crop": "Groundnut",
+                "market": "Erode",
+                "price": "₹6200 / Quintal"
+            },
+
+            {
+                "crop": "Cotton",
+                "market": "Tiruppur",
+                "price": "₹7350 / Quintal"
+            },
+
+            {
+                "crop": "Sugarcane",
+                "market": "Karur",
+                "price": "₹340 / Quintal"
+            }
+
+        ]
