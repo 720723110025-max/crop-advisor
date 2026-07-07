@@ -1,5 +1,4 @@
 from app.utils.database import get_collection
-from bson import ObjectId
 
 class FarmerModel:
 

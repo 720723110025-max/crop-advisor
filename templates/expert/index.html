@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>👨‍🌾 Expert Directory</h2>
+
+    <a href="/expert/add" class="btn btn-primary mb-3">
+        Add Expert
+    </a>
+
+    <table class="table table-bordered table-striped">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>District</th>
+                <th>Specialization</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Book</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for expert in experts %}
+
+            <tr>
+                <td>{{ expert.name }}</td>
+                <td>{{ expert.district }}</td>
+                <td>{{ expert.specialization }}</td>
+                <td>{{ expert.phone }}</td>
+                <td>{{ expert.email }}</td>
+
+                <td>
+                    <a href="/expert/book/{{ expert._id }}"
+                       class="btn btn-success btn-sm">
+                        Book
+                    </a>
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

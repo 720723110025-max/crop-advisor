@@ -15,6 +15,9 @@ from app.lands.routes import lands_bp
 from app.workshops.routes import workshop_bp
 from app.notifications.routes import notification_bp
 from app.market.routes import market_bp
+from app.soil.routes import soil_bp
+from app.feedback.routes import feedback_bp
+from app.crop_ai.routes import crop_ai_bp
 
 # Extensions
 login_manager = LoginManager()
@@ -49,6 +52,12 @@ def create_app(config_name="default"):
     app.register_blueprint(notification_bp)
     
     app.register_blueprint(market_bp)
+
+    app.register_blueprint(soil_bp)
+    
+    app.register_blueprint(feedback_bp)
+
+    app.register_blueprint(crop_ai_bp)
 
     app.config.from_object(config[config_name])
 

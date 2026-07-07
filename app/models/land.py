@@ -1,5 +1,5 @@
-from bson import ObjectId
 from app.utils.database import get_collection
+from bson import ObjectId
 
 class LandModel:
 
@@ -9,11 +9,13 @@ class LandModel:
     def get_all(self):
         return list(self.collection.find())
 
-    def get_by_id(self, land_id):
-        return self.collection.find_one({"_id": ObjectId(land_id)})
-
     def create(self, data):
         return self.collection.insert_one(data)
+
+    def get(self, land_id):
+        return self.collection.find_one(
+            {"_id": ObjectId(land_id)}
+        )
 
     def update(self, land_id, data):
         return self.collection.update_one(

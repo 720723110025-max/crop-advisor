@@ -10,3 +10,10 @@ class NotificationModel:
 
     def create(self, data):
         return self.collection.insert_one(data)
+
+    def by_district(self, district):
+        return list(
+            self.collection.find(
+                {"district": district}
+            )
+        )

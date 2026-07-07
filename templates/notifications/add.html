@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>🔔 Send Notification</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+<label>Title</label>
+<input
+name="title"
+class="form-control">
+</div>
+
+<div class="mb-3">
+<label>District</label>
+<input
+name="district"
+class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Message</label>
+
+<textarea
+name="message"
+class="form-control"
+rows="5"></textarea>
+
+</div>
+
+<button
+class="btn btn-primary">
+
+Send Notification
+
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

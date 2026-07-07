@@ -31,31 +31,44 @@ def dashboard():
 @farmer_bp.route("/profile", methods=["GET", "POST"])
 def profile():
 
-    user_id = "demo_user"   # Later replace with current_user.id
+    user_id = "demo_user"
 
     farmer = farmer_model.get(user_id)
 
     if request.method == "POST":
 
         data = {
+
             "user_id": user_id,
+
             "name": request.form["name"],
+
             "phone": request.form["phone"],
+
             "district": request.form["district"],
+
             "village": request.form["village"],
+
             "land_size": request.form["land_size"]
+
         }
 
         if farmer:
+
             farmer_model.update(user_id, data)
+
         else:
+
             farmer_model.create(data)
 
         flash("Profile Saved Successfully", "success")
+
         return redirect(url_for("farmer.profile"))
 
-    return render_template("farmer/profile.html", farmer=farmer)
-
+    return render_template(
+        "farmer/profile.html",
+        farmer=farmer
+    )
 
 @farmer_bp.route("/lands")
 def lands():

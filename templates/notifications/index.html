@@ -6,7 +6,41 @@
 
 <h2>🔔 Notifications</h2>
 
-<p>No notifications available.</p>
+<a
+href="/notifications/add"
+class="btn btn-primary mb-3">
+
+Send Notification
+
+</a>
+
+<table class="table table-bordered">
+
+<tr>
+
+<th>Title</th>
+
+<th>District</th>
+
+<th>Message</th>
+
+</tr>
+
+{% for n in notifications %}
+
+<tr>
+
+<td>{{ n.title }}</td>
+
+<td>{{ n.district }}</td>
+
+<td>{{ n.message }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
 
 </div>
 

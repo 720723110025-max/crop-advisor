@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>👤 Farmer Profile</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+<label>Name</label>
+<input
+name="name"
+class="form-control"
+value="{{ farmer.name if farmer else '' }}">
+</div>
+
+<div class="mb-3">
+<label>Phone</label>
+<input
+name="phone"
+class="form-control"
+value="{{ farmer.phone if farmer else '' }}">
+</div>
+
+<div class="mb-3">
+<label>District</label>
+<input
+name="district"
+class="form-control"
+value="{{ farmer.district if farmer else '' }}">
+</div>
+
+<div class="mb-3">
+<label>Village</label>
+<input
+name="village"
+class="form-control"
+value="{{ farmer.village if farmer else '' }}">
+</div>
+
+<div class="mb-3">
+<label>Land Size (Acres)</label>
+<input
+name="land_size"
+class="form-control"
+value="{{ farmer.land_size if farmer else '' }}">
+</div>
+
+<button
+class="btn btn-success">
+
+💾 Save Profile
+
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

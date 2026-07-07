@@ -22,4 +22,6 @@ class ExpertModel:
         )
 
     def delete(self, expert_id):
-        return self.collection.delete_one({"_id": ObjectId(expert_id)})
+        return self.collection.delete_one(
+            {"_id": ObjectId(expert_id)}
+        )

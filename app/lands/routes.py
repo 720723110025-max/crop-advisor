@@ -44,7 +44,7 @@ def add():
 @lands_bp.route("/edit/<land_id>", methods=["GET", "POST"])
 def edit(land_id):
 
-    land = land_model.get_by_id(land_id)
+    land = land_model.get(land_id)
 
     if not land:
         flash("Land not found.", "danger")
@@ -69,6 +69,7 @@ def edit(land_id):
         return redirect(url_for("lands.index"))
 
     return render_template("lands/edit_land.html", land=land)
+
 
 
 @lands_bp.route("/delete/<land_id>")

@@ -50,54 +50,90 @@
 
 <div class="row mt-4">
 
-<div class="col-md-4">
-<a href="/lands/" class="btn btn-success w-100 mb-3">
-🌱 My Lands
+<div class="col-lg-3 col-md-6 mb-4">
+    <div class="card bg-success text-white shadow">
+        <div class="card-body text-center">
+            <h1>{{ dashboard.lands }}</h1>
+            <h5>🌱 My Lands</h5>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-3 col-md-6 mb-4">
+    <div class="card bg-primary text-white shadow">
+        <div class="card-body text-center">
+            <h1>{{ dashboard.crop_predictions }}</h1>
+            <h5>🌾 Crop Recommendations</h5>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-3 col-md-6 mb-4">
+    <div class="card bg-danger text-white shadow">
+        <div class="card-body text-center">
+            <h1>{{ dashboard.disease_reports }}</h1>
+            <h5>🦠 Disease Reports</h5>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-3 col-md-6 mb-4">
+    <div class="card bg-warning text-dark shadow">
+        <div class="card-body text-center">
+            <h1>{{ dashboard.workshops }}</h1>
+            <h5>📅 Workshops</h5>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+</div>
+<h2>🌾 Krushak Saathi - Farmer Dashboard</h2>
+
+<div class="alert alert-success mt-3">
+
+<h4>👋 Welcome to Krushak Saathi</h4>
+
+<p>
+
+Manage your lands, monitor crop health, check market prices,
+receive weather alerts, and get AI-powered farming advice.
+
+</p>
+
+</div>
+
+<hr>
+
+<h3>⚡ Quick Actions</h3>
+
+<div class="row">
+
+<div class="col-md-3 mb-3">
+<a href="/crop/recommend" class="btn btn-success w-100">
+🌾 Recommend Crop
 </a>
 </div>
 
-<div class="col-md-4">
-<a href="/crop/recommend" class="btn btn-primary w-100 mb-3">
-🌾 Crop Recommendation
+<div class="col-md-3 mb-3">
+<a href="/disease/detect" class="btn btn-danger w-100">
+🦠 Detect Disease
 </a>
 </div>
 
-<div class="col-md-4">
-<a href="/disease/detect" class="btn btn-danger w-100 mb-3">
-🦠 Disease Detection
-</a>
-</div>
-
-<div class="col-md-4">
-<a href="/weather/advisory" class="btn btn-info w-100 mb-3">
+<div class="col-md-3 mb-3">
+<a href="/weather/advisory" class="btn btn-info w-100">
 ☁ Weather
 </a>
 </div>
 
-<div class="col-md-4">
-<a href="/workshops/" class="btn btn-warning w-100 mb-3">
-📅 Workshops
+<div class="col-md-3 mb-3">
+<a href="/market/" class="btn btn-warning w-100">
+💰 Market Prices
 </a>
-</div>
-
-<div class="col-md-4">
-    <a href="/notifications/" class="btn btn-secondary w-100 mb-3">
-        🔔 Notifications
-    </a>
-</div>
-
-<div class="col-md-4">
-    <a href="/market/" class="btn btn-success w-100 mb-3">
-        💰 Market Prices
-    </a>
-</div>
-
-<div class="col-md-4">
-<a href="/farmer/profile" class="btn btn-dark w-100 mb-3">
-👤 My Profile
-</a>
-</div>
-
 </div>
 
 </div>
