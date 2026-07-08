@@ -126,6 +126,76 @@
 
 <p id="suggestions"></p>
 
+<hr>
+
+<h4>🌱 Best Seed Recommendation</h4>
+
+<div class="table-responsive">
+<table class="table table-bordered">
+
+<tr>
+<th>Seed Varieties</th>
+<td id="seedVarieties"></td>
+</tr>
+
+<tr>
+<th>Season</th>
+<td id="seedSeason"></td>
+</tr>
+
+<tr>
+<th>Duration</th>
+<td id="seedDuration"></td>
+</tr>
+
+<tr>
+<th>Expected Yield</th>
+<td id="seedYield"></td>
+</tr>
+
+</table>
+</div>
+
+<hr>
+
+<h4>💰 Profit Estimation</h4>
+
+<table class="table table-striped table-bordered">
+
+<tr>
+
+<th>Estimated Cost</th>
+
+<td id="cost"></td>
+
+</tr>
+
+<tr>
+
+<th>Expected Yield</th>
+
+<td id="yield"></td>
+
+</tr>
+
+<tr>
+
+<th>Market Price</th>
+
+<td id="marketPrice"></td>
+
+</tr>
+
+<tr>
+
+<th>Estimated Profit</th>
+
+<td class="text-success fw-bold" id="profit"></td>
+
+</tr>
+
+</table>
+
 </div>
 
 </div>
@@ -170,13 +240,36 @@ document.getElementById("result").style.display="block";
 
 document.getElementById("cropName").innerHTML=data.crop;
 
-document.getElementById("confidence").innerHTML=(data.confidence*100).toFixed(1)+"%";
+document.getElementById("confidence").innerHTML=
+(data.confidence*100).toFixed(1)+"%";
 
-document.getElementById("suggestions").innerHTML =
-    data.suggestions.join("<br>");
+document.getElementById("suggestions").innerHTML=
+data.suggestions.join("<br>");
 
+document.getElementById("seedVarieties").innerHTML=
+data.seed_info.varieties.join(", ");
+
+document.getElementById("seedSeason").innerHTML=
+data.seed_info.season;
+
+document.getElementById("seedDuration").innerHTML=
+data.seed_info.duration;
+
+document.getElementById("seedYield").innerHTML=
+data.seed_info.yield;
+
+document.getElementById("cost").innerHTML =
+data.profit_info.cost;
+
+document.getElementById("yield").innerHTML =
+data.profit_info.yield;
+
+document.getElementById("marketPrice").innerHTML =
+data.profit_info.market_price;
+
+document.getElementById("profit").innerHTML =
+data.profit_info.profit;
 });
-
 }
 
 </script>

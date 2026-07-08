@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Location Recommendation{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h2>📍 GPS Crop Recommendation</h2>
+
+</div>
+
+<div class="card-body text-center">
+
+<button
+class="btn btn-success"
+onclick="getLocation()">
+
+📍 Detect My Location
+
+</button>
+
+<hr>
+
+<h4 id="result"></h4>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function getLocation(){
+
+navigator.geolocation.getCurrentPosition(function(pos){
+
+let form=new FormData();
+
+form.append("latitude",pos.coords.latitude);
+
+form.append("longitude",pos.coords.longitude);
+
+fetch("/location/recommend",{
+
+method:"POST",
+
+body:form
+
+})
+
+.then(r=>r.json())
+
+.then(data=>{
+
+document.getElementById("result").innerHTML=
+
+"Recommended Crop : "+data.crop+
+
+"<br>Latitude : "+data.latitude+
+
+"<br>Longitude : "+data.longitude;
+
+});
+
+});
+
+}
+
+</script>
+
+{% endblock %}

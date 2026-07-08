@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Voice Assistant{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h2>🎤 AI Voice Assistant</h2>
+
+</div>
+
+<div class="card-body text-center">
+
+<h4 id="text">
+
+Click Start and Speak
+
+</h4>
+
+<button
+class="btn btn-success btn-lg"
+onclick="startRecognition()">
+
+🎤 Start
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const SpeechRecognition =
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+const recognition =
+new SpeechRecognition();
+
+recognition.lang="en-IN";
+
+recognition.onresult=function(event){
+
+let text=event.results[0][0].transcript;
+
+document.getElementById("text").innerHTML=text;
+
+if(text.toLowerCase().includes("weather")){
+
+window.location="/weather/advisory";
+
+}
+
+else if(text.toLowerCase().includes("crop")){
+
+window.location="/crop/recommend";
+
+}
+
+else if(text.toLowerCase().includes("disease")){
+
+window.location="/disease/detect";
+
+}
+
+else if(text.toLowerCase().includes("market")){
+
+window.location="/market/";
+
+}
+
+};
+
+function startRecognition(){
+
+recognition.start();
+
+}
+
+</script>
+
+{% endblock %}

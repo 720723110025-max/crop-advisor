@@ -6,113 +6,244 @@
 
 <div class="container mt-4">
 
-<h2>📊 Admin Dashboard</h2>
+    <h2 class="mb-4">📊 Admin Dashboard</h2>
 
-<div class="row">
+    <!-- Statistics Cards -->
 
-<div class="col-md-4 mb-4">
-<div class="card bg-success text-white">
-<div class="card-body text-center">
-<h1>{{ stats.farmers }}</h1>
-<h5>Farmers</h5>
-</div>
-</div>
-</div>
+    <div class="row">
 
-<div class="col-md-4 mb-4">
-<div class="card bg-primary text-white">
-<div class="card-body text-center">
-<h1>{{ stats.experts }}</h1>
-<h5>Experts</h5>
-</div>
-</div>
-</div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body text-center">
+                    <h1>{{ stats.farmers }}</h1>
+                    <h5>👨‍🌾 Farmers</h5>
+                </div>
+            </div>
+        </div>
 
-<div class="col-md-4 mb-4">
-<div class="card bg-warning text-dark">
-<div class="card-body text-center">
-<h1>{{ stats.lands }}</h1>
-<h5>Lands</h5>
-</div>
-</div>
-</div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body text-center">
+                    <h1>{{ stats.experts }}</h1>
+                    <h5>🧑‍🔬 Experts</h5>
+                </div>
+            </div>
+        </div>
 
-<div class="col-md-4 mb-4">
-<div class="card bg-danger text-white">
-<div class="card-body text-center">
-<h1>{{ stats.crop_predictions }}</h1>
-<h5>Crop Predictions</h5>
-</div>
-</div>
-</div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-warning shadow">
+                <div class="card-body text-center">
+                    <h1>{{ stats.lands }}</h1>
+                    <h5>🌱 Lands</h5>
+                </div>
+            </div>
+        </div>
 
-<div class="col-md-4 mb-4">
-<div class="card bg-info text-white">
-<div class="card-body text-center">
-<h1>{{ stats.disease_reports }}</h1>
-<h5>Disease Reports</h5>
-</div>
-</div>
-</div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-danger text-white shadow">
+                <div class="card-body text-center">
+                    <h1>{{ stats.crop_predictions }}</h1>
+                    <h5>🌾 Crop Predictions</h5>
+                </div>
+            </div>
+        </div>
 
-<div class="col-md-4 mb-4">
-<div class="card bg-secondary text-white">
-<div class="card-body text-center">
-<h1>{{ stats.notifications }}</h1>
-<h5>Notifications</h5>
-</div>
-</div>
-</div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-info text-white shadow">
+                <div class="card-body text-center">
+                    <h1>{{ stats.disease_reports }}</h1>
+                    <h5>🦠 Disease Reports</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card bg-secondary text-white shadow">
+                <div class="card-body text-center">
+                    <h1>{{ stats.notifications }}</h1>
+                    <h5>🔔 Notifications</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- Analytics Chart -->
+
+    <h3 class="mb-3">📈 System Analytics</h3>
+
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+
+            <canvas id="systemChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- Latest Farmers -->
+
+    <h3 class="mb-3">👨‍🌾 Latest Farmers</h3>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <table class="table table-hover table-bordered">
+
+                <thead class="table-success">
+
+                    <tr>
+
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>District</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% if latest_users %}
+
+                        {% for farmer in latest_users %}
+
+                        <tr>
+
+                            <td>{{ farmer.name }}</td>
+
+                            <td>{{ farmer.phone }}</td>
+
+                            <td>{{ farmer.district }}</td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+
+                            <td colspan="3" class="text-center">
+
+                                No Farmers Found
+
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
-
-</div>
-
-<hr>
-
-<canvas id="adminChart"></canvas>
 
 <script>
 
-const ctx=document.getElementById("adminChart");
+const ctx = document.getElementById("systemChart");
 
-new Chart(ctx,{
+new Chart(ctx, {
 
-type:"bar",
+    type: "bar",
 
-data:{
+    data: {
 
-labels:[
-"Farmers",
-"Experts",
-"Lands",
-"Crops",
-"Diseases"
-],
+        labels: [
 
-datasets:[{
+            "Farmers",
 
-label:"System Statistics",
+            "Experts",
 
-data:[
+            "Lands",
 
-{{ stats.farmers }},
+            "Crop Predictions",
 
-{{ stats.experts }},
+            "Disease Reports",
 
-{{ stats.lands }},
+            "Notifications"
 
-{{ stats.crop_predictions }},
+        ],
 
-{{ stats.disease_reports }}
+        datasets: [{
 
-]
+            label: "Total Records",
 
-}]
+            data: [
 
-}
+                {{ stats.farmers }},
+
+                {{ stats.experts }},
+
+                {{ stats.lands }},
+
+                {{ stats.crop_predictions }},
+
+                {{ stats.disease_reports }},
+
+                {{ stats.notifications }}
+
+            ],
+
+            backgroundColor: [
+
+                "#198754",
+
+                "#0d6efd",
+
+                "#ffc107",
+
+                "#dc3545",
+
+                "#0dcaf0",
+
+                "#6c757d"
+
+            ]
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: false
+
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true
+
+            }
+
+        }
+
+    }
 
 });
 
 </script>
+
 {% endblock %}

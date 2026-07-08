@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Appointment History{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>📅 Appointment History</h2>
+
+<table class="table table-bordered">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Expert</th>
+
+<th>Date</th>
+
+<th>Time</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for a in appointments %}
+
+<tr>
+
+<td>{{ a.expert }}</td>
+
+<td>{{ a.date }}</td>
+
+<td>{{ a.time }}</td>
+
+<td>{{ a.status }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

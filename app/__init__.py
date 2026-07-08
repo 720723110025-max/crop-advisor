@@ -15,11 +15,10 @@ from app.lands.routes import lands_bp
 from app.workshops.routes import workshop_bp
 from app.notifications.routes import notification_bp
 from app.market.routes import market_bp
-from app.soil.routes import soil_bp
 from app.feedback.routes import feedback_bp
 from app.crop_ai.routes import crop_ai_bp
-from app.routes.soil import soil_bp
 from app.chatbot.routes import chatbot_bp
+from app.routes.language import language_bp
 
 # Extensions
 login_manager = LoginManager()
@@ -55,8 +54,6 @@ def create_app(config_name="default"):
     
     app.register_blueprint(market_bp)
 
-    app.register_blueprint(soil_bp)
-    
     app.register_blueprint(feedback_bp)
 
     app.register_blueprint(crop_ai_bp)
@@ -144,7 +141,22 @@ def register_blueprints(app):
     from app.routes.weather import weather_bp
     from app.routes.yield_prediction import yield_bp
     from app.routes.admin import admin_bp
-    from app.routes.export import export_bp
+    from app.routes.export import export_bp  
+    from app.routes.soil_analysis import soil_bp
+    from app.routes.seed import seed_bp
+    from app.routes.profit import profit_bp
+    from app.routes.weather_ai import weather_ai_bp
+    from app.routes.smart_notifications import smart_bp
+    from app.routes.analytics import analytics_bp
+    from app.routes.voice import voice_bp
+    from app.routes.location import location_bp
+    from app.routes.appointment import appointment_bp
+    from app.routes.language import language_bp
+    from app.routes.soil_analysis_ai import soil_ai_bp
+    from app.routes.farm_income import income_bp
+    from app.routes.reports import reports_bp
+    from app.routes.admin_notifications import admin_notification_bp
+    from app.routes.weather_alerts import weather_alert_bp
 
     csrf.exempt(crop_bp)
     csrf.exempt(disease_bp)
@@ -162,6 +174,21 @@ def register_blueprints(app):
     app.register_blueprint(yield_bp, url_prefix="/yield")
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(export_bp, url_prefix="/export")
+    app.register_blueprint(soil_bp)
+    app.register_blueprint(seed_bp)
+    app.register_blueprint(profit_bp)
+    app.register_blueprint(weather_ai_bp)
+    app.register_blueprint(smart_bp)
+    app.register_blueprint(analytics_bp)
+    app.register_blueprint(voice_bp)
+    app.register_blueprint(location_bp)
+    app.register_blueprint(appointment_bp)
+    app.register_blueprint(language_bp)
+    app.register_blueprint(soil_ai_bp)
+    app.register_blueprint(income_bp)
+    app.register_blueprint(reports_bp)
+    app.register_blueprint(admin_notification_bp)
+
 
     logger.info("All blueprints registered")
 

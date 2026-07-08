@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Soil Analysis{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-8">
+
+<div class="card shadow-lg">
+
+<div class="card-header bg-success text-white text-center">
+
+<h2>🌱 AI Soil Analysis</h2>
+
+</div>
+
+<div class="card-body">
+
+<form id="soilForm" enctype="multipart/form-data">
+
+<div class="mb-3">
+
+<label>Select Soil Image</label>
+
+<input
+type="file"
+class="form-control"
+name="soil_image"
+id="soil_image"
+accept="image/*"
+required>
+
+</div>
+
+<div class="text-center">
+
+<img
+id="preview"
+style="display:none;max-width:300px;"
+class="img-fluid rounded shadow">
+
+</div>
+
+<br>
+
+<button class="btn btn-success w-100">
+
+Analyze Soil
+
+</button>
+
+</form>
+
+<hr>
+
+<div id="result" style="display:none;">
+
+<h3>Analysis Result</h3>
+
+<table class="table table-bordered">
+
+<tr>
+
+<th>Soil Type</th>
+
+<td id="soilType"></td>
+
+</tr>
+
+<tr>
+
+<th>Estimated pH</th>
+
+<td id="ph"></td>
+
+</tr>
+
+<tr>
+
+<th>Fertility</th>
+
+<td id="fertility"></td>
+
+</tr>
+
+<tr>
+
+<th>Recommended Fertilizer</th>
+
+<td id="fertilizer"></td>
+
+</tr>
+
+<tr>
+
+<th>Suitable Crops</th>
+
+<td id="crops"></td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("soil_image").onchange=function(){
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+document.getElementById("preview").src=e.target.result;
+
+document.getElementById("preview").style.display="block";
+
+}
+
+reader.readAsDataURL(this.files[0]);
+
+}
+
+document.getElementById("soilForm").onsubmit=function(e){
+
+e.preventDefault();
+
+let formData=new FormData(this);
+
+fetch("/soil/analyze",{
+
+method:"POST",
+
+body:formData
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+document.getElementById("result").style.display="block";
+
+document.getElementById("soilType").innerHTML=data.soil_type;
+
+document.getElementById("ph").innerHTML=data.ph;
+
+document.getElementById("fertility").innerHTML=data.fertility;
+
+document.getElementById("fertilizer").innerHTML=data.fertilizer;
+
+document.getElementById("crops").innerHTML=data.crops;
+
+});
+
+}
+
+</script>
+{% endblock %}

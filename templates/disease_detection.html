@@ -38,11 +38,23 @@ Select Leaf Image
 <input
 type="file"
 class="form-control"
-id="image"
-name="image"
+id="leaf_image"
+name="leaf_image"
 accept="image/*"
 onchange="previewImage(event)"
 required>
+
+<div class="text-center mt-3">
+
+<img
+
+id="previewImage"
+
+class="img-fluid rounded shadow"
+
+style="max-height:250px;display:none;">
+
+</div>
 
 </div>
 
@@ -109,8 +121,31 @@ Confidence
 </h5>
 
 <h3 id="confidence"></h3>
+<hr>
+
+<h5>⚠ Severity</h5>
+
+<h4 id="severity"></h4>
 
 <hr>
+
+<h5>📝 Symptoms</h5>
+
+<p id="symptoms"></p>
+
+<hr>
+
+<h5>🔍 Causes</h5>
+
+<p id="causes"></p>
+
+<hr>
+
+<h5>🛡 Prevention</h5>
+
+<p id="prevention"></p>
+<hr>
+
 
 <h5>
 
@@ -119,6 +154,18 @@ Treatment
 </h5>
 
 <p id="treatment"></p>
+
+<hr>
+
+<h5>🌿 Organic Treatment</h5>
+
+<p id="organic"></p>
+
+<hr>
+
+<h5>💊 Chemical Treatment</h5>
+
+<p id="chemical"></p>
 
 </div>
 
@@ -156,7 +203,7 @@ document.getElementById("result").style.display="none";
 
 let formData=new FormData(this);
 
-fetch("/disease/api/detect",{
+fetch("/disease/api/detect-disease",{
 
 method:"POST",
 
@@ -178,6 +225,23 @@ document.getElementById("confidence").innerHTML=data.confidence+"%";
 
 document.getElementById("treatment").innerHTML=data.treatment;
 
+document.getElementById("organic").innerHTML =
+data.organic;
+
+document.getElementById("chemical").innerHTML =
+data.chemical;
+
+document.getElementById("severity").innerHTML =
+data.severity;
+
+document.getElementById("symptoms").innerHTML =
+data.symptoms;
+
+document.getElementById("causes").innerHTML =
+data.causes;
+
+document.getElementById("prevention").innerHTML =
+data.prevention;
 });
 
 }

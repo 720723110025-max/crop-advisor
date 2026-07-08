@@ -24,6 +24,7 @@ class User(UserMixin):
         self.farm_size = kwargs.get('farm_size', 0)
         self.farm_location = kwargs.get('farm_location', '')
         self.is_admin = kwargs.get('is_admin', False)
+        self.role = kwargs.get('role', 'farmer')
         self.active = kwargs.get('is_active', True)
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
@@ -78,6 +79,7 @@ class User(UserMixin):
             'farm_size': self.farm_size,
             'farm_location': self.farm_location,
             'is_admin': self.is_admin,
+            'role': self.role,
             'is_active': self.active,
             'created_at': self.created_at,
             'updated_at': datetime.utcnow(),
@@ -136,6 +138,7 @@ class User(UserMixin):
             farm_size=data.get('farm_size', 0),
             farm_location=data.get('farm_location', ''),
             is_admin=data.get('is_admin', False),
+            role=data.get('role', 'farmer'),
             is_active=data.get('is_active', True),
         )
         user.id = str(data['_id'])
@@ -155,6 +158,7 @@ class User(UserMixin):
             'farm_size': getattr(self, 'farm_size', 0),
             'farm_location': getattr(self, 'farm_location', ''),
             'is_admin': self.is_admin,
+            'role': self.role,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }
 

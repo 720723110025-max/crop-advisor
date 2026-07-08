@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Expert Appointment{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h2>👨‍🌾 Book Expert</h2>
+
+</div>
+
+<div class="card-body">
+
+<form action="/appointment/book" method="POST">
+
+<label>Select Expert</label>
+
+<select
+class="form-control"
+name="expert">
+
+{% for expert in experts %}
+
+<option>
+
+{{ expert.name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+<br>
+
+<label>Date</label>
+
+<input
+type="date"
+class="form-control"
+name="date"
+required>
+
+<br>
+
+<label>Time</label>
+
+<input
+type="time"
+class="form-control"
+name="time"
+required>
+
+<br>
+
+<button
+class="btn btn-success">
+
+Book Appointment
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

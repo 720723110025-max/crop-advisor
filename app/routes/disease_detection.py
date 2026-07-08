@@ -86,41 +86,45 @@ def detect_disease():
         # Save to MongoDB
         try:
             report_data = {
-                'user_id': current_user.id,
-                'image_path': upload_path,
-                'image_filename': unique_filename,
-                'crop_type': crop_type,
-                'disease_name': result['name'],
-                'confidence': result['confidence'],
-                'severity': result['severity'],
-                'symptoms': result['symptoms'],
-                'causes': result['causes'],
-                'prevention': result['prevention'],
-                'treatment': result['treatment'],
-                'is_verified': False,
-                'created_at': datetime.utcnow(),
+                "user_id": current_user.id,
+                "image_path": upload_path,
+                "image_filename": unique_filename,
+                "crop_type": crop_type,
+                "disease_name": result["name"],
+                "confidence": result["confidence"],
+                "severity": result["severity"],
+                "symptoms": result["symptoms"],
+                "causes": result["causes"],
+                "prevention": result["prevention"],
+                "treatment": result["treatment"],
+                "is_verified": False,
+                "created_at": datetime.utcnow(),
             }
-            db_instance.get_collection('disease_reports').insert_one(report_data)
+
+            db_instance.get_collection("disease_reports").insert_one(report_data)
+
             db_instance.get_collection("notifications").insert_one({
-    "message": f"{current_user.username} detected {result['name']}",
-    "type": "Disease",
-    "created_at": datetime.utcnow()
-})
+                "message": f"{current_user.username} detected {result['name']}",
+                "type": "Disease",
+                "created_at": datetime.utcnow()
+            })
+
         except Exception:
             pass
 
         return jsonify({
-            'success': True,
-            'disease': result['name'],
-            'confidence': result['confidence'],
-            'severity': result['severity'],
-            'symptoms': result['symptoms'],
-            'causes': result['causes'],
-            'prevention': result['prevention'],
-            'treatment': result['treatment'],
-            'image_path': unique_filename,
+            "success": True,
+            "disease": result["name"],
+            "confidence": result["confidence"],
+            "severity": result["severity"],
+            "symptoms": result["symptoms"],
+            "causes": result["causes"],
+            "prevention": result["prevention"],
+            "treatment": result["treatment"],
+            "organic": "Neem Oil Spray every 7 days.",
+            "chemical": "Carbendazim 1g/L water.",
+            "image_path": unique_filename
         })
-
 
     except Exception as e:
         import traceback

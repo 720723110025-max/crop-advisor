@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Seed Recommendation{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h2>🌱 Seed Recommendation</h2>
+
+</div>
+
+<div class="card-body">
+
+<form id="seedForm">
+
+<label>Select Crop</label>
+
+<select
+class="form-control"
+name="crop">
+
+<option>Rice</option>
+
+<option>Maize</option>
+
+<option>Wheat</option>
+
+<option>Groundnut</option>
+
+</select>
+
+<br>
+
+<button class="btn btn-success">
+
+Recommend Seed
+
+</button>
+
+</form>
+
+<hr>
+
+<h4 id="result"></h4>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("seedForm").onsubmit=function(e){
+
+e.preventDefault();
+
+fetch("/seed/recommend",{
+
+method:"POST",
+
+body:new FormData(this)
+
+})
+
+.then(r=>r.json())
+
+.then(data=>{
+
+document.getElementById("result").innerHTML=
+
+"Recommended Seed : "+data.seed;
+
+});
+
+}
+
+</script>
+
+{% endblock %}

@@ -32,6 +32,9 @@ def predict_crop():
         crop, confidence, all_recommendations = _predict(
             nitrogen, phosphorus, potassium, temperature, humidity, ph, rainfall
         )
+        
+        seed_info = get_seed_info(crop)
+        profit_info = get_profit_info(crop)
 
         # Save to database
                 # Save to database
@@ -47,6 +50,8 @@ def predict_crop():
                 "ph": ph,
                 "rainfall": rainfall,
                 "confidence": confidence,
+                "seed_info": seed_info,
+                "profit_info": profit_info,
                 "created_at": datetime.utcnow(),
             }
 
@@ -125,6 +130,128 @@ def _predict(nitrogen, phosphorus, potassium, temperature, humidity, ph, rainfal
         {'crop': 'Wheat', 'confidence': 0.80},
     ]
     return crop, confidence, all_recs
+
+def get_seed_info(crop):
+
+    seeds = {
+
+        "Rice":{
+
+            "varieties":[
+
+                "CR1009",
+
+                "ADT43",
+
+                "CO51"
+
+            ],
+
+            "season":"Kharif",
+
+            "duration":"120 Days",
+
+            "yield":"6.5 Tons/Hectare"
+
+        },
+
+        "Maize":{
+
+            "varieties":[
+
+                "COH(M)6",
+
+                "NK6240"
+
+            ],
+
+            "season":"Rabi",
+
+            "duration":"100 Days",
+
+            "yield":"5 Tons/Hectare"
+
+        },
+
+        "Wheat":{
+
+            "varieties":[
+
+                "HD2967",
+
+                "PBW343"
+
+            ],
+
+            "season":"Rabi",
+
+            "duration":"130 Days",
+
+            "yield":"4 Tons/Hectare"
+
+        }
+
+    }
+
+    return seeds.get(crop,{
+        "varieties":["Local Variety"],
+        "season":"Unknown",
+        "duration":"Unknown",
+        "yield":"Unknown"
+    })
+def get_profit_info(crop):
+
+    data = {
+
+        "Rice":{
+
+            "cost":"₹25,000 / Acre",
+
+            "yield":"6.5 Tons",
+
+            "market_price":"₹2,400 / Quintal",
+
+            "profit":"₹60,000"
+
+        },
+
+        "Maize":{
+
+            "cost":"₹18,000 / Acre",
+
+            "yield":"5 Tons",
+
+            "market_price":"₹2,000 / Quintal",
+
+            "profit":"₹45,000"
+
+        },
+
+        "Wheat":{
+
+            "cost":"₹20,000 / Acre",
+
+            "yield":"4 Tons",
+
+            "market_price":"₹2,200 / Quintal",
+
+            "profit":"₹42,000"
+
+        }
+
+    }
+
+    return data.get(crop,{
+
+        "cost":"Unknown",
+
+        "yield":"Unknown",
+
+        "market_price":"Unknown",
+
+        "profit":"Unknown"
+
+    })
 
 @crop_bp.route("/history")
 @login_required

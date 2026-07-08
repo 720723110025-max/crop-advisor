@@ -12,22 +12,41 @@ farmer_bp = Blueprint(
 farmer_model = FarmerModel()
 
 
+from app.utils.database import db_instance
+
 @farmer_bp.route("/dashboard")
 def dashboard():
 
-    dashboard_data = {
-        "lands": 0,
-        "crop_predictions": 0,
-        "disease_reports": 0,
-        "workshops": 0,
-        "notifications": 0
+    dashboard = {
+
+        "lands": db_instance.get_collection("lands").count_documents({}),
+
+        "crop_predictions": db_instance.get_collection(
+            "crop_predictions"
+        ).count_documents({}),
+
+        "disease_reports": db_instance.get_collection(
+            "disease_reports"
+        ).count_documents({}),
+
+        "workshops": db_instance.get_collection(
+            "workshops"
+        ).count_documents({})
+
     }
+
+    recent_notifications = list(
+        db_instance.get_collection("notifications")
+        .find()
+        .sort("created_at", -1)
+        .limit(5)
+    )
 
     return render_template(
         "farmer/dashboard.html",
-        dashboard=dashboard_data
+        dashboard=dashboard,
+        notifications=recent_notifications
     )
-
 @farmer_bp.route("/profile", methods=["GET", "POST"])
 def profile():
 

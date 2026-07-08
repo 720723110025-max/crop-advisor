@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>🌱 AI Soil Analysis</h2>
+
+<select id="soil" class="form-control">
+
+<option>Black</option>
+<option>Red</option>
+<option>Alluvial</option>
+
+</select>
+
+<br>
+
+<button
+class="btn btn-success"
+onclick="analyze()">
+
+Analyze
+
+</button>
+
+<hr>
+
+<h4 id="result"></h4>
+
+</div>
+
+<script>
+
+function analyze(){
+
+let form=new FormData();
+
+form.append(
+
+"soil",
+
+document.getElementById("soil").value
+
+);
+
+fetch("/soil-ai/analyze",{
+
+method:"POST",
+
+body:form
+
+})
+
+.then(r=>r.json())
+
+.then(data=>{
+
+document.getElementById("result").innerHTML=
+
+"Recommended Crop : "+data.crop+
+
+"<br>Fertilizer : "+data.fertilizer;
+
+});
+
+}
+
+</script>
+
+{% endblock %}

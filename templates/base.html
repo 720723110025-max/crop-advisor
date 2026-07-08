@@ -9,10 +9,114 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_css %}{% endblock %}
-    <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-</head>
+    </head>
 <body>
+ <button
+class="btn btn-success d-lg-none m-2"
+onclick="toggleSidebar()">
+
+☰ Menu
+
+</button>
+    <div class="d-flex">
+
+<div id="sidebar"
+     class="bg-dark text-white p-3"
+     style="width:260px;min-height:100vh;">
+
+<h3 class="text-center mb-4">
+
+🌾 Krushak Saathi
+
+</h3>
+
+<a href="/dashboard"
+class="btn btn-success w-100 mb-2">
+
+<i class="fas fa-home"></i>
+
+Dashboard
+
+</a>
+
+<a href="/crop"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-seedling"></i>
+
+Crop AI
+
+</a>
+<a href="/notifications" class="btn btn-light position-relative">
+
+<i class="fas fa-bell"></i>
+
+<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+
+{{ notification_count|default(0) }}
+
+</span>
+
+</a>
+
+<a href="/disease/detect"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-virus"></i>
+
+Disease Detection
+
+</a>
+
+<a href="/soil"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-mountain"></i>
+
+Soil Analysis
+
+</a>
+
+<a href="/weather"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-cloud-sun"></i>
+
+Weather
+
+</a>
+
+<a href="/market"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-chart-line"></i>
+
+Market
+
+</a>
+
+<a href="/reports"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-chart-pie"></i>
+
+Export
+
+</a>
+
+<a href="/auth/logout"
+class="btn btn-danger w-100">
+
+<i class="fas fa-sign-out-alt"></i>
+
+Logout
+
+</a>
+
+</div>
+
+<div class="flex-grow-1 p-4">
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('dashboard.index') if current_user.is_authenticated else url_for('auth.login') }}">
@@ -60,6 +164,28 @@
                             <i class="fas fa-cloud-sun"></i> Weather
                         </a>
                     </li>
+                    <div class="dropdown ms-3">
+    <button class="btn btn-light dropdown-toggle"
+            data-bs-toggle="dropdown">
+        🌍 Language
+    </button>
+
+    <ul class="dropdown-menu">
+        <li>
+            <a class="dropdown-item"
+               href="/language/set/en">
+               English
+            </a>
+        </li>
+
+        <li>
+            <a class="dropdown-item"
+               href="/language/set/or">
+               Odia
+            </a>
+        </li>
+    </ul>
+</div>
                     <li class="nav-item">
                         <a class="nav-link {% if request.endpoint == 'yield.predict' %}active{% endif %}" 
                            href="{{ url_for('yield.predict') }}">
@@ -165,5 +291,28 @@ row.style.display=row.innerText.toLowerCase().includes(value)
 });
 
 </script>
+</div>
+
+</div>
+<script>
+
+function toggleSidebar(){
+
+const sidebar=document.getElementById("sidebar");
+
+if(sidebar.style.display==="none"){
+
+sidebar.style.display="block";
+
+}else{
+
+sidebar.style.display="none";
+
+}
+
+}
+
+</script>
 </body>
+
 </html>

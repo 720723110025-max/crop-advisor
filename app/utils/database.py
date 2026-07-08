@@ -121,16 +121,33 @@ class MongoDatabase:
     "lands",
     "crops",
     "farmers",
+
     "soil_reports",
+    "soil_data",
+
+    "crop_recommendations",
+    "crop_predictions",
+
     "disease_reports",
+
+    "fertilizer_recommendations",
+
+    "irrigation_schedules",
+
+    "yield_predictions",
+
     "market_prices",
     "weather_data",
+
     "experts",
     "appointments",
+
     "workshop_registrations",
     "workshops",
+
     "notifications",
     "feedback",
+
     "analytics",
     "chat_history",
     "voice_requests"
@@ -141,18 +158,8 @@ class MongoDatabase:
                 self.db.create_collection(col)
 
     def _create_indexes(self):
-        try:
-            self.db.users.create_index('username', unique=True)
-            self.db.users.create_index('email', unique=True)
-            self.db.users.create_index('created_at')
-            self.db.soil_data.create_index('user_id')
-            self.db.disease_reports.create_index([('user_id', 1), ('created_at', -1)])
-            self.db.crop_recommendations.create_index([('user_id', 1), ('created_at', -1)])
-            self.db.fertilizer_recommendations.create_index([('user_id', 1), ('created_at', -1)])
-            self.db.irrigation_schedules.create_index([('user_id', 1), ('is_completed', 1)])
-            self.db.yield_predictions.create_index([('user_id', 1), ('created_at', -1)])
-        except Exception as e:
-            logger.warning(f"Index creation warning: {str(e)}")
+       logger.info("Skipping index creation")
+       return
 
     # ------------------------------------------------------------------
     # Public API

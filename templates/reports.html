@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>📊 Farm Reports</h2>
+
+<canvas id="incomeChart"></canvas>
+
+</div>
+
+<script>
+
+new Chart(
+
+document.getElementById("incomeChart"),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:{{ labels|tojson }},
+
+datasets:[
+
+{
+
+label:"Income",
+
+data:{{ income|tojson }}
+
+},
+
+{
+
+label:"Expense",
+
+data:{{ expense|tojson }}
+
+}
+
+]
+
+}
+
+});
+
+</script>
+
+{% endblock %}
