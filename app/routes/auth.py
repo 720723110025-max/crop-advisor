@@ -104,14 +104,14 @@ def login():
         return redirect(url_for('dashboard.index'))
 
     if request.method == 'POST':
-        username = request.form.get('username', '').strip()
+        email = request.form.get('email', '').strip().lower()
         password = request.form.get('password', '')
         remember = request.form.get('remember', False)
 
         print("\n========== LOGIN ==========")
-        print("Username:", username)
+        print("Email:", email)
 
-        user = User.find_by_username(username)
+        user = User.find_by_email(email)
 
         print("User Found:", user)
 
@@ -132,7 +132,7 @@ def login():
             return redirect(url_for('dashboard.index'))
 
         print("LOGIN FAILED")
-        flash('Invalid username or password.', 'danger')
+        flash('Invalid email or password.', 'danger')
 
     return render_template('login.html')
 @auth_bp.route('/logout')
