@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     {% block extra_css %}{% endblock %}
     </head>
 <body>
@@ -313,6 +314,71 @@ sidebar.style.display="none";
 }
 
 </script>
+<script>
+
+document.querySelector("form")?.addEventListener("submit",function(){
+
+let btn=document.querySelector(".btn-login");
+
+btn.innerHTML="Logging in...";
+
+btn.disabled=true;
+
+});
+
+</script>
+<script>
+
+window.addEventListener("scroll",()=>{
+
+document.querySelectorAll(".card,.service-box").forEach(card=>{
+
+card.style.opacity="1";
+
+card.style.transform="translateY(0)";
+
+});
+
+});
+
+</script>
 </body>
+<footer class="bg-dark text-white py-5">
+
+<div class="container text-center">
+
+<h3>
+
+🌾 Krushak Saathi
+
+</h3>
+
+<p>
+
+Smart Agriculture Advisory System
+
+</p>
+
+<div>
+
+<i class="fab fa-facebook fa-2x m-2"></i>
+
+<i class="fab fa-instagram fa-2x m-2"></i>
+
+<i class="fab fa-linkedin fa-2x m-2"></i>
+
+<i class="fab fa-github fa-2x m-2"></i>
+
+</div>
+
+<p class="mt-4">
+
+© 2026 Krushak Saathi
+
+</p>
+
+</div>
+
+</footer>
 
 </html>

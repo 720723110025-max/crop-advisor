@@ -1,0 +1,788 @@
+body{
+    margin:0;
+    padding:0;
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#0b7d3e,#198754,#7ed957);
+    background-size:400% 400%;
+    animation:bg 10s ease infinite;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.login-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:30px;
+}
+
+.login-card{
+    width:1100px;
+    min-height:650px;
+    display:flex;
+    overflow:hidden;
+    border-radius:30px;
+    backdrop-filter:blur(20px);
+    background:white;
+    box-shadow:0 25px 60px rgba(0,0,0,.25);
+}
+
+.left-side{
+
+width:50%;
+
+padding:70px;
+
+background:linear-gradient(160deg,#198754,#0f5132);
+
+color:white;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+}
+
+.right-side{
+
+width:50%;
+
+padding:70px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+}
+
+.logo{
+
+font-size:42px;
+
+font-weight:bold;
+
+}
+
+.subtitle{
+
+font-size:18px;
+
+opacity:.9;
+
+margin-bottom:40px;
+
+}
+
+.left-side h3{
+
+font-size:30px;
+
+margin-bottom:25px;
+
+}
+
+.left-side p{
+
+font-size:18px;
+
+margin-bottom:18px;
+
+}
+
+.form-control{
+
+height:55px;
+
+border-radius:15px;
+
+}
+
+.btn-login{
+
+margin-top:20px;
+
+width:100%;
+
+height:55px;
+
+border:none;
+
+border-radius:15px;
+
+background:#198754;
+
+font-size:18px;
+
+font-weight:bold;
+
+color:white;
+
+transition:.4s;
+
+}
+
+.btn-login:hover{
+
+background:#146c43;
+
+transform:translateY(-3px);
+
+}
+
+img{
+
+margin-top:40px;
+
+animation:float 4s infinite ease-in-out;
+
+}
+
+@keyframes float{
+
+0%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-15px);
+
+}
+
+100%{
+
+transform:translateY(0);
+
+}
+
+}
+
+@media(max-width:900px){
+
+.login-card{
+
+flex-direction:column;
+
+width:95%;
+
+}
+
+.left-side,
+
+.right-side{
+
+width:100%;
+
+padding:40px;
+
+}
+
+}
+.card{
+
+transition:.4s;
+
+border-radius:20px;
+
+}
+
+.card:hover{
+
+transform:translateY(-10px);
+
+box-shadow:0 15px 30px rgba(0,0,0,.2);
+
+}
+.hero-title{
+    font-size:45px;
+    font-weight:bold;
+    animation:slideDown 1s ease;
+}
+
+.hero-text{
+    font-size:18px;
+    opacity:.9;
+}
+
+@keyframes slideDown{
+
+from{
+
+opacity:0;
+transform:translateY(-40px);
+
+}
+
+to{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+}
+.login-card{
+
+backdrop-filter:blur(20px);
+
+background:rgba(255,255,255,.96);
+
+border:1px solid rgba(255,255,255,.3);
+
+}
+.form-control:focus{
+
+border-color:#198754;
+
+box-shadow:0 0 10px rgba(25,135,84,.3);
+
+}
+.circle{
+
+position:fixed;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.15);
+
+z-index:-1;
+
+}
+
+.one{
+
+width:300px;
+
+height:300px;
+
+top:-100px;
+
+left:-100px;
+
+}
+
+.two{
+
+width:250px;
+
+height:250px;
+
+bottom:-80px;
+
+right:-80px;
+
+}
+.hero-section{
+
+padding:100px 0;
+
+background:white;
+
+}
+
+.hero-image{
+
+max-width:500px;
+
+animation:float 5s infinite ease-in-out;
+
+}
+
+.hero-section h1{
+
+font-size:55px;
+
+font-weight:700;
+
+color:#146c43;
+
+}
+
+.hero-section p{
+
+font-size:22px;
+
+color:#555;
+
+}
+<section class="container py-5">
+
+<h2 class="text-center mb-5">
+
+Our Features
+
+</h2>
+
+<div class="row g-4">
+
+<div class="col-md-3">
+
+<div class="card feature-card">
+
+<div class="card-body text-center">
+
+<i class="fas fa-seedling fa-3x text-success"></i>
+
+<h4 class="mt-3">
+
+Crop Recommendation
+
+</h4>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card feature-card">
+
+<div class="card-body text-center">
+
+<i class="fas fa-leaf fa-3x text-success"></i>
+
+<h4 class="mt-3">
+
+Disease Detection
+
+</h4>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card feature-card">
+
+<div class="card-body text-center">
+
+<i class="fas fa-cloud-sun fa-3x text-success"></i>
+
+<h4 class="mt-3">
+
+Weather Forecast
+
+</h4>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card feature-card">
+
+<div class="card-body text-center">
+
+<i class="fas fa-chart-line fa-3x text-success"></i>
+
+<h4 class="mt-3">
+
+Market Price
+
+</h4>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+.feature-card{
+
+border:none;
+
+border-radius:20px;
+
+transition:.4s;
+
+padding:20px;
+
+}
+
+.feature-card:hover{
+
+transform:translateY(-12px);
+
+box-shadow:0 20px 40px rgba(0,0,0,.15);
+
+}
+<section class="bg-success text-white py-5">
+
+<div class="container">
+
+<div class="row text-center">
+
+<div class="col">
+
+<h2>1000+</h2>
+
+<p>Farmers</p>
+
+</div>
+
+<div class="col">
+
+<h2>150+</h2>
+
+<p>Villages</p>
+
+</div>
+
+<div class="col">
+
+<h2>50+</h2>
+
+<p>Crops</p>
+
+</div>
+
+<div class="col">
+
+<h2>24×7</h2>
+
+<p>Support</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+<section class="container py-5">
+
+<h2 class="text-center">
+
+What Farmers Say
+
+</h2>
+
+<div class="row mt-5">
+
+<div class="col-md-4">
+
+<div class="card p-4">
+
+⭐⭐⭐⭐⭐
+
+<p>
+
+Very useful for selecting crops.
+
+</p>
+
+<b>
+
+Farmer Ravi
+
+</b>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card p-4">
+
+⭐⭐⭐⭐⭐
+
+<p>
+
+Disease detection saved my crops.
+
+</p>
+
+<b>
+
+Farmer Kumar
+
+</b>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card p-4">
+
+⭐⭐⭐⭐⭐
+
+<p>
+
+Weather prediction is very accurate.
+
+</p>
+
+<b>
+
+Farmer Mani
+
+</b>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+<footer class="bg-dark text-white py-5">
+
+<div class="container text-center">
+
+<h3>
+
+🌾 Krushak Saathi
+
+</h3>
+
+<p>
+
+Smart Agriculture Advisory System
+
+</p>
+
+<p>
+
+Developed using Flask • MongoDB • AI
+
+</p>
+
+</div>
+
+</footer>
+.service-box{
+
+background:white;
+
+padding:35px;
+
+border-radius:20px;
+
+text-align:center;
+
+transition:.4s;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.service-box:hover{
+
+transform:translateY(-12px);
+
+box-shadow:0 25px 50px rgba(0,0,0,.18);
+
+}
+<section class="counter-section">
+
+<div class="container">
+
+<div class="row text-center">
+
+<div class="col-md-3">
+
+<h1>5000+</h1>
+
+<p>Farmers</p>
+
+</div>
+
+<div class="col-md-3">
+
+<h1>250+</h1>
+
+<p>Villages</p>
+
+</div>
+
+<div class="col-md-3">
+
+<h1>100+</h1>
+
+<p>Crops</p>
+
+</div>
+
+<div class="col-md-3">
+
+<h1>24×7</h1>
+
+<p>Support</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+.counter-section{
+
+background:#198754;
+
+color:white;
+
+padding:70px 0;
+
+}
+
+.counter-section h1{
+
+font-size:50px;
+
+font-weight:bold;
+
+}
+<section class="container py-5">
+
+<div class="row align-items-center">
+
+<div class="col-lg-6">
+
+<h2 class="fw-bold">
+
+Why Choose Krushak Saathi?
+
+</h2>
+
+<br>
+
+<p>✅ AI Powered Suggestions</p>
+
+<p>✅ Accurate Weather Forecast</p>
+
+<p>✅ Easy to Use</p>
+
+<p>✅ Fast Disease Detection</p>
+
+<p>✅ Free for Farmers</p>
+
+</div>
+
+<div class="col-lg-6 text-center">
+
+<img
+src="{{ url_for('static', filename='images/farmer.png') }}"
+width="420">
+
+</div>
+
+</div>
+
+</section>
+<section class="bg-light py-5">
+
+<div class="container">
+
+<h2 class="text-center">
+
+Contact Us
+
+</h2>
+
+<div class="row mt-5">
+
+<div class="col-md-4">
+
+<h5>Email</h5>
+
+<p>support@krushaksaathi.com</p>
+
+</div>
+
+<div class="col-md-4">
+
+<h5>Phone</h5>
+
+<p>+91 XXXXX XXXXX</p>
+
+</div>
+
+<div class="col-md-4">
+
+<h5>Location</h5>
+
+<p>Coimbatore, Tamil Nadu</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+.btn{
+
+transition:.35s;
+
+}
+
+.btn:hover{
+
+transform:scale(1.05);
+
+}
+.hero-section{
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.hero-section::before{
+
+content:"";
+
+position:absolute;
+
+width:700px;
+
+height:700px;
+
+background:#19875422;
+
+border-radius:50%;
+
+right:-250px;
+
+top:-150px;
+
+animation:rotate 25s linear infinite;
+
+}
+
+@keyframes rotate{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
