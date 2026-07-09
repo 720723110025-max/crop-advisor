@@ -1,16 +1,106 @@
 {% extends "base.html" %}
 
+{% block title %}
+My Lands
+{% endblock %}
+
 {% block content %}
 
 <div class="container mt-4">
 
-<h2>My Lands</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<a href="/lands/add" class="btn btn-success mb-3">
+<h2 class="text-success">
+🌾 My Lands
+</h2>
+
+<a href="{{ url_for('lands.add') }}"
+class="btn btn-success">
+
 + Add Land
+
 </a>
 
-<table class="table table-striped">
+</div>
+
+<div class="row mb-4">
+
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h5>Total Lands</h5>
+
+<h2 class="text-success">
+
+{{ lands|length }}
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h5>Total Area</h5>
+
+<h2 class="text-primary">
+
+{% set total = namespace(area=0) %}
+{% for land in lands %}
+    {% set total.area = total.area + (land.area|float) %}
+{% endfor %}
+
+{{ total.area }} Acres
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h5>Districts</h5>
+
+<h2 class="text-warning">
+
+{{ lands|map(attribute='district')|list|length }}
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle">
+
+<thead class="table-success">
 
 <tr>
 
@@ -18,60 +108,88 @@
 
 <th>District</th>
 
+<th>Block</th>
+
 <th>Village</th>
 
 <th>Area</th>
 
 <th>Soil</th>
 
-<th>Previous</th>
-
-<th>Current</th>
+<th>Current Crop</th>
 
 <th>Actions</th>
 
 </tr>
 
+</thead>
+
+<tbody>
+
 {% for land in lands %}
 
 <tr>
 
-<td>{{ land.land_name }}</td>
+<td>
 
-<td>{{ land.district }}</td>
+<strong>
 
-<td>{{ land.village }}</td>
+{{ land.land_name }}
 
-<td>{{ land.area }}</td>
+</strong>
 
-<td>{{ land.soil_type }}</td>
-
-<td>{{ land.previous_crop }}</td>
-
-<td>{{ land.current_crop }}</td>
+</td>
 
 <td>
 
-<a href="/lands/edit/{{ land._id }}"
+{{ land.district }}
+
+</td>
+
+<td>
+
+{{ land.block }}
+
+</td>
+
+<td>
+
+{{ land.village }}
+
+</td>
+
+<td>
+
+{{ land.area }} Acres
+
+</td>
+
+<td>
+
+{{ land.soil_type }}
+
+</td>
+
+<td>
+
+{{ land.current_crop }}
+
+</td>
+
+<td>
+
+<a
+href="{{ url_for('lands.edit', land_id=land._id) }}"
 class="btn btn-warning btn-sm">
+
 Edit
+
 </a>
 
-<a href="/lands/delete/{{ land._id }}"
+<a
+href="{{ url_for('lands.delete', land_id=land._id) }}"
 class="btn btn-danger btn-sm"
 onclick="return confirm('Delete this land?')">
-Delete
-</a>
-
-<a href="/lands/edit/{{ land._id }}"
-class="btn btn-warning btn-sm">
-
-Edit
-
-</a>
-
-<a href="/lands/delete/{{ land._id }}"
-class="btn btn-danger btn-sm">
 
 Delete
 
@@ -81,9 +199,30 @@ Delete
 
 </tr>
 
+{% else %}
+
+<tr>
+
+<td colspan="8" class="text-center text-muted">
+
+No lands added yet.
+
+</td>
+
+</tr>
+
 {% endfor %}
 
+</tbody>
+
 </table>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 {% endblock %}

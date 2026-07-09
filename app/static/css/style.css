@@ -298,3 +298,36 @@ padding:8px;
 }
 
 }
+.hero{
+
+padding:120px 0;
+
+background:#f4fff7;
+
+}
+
+.hero h1{
+
+font-size:60px;
+
+font-weight:bold;
+
+color:#198754;
+
+}
+
+.hero p{
+
+font-size:20px;
+
+margin-top:20px;
+
+margin-bottom:40px;
+
+}
+
+.hero img{
+
+max-width:550px;
+
+}

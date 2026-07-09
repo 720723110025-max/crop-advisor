@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="text-success">
+
+🎓 Workshops
+
+</h2>
+
+<div class="row">
+
+{% for workshop in workshops %}
+
+<div class="col-lg-4 mb-4">
+
+<div class="card shadow h-100">
+
+<div class="card-body">
+
+<h4>
+
+{{ workshop.title }}
+
+</h4>
+
+<p>
+
+{{ workshop.description }}
+
+</p>
+
+<hr>
+
+<p>
+
+📍 {{ workshop.district }}
+
+</p>
+
+<p>
+
+🗓 {{ workshop.date }}
+
+</p>
+
+<p>
+
+🕒 {{ workshop.time }}
+
+</p>
+
+<p>
+
+💻 {{ workshop.mode }}
+
+</p>
+
+<p>
+
+👥 {{ workshop.registered }}/{{ workshop.capacity }}
+
+</p>
+
+<a
+
+href="/workshops/register/{{ workshop._id }}"
+
+class="btn btn-success">
+
+Register
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

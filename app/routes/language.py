@@ -1,4 +1,4 @@
-from flask import Blueprint, session, redirect, request
+from flask import Blueprint, session, redirect, request, render_template
 
 language_bp = Blueprint(
     "language",
@@ -6,11 +6,18 @@ language_bp = Blueprint(
     url_prefix="/language"
 )
 
+
+@language_bp.route("/")
+def select_language():
+    return render_template("language.html")
+
+
 @language_bp.route("/<lang>")
-def change(lang):
+def set_language(lang):
 
-    session["lang"]=lang
+    if lang not in ["en", "od"]:
+        lang = "en"
 
-    return redirect(
-        request.referrer or "/"
-    )
+    session["lang"] = lang
+
+    return redirect(request.args.get("next") or "/")

@@ -20,14 +20,20 @@ class User(UserMixin):
         self.email = email
         self.full_name = full_name
         self.phone = kwargs.get('phone', '')
+        self.district = kwargs.get('district', '')
+        self.block = kwargs.get('block', '')
+        self.village = kwargs.get('village', '')
         self.address = kwargs.get('address', '')
         self.farm_size = kwargs.get('farm_size', 0)
         self.farm_location = kwargs.get('farm_location', '')
         self.is_admin = kwargs.get('is_admin', False)
         self.role = kwargs.get('role', 'farmer')
+        self.is_admin = self.role == "admin"
         self.active = kwargs.get('is_active', True)
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
+        self.language = kwargs.get("language", "en")
+
         self.password_hash = b''
         if password:
             self.set_password(password)
@@ -75,6 +81,9 @@ class User(UserMixin):
             'password_hash': self.password_hash,
             'full_name': self.full_name,
             'phone': self.phone,
+            'district': self.district,
+            'block': self.block,
+            'village': self.village,
             'address': self.address,
             'farm_size': self.farm_size,
             'farm_location': self.farm_location,
@@ -83,6 +92,7 @@ class User(UserMixin):
             'is_active': self.active,
             'created_at': self.created_at,
             'updated_at': datetime.utcnow(),
+            'language': self.language,
         }
         result = self._get_collection().insert_one(user_data)
         self.id = str(result.inserted_id)
@@ -134,12 +144,16 @@ class User(UserMixin):
             password='',
             full_name=data.get('full_name', ''),
             phone=data.get('phone', ''),
+            district=data.get('district', ''),
+            block=data.get('block', ''),
+            village=data.get('village', ''),
             address=data.get('address', ''),
             farm_size=data.get('farm_size', 0),
             farm_location=data.get('farm_location', ''),
             is_admin=data.get('is_admin', False),
             role=data.get('role', 'farmer'),
             is_active=data.get('is_active', True),
+            language=data.get("language", "en"),
         )
         user.id = str(data['_id'])
         user.password_hash = data.get('password_hash', b'')
@@ -154,6 +168,9 @@ class User(UserMixin):
             'email': self.email,
             'full_name': self.full_name,
             'phone': getattr(self, 'phone', ''),
+            'district': getattr(self, 'district', ''),
+            'block': getattr(self, 'block', ''),
+            'village': getattr(self, 'village', ''),
             'address': getattr(self, 'address', ''),
             'farm_size': getattr(self, 'farm_size', 0),
             'farm_location': getattr(self, 'farm_location', ''),

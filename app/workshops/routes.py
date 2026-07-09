@@ -1,18 +1,19 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint,render_template,redirect,url_for,flash
 from app.models.workshop import WorkshopModel
 
-workshop_bp = Blueprint(
+workshop_bp=Blueprint(
     "workshops",
     __name__,
     url_prefix="/workshops"
 )
 
-model = WorkshopModel()
+model=WorkshopModel()
+
 
 @workshop_bp.route("/")
 def index():
 
-    workshops = model.get_all()
+    workshops=model.get_all()
 
     return render_template(
         "workshops/index.html",
@@ -20,47 +21,16 @@ def index():
     )
 
 
-@workshop_bp.route("/add", methods=["GET","POST"])
-def add():
+@workshop_bp.route("/register/<id>")
+def register(id):
 
-    if request.method == "POST":
+    model.register(id)
 
-        model.create({
+    flash(
+        "Workshop Registered Successfully",
+        "success"
+    )
 
-            "title": request.form["title"],
-
-            "date": request.form["date"],
-
-            "time": request.form["time"],
-
-            "district": request.form["district"],
-
-            "mode": request.form["mode"],
-
-            "capacity": request.form["capacity"],
-
-            "description": request.form["description"]
-
-        })
-
-        flash("Workshop Added Successfully","success")
-
-        return redirect(url_for("workshops.index"))
-
-    return render_template("workshops/add.html")
-
-
-@workshop_bp.route("/register/<workshop_id>")
-def register(workshop_id):
-
-    model.register({
-
-        "workshop_id": workshop_id,
-
-        "farmer": "demo_user"
-
-    })
-
-    flash("Workshop Registration Successful","success")
-
-    return redirect(url_for("workshops.index"))
+    return redirect(
+        url_for("workshops.index")
+    )

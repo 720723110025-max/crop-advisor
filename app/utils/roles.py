@@ -7,9 +7,9 @@ def admin_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not current_user.is_authenticated:
-            abort(403)
+            abort(401)
 
-        if not current_user.is_admin:
+        if current_user.role != "admin":
             abort(403)
 
         return func(*args, **kwargs)
@@ -20,6 +20,12 @@ def admin_required(func):
 def expert_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
+        if not current_user.is_authenticated:
+            abort(401)
+
+        if current_user.role != "expert":
+            abort(403)
+
         return func(*args, **kwargs)
 
     return wrapper
@@ -28,6 +34,12 @@ def expert_required(func):
 def farmer_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
+        if not current_user.is_authenticated:
+            abort(401)
+
+        if current_user.role != "farmer":
+            abort(403)
+
         return func(*args, **kwargs)
 
     return wrapper

@@ -25,3 +25,22 @@ class ExpertModel:
         return self.collection.delete_one(
             {"_id": ObjectId(expert_id)}
         )
+{
+    "name": "Dr. Kumar",
+
+    "district": "Coimbatore",
+
+    "specialization": "Paddy",
+
+    "languages": "Tamil, English",
+
+    "experience": 12,
+
+    "phone": "9876543210",
+
+    "email": "expert@example.com",
+
+    "rating": 4.8,
+
+    "availability": "Mon-Fri"
+}

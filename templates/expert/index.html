@@ -1,53 +1,100 @@
 {% extends "base.html" %}
 
+{% block title %}
+Experts
+{% endblock %}
+
 {% block content %}
 
-<div class="container mt-4">
+<div class="container mt-5">
 
-    <h2>👨‍🌾 Expert Directory</h2>
+<h2 class="text-success mb-4">
 
-    <a href="/expert/add" class="btn btn-primary mb-3">
-        Add Expert
-    </a>
+👨‍🌾 Agricultural Experts
 
-    <table class="table table-bordered table-striped">
+</h2>
 
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>District</th>
-                <th>Specialization</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Book</th>
-            </tr>
-        </thead>
+<div class="row">
 
-        <tbody>
+{% for expert in experts %}
 
-        {% for expert in experts %}
+<div class="col-lg-4 mb-4">
 
-            <tr>
-                <td>{{ expert.name }}</td>
-                <td>{{ expert.district }}</td>
-                <td>{{ expert.specialization }}</td>
-                <td>{{ expert.phone }}</td>
-                <td>{{ expert.email }}</td>
+<div class="card shadow h-100">
 
-                <td>
-                    <a href="/expert/book/{{ expert._id }}"
-                       class="btn btn-success btn-sm">
-                        Book
-                    </a>
-                </td>
+<div class="card-body">
 
-            </tr>
+<h4>
 
-        {% endfor %}
+{{ expert.name }}
 
-        </tbody>
+</h4>
 
-    </table>
+<p>
+
+<strong>District:</strong>
+
+{{ expert.district }}
+
+</p>
+
+<p>
+
+<strong>Specialization:</strong>
+
+{{ expert.specialization }}
+
+</p>
+
+<p>
+
+<strong>Languages:</strong>
+
+{{ expert.languages }}
+
+</p>
+
+<p>
+
+<strong>Experience:</strong>
+
+{{ expert.experience }} Years
+
+</p>
+
+<p>
+
+<strong>Phone:</strong>
+
+{{ expert.phone }}
+
+</p>
+
+<a
+href="{{ url_for('appointment.book', expert_id=expert._id) }}"
+class="btn btn-success">
+
+Book Appointment
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-warning">
+
+No experts available.
+
+</div>
+
+{% endfor %}
+
+</div>
 
 </div>
 

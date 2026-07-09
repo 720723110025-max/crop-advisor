@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, flash
+import os
 
 soil_bp = Blueprint(
     "soil",
@@ -6,26 +7,62 @@ soil_bp = Blueprint(
     url_prefix="/soil"
 )
 
+
 @soil_bp.route("/")
 def index():
-    return render_template("soil_analysis.html")
+    return render_template("soil/index.html")
 
 
 @soil_bp.route("/analyze", methods=["POST"])
 def analyze():
 
+    image = request.files.get("soil_image")
+
+    if not image:
+
+        flash(
+            "Please upload a soil image.",
+            "danger"
+        )
+
+        return render_template("soil/index.html")
+
+    upload_folder = "app/static/uploads"
+
+    os.makedirs(upload_folder, exist_ok=True)
+
+    filepath = os.path.join(
+        upload_folder,
+        image.filename
+    )
+
+    image.save(filepath)
+
+    # Temporary AI Result
     result = {
 
-        "soil_type":"Red Soil",
+        "soil_type": "Loamy Soil",
 
-        "ph":"6.8",
+        "ph": "6.8",
 
-        "fertility":"High",
+        "nitrogen": "Medium",
 
-        "fertilizer":"NPK 19:19:19",
+        "phosphorus": "High",
 
-        "crops":"Rice, Maize, Groundnut"
+        "potassium": "Medium",
+
+        "recommended_crop": "Paddy",
+
+        "fertilizer": "NPK 20:20:20"
 
     }
 
-    return jsonify(result)
+    return render_template(
+
+        "soil/result.html",
+
+        result=result,
+
+        image=image.filename
+
+    )

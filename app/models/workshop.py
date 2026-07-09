@@ -1,34 +1,61 @@
 from app.utils.database import get_collection
 from bson import ObjectId
+from datetime import datetime
+
 
 class WorkshopModel:
 
     def __init__(self):
-        self.workshops = get_collection("workshops")
-        self.registrations = get_collection("workshop_registrations")
+        self.collection = get_collection("workshops")
 
     def get_all(self):
-        return list(self.workshops.find())
-
-    def get(self, workshop_id):
-        return self.workshops.find_one({"_id": ObjectId(workshop_id)})
-
-    def create(self, data):
-        return self.workshops.insert_one(data)
-
-    def update(self, workshop_id, data):
-        return self.workshops.update_one(
-            {"_id": ObjectId(workshop_id)},
-            {"$set": data}
+        return list(
+            self.collection.find().sort(
+                "date",1
+            )
         )
 
-    def delete(self, workshop_id):
-        return self.workshops.delete_one(
-            {"_id": ObjectId(workshop_id)}
+    def get(self,id):
+        return self.collection.find_one(
+            {"_id":ObjectId(id)}
         )
 
-    def register(self, data):
-        return self.registrations.insert_one(data)
+    def create(self,data):
 
-    def registrations(self):
-        return list(self.registrations.find())
+        workshop={
+
+            "title":data.get("title"),
+
+            "description":data.get("description"),
+
+            "district":data.get("district"),
+
+            "mode":data.get("mode"),
+
+            "location":data.get("location"),
+
+            "date":data.get("date"),
+
+            "time":data.get("time"),
+
+            "capacity":int(data.get("capacity",0)),
+
+            "registered":0,
+
+            "resource":"",
+
+            "created_at":datetime.utcnow()
+
+        }
+
+        return self.collection.insert_one(workshop)
+
+    def register(self,id):
+
+        return self.collection.update_one(
+
+            {"_id":ObjectId(id)},
+
+            {"$inc":{"registered":1}}
+
+        )

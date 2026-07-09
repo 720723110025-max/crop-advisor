@@ -19,6 +19,8 @@ from app.feedback.routes import feedback_bp
 from app.crop_ai.routes import crop_ai_bp
 from app.chatbot.routes import chatbot_bp
 from app.routes.language import language_bp
+from app.routes.main import main_bp
+from app.routes.disease_ai import disease_ai_bp
 
 # Extensions
 login_manager = LoginManager()
@@ -58,7 +60,11 @@ def create_app(config_name="default"):
 
     app.register_blueprint(crop_ai_bp)
 
-    app.register_blueprint(chatbot_bp)    
+    app.register_blueprint(chatbot_bp) 
+
+    app.register_blueprint(main_bp)
+
+    app.register_blueprint(disease_ai_bp)
 
     app.config.from_object(config[config_name])
 
@@ -105,12 +111,6 @@ def create_app(config_name="default"):
     except Exception as e:
         logger.error(e)
 
-    # Home
-    @app.route("/")
-    def home():
-        from flask import redirect, url_for
-        return redirect(url_for("auth.login"))
-
     # Context Processor
     @app.context_processor
     def utility_processor():
@@ -132,6 +132,7 @@ def create_app(config_name="default"):
 
 def register_blueprints(app):
 
+
     from app.routes.auth import auth_bp
     from app.routes.dashboard import dashboard_bp
     from app.routes.crop_recommendation import crop_bp
@@ -148,10 +149,12 @@ def register_blueprints(app):
     from app.routes.weather_ai import weather_ai_bp
     from app.routes.smart_notifications import smart_bp
     from app.routes.analytics import analytics_bp
-    from app.routes.voice import voice_bp
+    from app.routes.voice import voice_bp   
     from app.routes.location import location_bp
     from app.routes.appointment import appointment_bp
     from app.routes.language import language_bp
+    from app.routes.main import main_bp
+    from app.routes.expert_directory import expert_directory_bp
 
     csrf.exempt(crop_bp)
     csrf.exempt(disease_bp)
@@ -179,6 +182,7 @@ def register_blueprints(app):
     app.register_blueprint(location_bp)
     app.register_blueprint(appointment_bp)
     app.register_blueprint(language_bp)
+    app.register_blueprint(expert_directory_bp)
 
     logger.info("All blueprints registered")
 

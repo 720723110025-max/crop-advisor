@@ -6,11 +6,11 @@
 
 <div class="card shadow">
 
-<div class="card-header bg-success text-white">
+<div class="card-header bg-danger text-white">
 
 <h3>
 
-🌱 AI Soil Analysis
+🦠 AI Disease Detection
 
 </h3>
 
@@ -19,30 +19,36 @@
 <div class="card-body">
 
 <form
-method="POST"
-action="{{ url_for('soil.analyze') }}"
-enctype="multipart/form-data">
 
-<div class="mb-4">
+method="POST"
+
+action="{{ url_for('disease_ai.predict') }}"
+
+enctype="multipart/form-data">
 
 <label>
 
-Upload Soil Image
+Upload Crop Leaf Image
 
 </label>
 
 <input
+
 type="file"
+
 class="form-control"
-name="soil_image"
+
+name="crop_image"
+
 required>
 
-</div>
+<br>
 
 <button
-class="btn btn-success">
 
-Analyze Soil
+class="btn btn-danger">
+
+Detect Disease
 
 </button>
 

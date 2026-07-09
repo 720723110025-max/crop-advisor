@@ -1,65 +1,232 @@
 {% extends "base.html" %}
 
+{% block title %}
+Add Land
+{% endblock %}
+
 {% block content %}
 
-<div class="container mt-4">
+<div class="container mt-5">
 
-<h2>Add New Land</h2>
+<div class="row justify-content-center">
+
+<div class="col-lg-10">
+
+<div class="card shadow-lg border-0">
+
+<div class="card-header bg-success text-white">
+
+<h3 class="mb-0">
+🌾 Add New Land
+</h3>
+
+</div>
+
+<div class="card-body">
 
 <form method="POST">
 
-<div class="mb-3">
-<label>Land Name</label>
-<input type="text" class="form-control" name="land_name" required>
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+Land Name
+</label>
+
+<input
+type="text"
+class="form-control"
+name="land_name"
+required>
+
 </div>
 
-<div class="mb-3">
-<label>District</label>
-<input type="text" class="form-control" name="district" required>
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+District
+</label>
+
+<input
+type="text"
+class="form-control"
+name="district"
+required>
+
 </div>
 
-<div class="mb-3">
-<label>Village</label>
-<input type="text" class="form-control" name="village" required>
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+Block
+</label>
+
+<input
+type="text"
+class="form-control"
+name="block">
+
 </div>
 
-<div class="mb-3">
-<label>Area (Acres)</label>
-<input type="number" class="form-control" name="area" required>
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+Village
+</label>
+
+<input
+type="text"
+class="form-control"
+name="village"
+required>
+
 </div>
 
-<div class="mb-3">
-<label>Soil Type</label>
+<div class="col-md-6 mb-3">
 
-<select class="form-control" name="soil_type">
+<label class="form-label">
+Land Area (Acres)
+</label>
+
+<input
+type="number"
+step="0.01"
+class="form-control"
+name="area"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+Soil Type
+</label>
+
+<select
+class="form-select"
+name="soil_type">
+
+<option value="">Select</option>
 
 <option>Clay</option>
+
 <option>Loamy</option>
+
 <option>Sandy</option>
-<option>Red</option>
+
 <option>Black</option>
+
+<option>Red</option>
+
+<option>Alluvial</option>
+
+<option>Laterite</option>
 
 </select>
 
 </div>
-<div class="mb-3">
-<label>Previous Crop</label>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+Previous Crop
+</label>
+
 <input
+type="text"
 class="form-control"
 name="previous_crop">
+
 </div>
 
-<div class="mb-3">
-<label>Current Crop</label>
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+Current Crop
+</label>
+
 <input
+type="text"
 class="form-control"
 name="current_crop">
+
 </div>
-<button class="btn btn-success">
-Save Land
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+GPS Latitude
+</label>
+
+<input
+type="text"
+class="form-control"
+name="gps_latitude"
+placeholder="11.1271">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label class="form-label">
+GPS Longitude
+</label>
+
+<input
+type="text"
+class="form-control"
+name="gps_longitude"
+placeholder="78.6569">
+
+</div>
+
+<div class="col-md-12 mb-3">
+
+<label class="form-label">
+Soil Image (Path / URL)
+</label>
+
+<input
+type="text"
+class="form-control"
+name="soil_image"
+placeholder="Upload feature will be added later">
+
+</div>
+
+</div>
+
+<div class="text-center mt-4">
+
+<button
+type="submit"
+class="btn btn-success btn-lg">
+
+💾 Save Land
+
 </button>
 
+<a
+href="{{ url_for('lands.index') }}"
+class="btn btn-secondary btn-lg">
+
+Cancel
+
+</a>
+
+</div>
+
 </form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 

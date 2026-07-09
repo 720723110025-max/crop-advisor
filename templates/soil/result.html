@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h3>
+
+Analysis Result
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<img
+src="{{ url_for('static',filename='uploads/'+image) }}"
+class="img-fluid mb-4">
+
+<table class="table">
+
+<tr>
+
+<th>Soil Type</th>
+
+<td>{{ result.soil_type }}</td>
+
+</tr>
+
+<tr>
+
+<th>pH</th>
+
+<td>{{ result.ph }}</td>
+
+</tr>
+
+<tr>
+
+<th>Nitrogen</th>
+
+<td>{{ result.nitrogen }}</td>
+
+</tr>
+
+<tr>
+
+<th>Phosphorus</th>
+
+<td>{{ result.phosphorus }}</td>
+
+</tr>
+
+<tr>
+
+<th>Potassium</th>
+
+<td>{{ result.potassium }}</td>
+
+</tr>
+
+<tr>
+
+<th>Recommended Crop</th>
+
+<td>{{ result.recommended_crop }}</td>
+
+</tr>
+
+<tr>
+
+<th>Fertilizer</th>
+
+<td>{{ result.fertilizer }}</td>
+
+</tr>
+
+</table>
+
+<a
+href="/soil"
+class="btn btn-success">
+
+Analyze Another
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
