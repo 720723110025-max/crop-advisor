@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Government Schemes
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="mb-4">
+
+🌾 Government Schemes
+
+</h2>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Scheme</th>
+
+<th>Benefit</th>
+
+<th>Description</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for s in schemes %}
+
+<tr>
+
+<td>{{ s.name }}</td>
+
+<td>{{ s.benefit }}</td>
+
+<td>{{ s.description }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

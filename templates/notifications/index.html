@@ -1,46 +1,42 @@
 {% extends "base.html" %}
 
+{% block title %}
+Notifications
+{% endblock %}
+
 {% block content %}
 
-<div class="container mt-4">
+<div class="container mt-5">
 
-<h2>🔔 Notifications</h2>
+<h2 class="text-success">
 
-<a
-href="/notifications/add"
-class="btn btn-primary mb-3">
+🔔 Smart Notifications
 
-Send Notification
+</h2>
 
-</a>
+{% for item in notifications %}
 
-<table class="table table-bordered">
+<div class="card shadow mb-3">
 
-<tr>
+<div class="card-body">
 
-<th>Title</th>
+<h5>
 
-<th>District</th>
+{{ item.title }}
 
-<th>Message</th>
+</h5>
 
-</tr>
+<p>
 
-{% for n in notifications %}
+{{ item.message }}
 
-<tr>
+</p>
 
-<td>{{ n.title }}</td>
+</div>
 
-<td>{{ n.district }}</td>
-
-<td>{{ n.message }}</td>
-
-</tr>
+</div>
 
 {% endfor %}
-
-</table>
 
 </div>
 

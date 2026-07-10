@@ -1,46 +1,37 @@
-import requests
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template
 
-weather_bp = Blueprint("weather", __name__)
+weather_bp = Blueprint(
+    "weather",
+    __name__,
+    url_prefix="/weather"
+)
 
-API_KEY = "288df0f1b431343c7b5ef0cc59a53cfe"
 
-
-@weather_bp.route("/advisory", methods=["GET", "POST"])
-def advisory():
-
-    city = "Coimbatore"
-
-    if request.method == "POST":
-        city = request.form.get("city", "Coimbatore")
-
-    url = (
-        f"https://api.openweathermap.org/data/2.5/weather"
-        f"?q={city}&appid={API_KEY}&units=metric"
-    )
-
-    response = requests.get(url)
-
-    if response.status_code != 200:
-        return render_template(
-            "weather.html",
-            error="City not found."
-        )
-
-    data = response.json()
+@weather_bp.route("/")
+def index():
 
     weather = {
-        "city": city,
-        "temperature": data["main"]["temp"],
-        "humidity": data["main"]["humidity"],
-        "pressure": data["main"]["pressure"],
-        "condition": data["weather"][0]["main"],
-        "description": data["weather"][0]["description"],
-        "wind": data["wind"]["speed"],
-        "icon": data["weather"][0]["icon"]
+
+        "location":"Odisha",
+
+        "temperature":"31°C",
+
+        "humidity":"78%",
+
+        "wind":"15 km/h",
+
+        "rain":"80%",
+
+        "condition":"Cloudy",
+
+        "advice":"Heavy rainfall expected. Avoid irrigation today."
+
     }
 
     return render_template(
-        "weather.html",
+
+        "weather/index.html",
+
         weather=weather
+
     )

@@ -21,6 +21,22 @@ from app.chatbot.routes import chatbot_bp
 from app.routes.language import language_bp
 from app.routes.main import main_bp
 from app.routes.disease_ai import disease_ai_bp
+from app.routes.voice import voice_bp
+from app.routes.appointment import appointment_bp
+from app.routes.profit import profit_bp
+from app.routes.report import report_bp
+from app.routes.location import location_bp
+from app.routes.ussd import ussd_bp
+from app.routes.settings import settings_bp
+from app.routes.tasks import tasks_bp
+from app.routes.diary import diary_bp
+from app.routes.irrigation import irrigation_bp
+from app.routes.fertilizer import fertilizer_bp
+from app.routes.assistant import assistant_bp
+from app.routes.analytics_dashboard import analytics_dashboard_bp
+from app.routes.weather_history import weather_history_bp
+from app.routes.yield_history import yield_history_bp
+from app.routes.schemes import schemes_bp
 
 # Extensions
 login_manager = LoginManager()
@@ -45,26 +61,17 @@ def create_app(config_name="default"):
         static_folder="static"
     )
     app.register_blueprint(farmer_bp)
-    
     app.register_blueprint(expert_bp)
-    
     app.register_blueprint(lands_bp)
-
     app.register_blueprint(workshop_bp)
-    
     app.register_blueprint(notification_bp)
-    
     app.register_blueprint(market_bp)
-
     app.register_blueprint(feedback_bp)
-
-    app.register_blueprint(crop_ai_bp)
-
-    app.register_blueprint(chatbot_bp) 
-
-    app.register_blueprint(main_bp)
-
-    app.register_blueprint(disease_ai_bp)
+    app.register_blueprint(assistant_bp)
+    app.register_blueprint(analytics_dashboard_bp)
+    app.register_blueprint(weather_history_bp)
+    app.register_blueprint(yield_history_bp)
+    app.register_blueprint(schemes_bp)
 
     app.config.from_object(config[config_name])
 
@@ -132,28 +139,19 @@ def create_app(config_name="default"):
 
 def register_blueprints(app):
 
-
     from app.routes.auth import auth_bp
     from app.routes.dashboard import dashboard_bp
     from app.routes.crop_recommendation import crop_bp
     from app.routes.disease_detection import disease_bp
-    from app.routes.fertilizer import fertilizer_bp
-    from app.routes.irrigation import irrigation_bp
     from app.routes.weather import weather_bp
     from app.routes.yield_prediction import yield_bp
     from app.routes.admin import admin_bp
-    from app.routes.export import export_bp  
+    from app.routes.export import export_bp
     from app.routes.soil_analysis import soil_bp
     from app.routes.seed import seed_bp
-    from app.routes.profit import profit_bp
     from app.routes.weather_ai import weather_ai_bp
     from app.routes.smart_notifications import smart_bp
     from app.routes.analytics import analytics_bp
-    from app.routes.voice import voice_bp   
-    from app.routes.location import location_bp
-    from app.routes.appointment import appointment_bp
-    from app.routes.language import language_bp
-    from app.routes.main import main_bp
     from app.routes.expert_directory import expert_directory_bp
 
     csrf.exempt(crop_bp)
@@ -164,24 +162,39 @@ def register_blueprints(app):
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(dashboard_bp, url_prefix="/dashboard")
+    app.register_blueprint(main_bp)
+
     app.register_blueprint(crop_bp, url_prefix="/crop")
     app.register_blueprint(disease_bp, url_prefix="/disease")
-    app.register_blueprint(fertilizer_bp, url_prefix="/fertilizer")
-    app.register_blueprint(irrigation_bp, url_prefix="/irrigation")
     app.register_blueprint(weather_bp, url_prefix="/weather")
     app.register_blueprint(yield_bp, url_prefix="/yield")
+
+    app.register_blueprint(fertilizer_bp)
+    app.register_blueprint(irrigation_bp)
+
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(export_bp, url_prefix="/export")
+
     app.register_blueprint(soil_bp)
     app.register_blueprint(seed_bp)
-    app.register_blueprint(profit_bp)
+
     app.register_blueprint(weather_ai_bp)
     app.register_blueprint(smart_bp)
     app.register_blueprint(analytics_bp)
+
+    app.register_blueprint(language_bp)
     app.register_blueprint(voice_bp)
     app.register_blueprint(location_bp)
     app.register_blueprint(appointment_bp)
-    app.register_blueprint(language_bp)
+    app.register_blueprint(profit_bp)
+    app.register_blueprint(settings_bp)
+    app.register_blueprint(tasks_bp)
+    app.register_blueprint(diary_bp)
+    app.register_blueprint(chatbot_bp)
+    app.register_blueprint(report_bp)
+    app.register_blueprint(ussd_bp)
+    app.register_blueprint(crop_ai_bp)
+    app.register_blueprint(disease_ai_bp)
     app.register_blueprint(expert_directory_bp)
 
     logger.info("All blueprints registered")

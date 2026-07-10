@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Weather Forecast{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>🌦 Weather Forecast</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <h4>📍 {{ weather.location }}</h4>
+
+                    <p>🌡 Temperature: <b>{{ weather.temperature }}</b></p>
+
+                    <p>💧 Humidity: <b>{{ weather.humidity }}</b></p>
+
+                    <p>🌬 Wind Speed: <b>{{ weather.wind }}</b></p>
+
+                    <p>🌧 Rain Chance: <b>{{ weather.rain }}</b></p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <h3>{{ weather.condition }}</h3>
+
+                    <div class="alert alert-success">
+
+                        {{ weather.advice }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

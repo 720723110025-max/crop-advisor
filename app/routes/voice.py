@@ -6,6 +6,8 @@ voice_bp = Blueprint(
     url_prefix="/voice"
 )
 
+
 @voice_bp.route("/")
 def index():
-    return render_template("voice.html")
+
+    return render_template("voice/index.html")

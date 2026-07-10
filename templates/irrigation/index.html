@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+Irrigation
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>
+
+💧 Smart Irrigation
+
+</h2>
+
+<a
+href="{{ url_for('irrigation.add') }}"
+class="btn btn-primary mb-3">
+
++ Analyze Moisture
+
+</a>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Crop</th>
+
+<th>Moisture</th>
+
+<th>Recommendation</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for r in records %}
+
+<tr>
+
+<td>{{ r.crop }}</td>
+
+<td>{{ r.moisture }}%</td>
+
+<td>{{ r.recommendation }}</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="3">
+
+No Records
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

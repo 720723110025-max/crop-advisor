@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Farm Tasks{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>🌾 Farm Tasks</h2>
+
+<a href="{{ url_for('tasks.add') }}"
+class="btn btn-success mb-3">
+
++ Add Task
+
+</a>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Crop</th>
+
+<th>Task</th>
+
+<th>Date</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for t in tasks %}
+
+<tr>
+
+<td>{{ t.crop }}</td>
+
+<td>{{ t.task }}</td>
+
+<td>{{ t.date }}</td>
+
+<td>{{ t.status }}</td>
+
+<td>
+
+{% if t.status=="Pending" %}
+
+<a
+href="{{ url_for('tasks.complete', id=loop.index0) }}"
+class="btn btn-primary btn-sm">
+
+Complete
+
+</a>
+
+{% else %}
+
+<span class="badge bg-success">
+
+Done
+
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="5" class="text-center">
+
+No Tasks Available
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

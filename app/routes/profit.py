@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for
 
 profit_bp = Blueprint(
     "profit",
@@ -6,23 +6,53 @@ profit_bp = Blueprint(
     url_prefix="/profit"
 )
 
+records = []
+
+
 @profit_bp.route("/")
 def index():
-    return render_template("profit.html")
+
+    return render_template(
+        "profit/index.html",
+        records=records
+    )
 
 
-@profit_bp.route("/calculate", methods=["POST"])
-def calculate():
+@profit_bp.route("/add", methods=["GET", "POST"])
+def add():
 
-    area = float(request.form["area"])
-    yield_per_acre = float(request.form["yield"])
-    market_price = float(request.form["price"])
-    cost = float(request.form["cost"])
+    if request.method == "POST":
 
-    income = area * yield_per_acre * market_price
-    profit = income - cost
+        crop = request.form.get("crop")
 
-    return jsonify({
-        "income": income,
-        "profit": profit
-    })
+        quantity = float(request.form.get("quantity"))
+
+        expense = float(request.form.get("expense"))
+
+        price = float(request.form.get("price"))
+
+        income = quantity * price
+
+        profit = income - expense
+
+        records.append({
+
+            "crop": crop,
+
+            "quantity": quantity,
+
+            "expense": expense,
+
+            "income": income,
+
+            "profit": profit
+
+        })
+
+        return redirect(
+            url_for("profit.index")
+        )
+
+    return render_template(
+        "profit/add.html"
+    )

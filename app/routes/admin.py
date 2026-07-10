@@ -1,8 +1,4 @@
 from flask import Blueprint, render_template
-from app.models.admin import AdminModel
-from flask_login import login_required, current_user
-from app.utils.database import db_instance
-from app.utils.roles import admin_required
 
 admin_bp = Blueprint(
     "admin",
@@ -10,51 +6,34 @@ admin_bp = Blueprint(
     url_prefix="/admin"
 )
 
-model = AdminModel()
 
-@admin_bp.route("/dashboard")
-@login_required
-@admin_required
+@admin_bp.route("/")
 def dashboard():
 
     stats = {
 
-        "farmers":
-        db_instance.get_collection("farmers").count_documents({}),
+        "farmers":245,
 
-        "experts":
-        db_instance.get_collection("experts").count_documents({}),
+        "lands":580,
 
-        "lands":
-        db_instance.get_collection("lands").count_documents({}),
+        "experts":18,
 
-        "crop_predictions":
-        db_instance.get_collection("crop_predictions").count_documents({}),
+        "workshops":34,
 
-        "disease_reports":
-        db_instance.get_collection("disease_reports").count_documents({}),
+        "notifications":156,
 
-        "notifications":
-        db_instance.get_collection("notifications").count_documents({})
+        "diseases":73,
+
+        "predictions":450,
+
+        "profit":"₹18,75,000"
 
     }
-
-    latest_users = list(
-
-        db_instance.get_collection("farmers")
-
-        .find()
-
-        .limit(5)
-
-    )
 
     return render_template(
 
         "admin/dashboard.html",
 
-        stats=stats,
-
-        latest_users=latest_users
+        stats=stats
 
     )

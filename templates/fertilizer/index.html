@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Fertilizer Recommendation
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h3>
+
+🌱 Fertilizer Recommendation
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label>Crop Name</label>
+
+<input
+type="text"
+name="crop"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Nitrogen (N)</label>
+
+<input
+type="number"
+name="nitrogen"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Phosphorus (P)</label>
+
+<input
+type="number"
+name="phosphorus"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Potassium (K)</label>
+
+<input
+type="number"
+name="potassium"
+class="form-control"
+required>
+
+</div>
+
+<button class="btn btn-success">
+
+Get Recommendation
+
+</button>
+
+</form>
+
+{% if recommendation %}
+
+<div class="alert alert-info mt-4">
+
+<b>Recommendation:</b>
+
+{{ recommendation }}
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

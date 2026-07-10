@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}
-Admin Dashboard
-{% endblock %}
+{% block title %}AI Assistant{% endblock %}
 
 {% block content %}
 
@@ -10,154 +8,90 @@ Admin Dashboard
 
 <h2 class="mb-4">
 
-📊 Admin Dashboard
+🤖 AI Farmer Assistant
 
 </h2>
 
 <div class="row g-4">
 
-<div class="col-lg-3">
-
+<div class="col-md-3">
 <div class="card shadow">
-
 <div class="card-body text-center">
-
-<h1>👨‍🌾</h1>
-
-<h3>{{ stats.farmers }}</h3>
-
-<p>Total Farmers</p>
-
+<h1>🌦</h1>
+<h5>Weather</h5>
+<p>{{ data.weather }}</p>
+</div>
+</div>
 </div>
 
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
+<div class="col-md-3">
 <div class="card shadow">
-
 <div class="card-body text-center">
-
 <h1>🌾</h1>
-
-<h3>{{ stats.lands }}</h3>
-
-<p>Total Lands</p>
-
+<h5>Crop</h5>
+<p>{{ data.crop }}</p>
+</div>
+</div>
 </div>
 
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
+<div class="col-md-3">
 <div class="card shadow">
-
 <div class="card-body text-center">
-
-<h1>👨‍🔬</h1>
-
-<h3>{{ stats.experts }}</h3>
-
-<p>Experts</p>
-
+<h1>🌱</h1>
+<h5>Soil</h5>
+<p>{{ data.soil }}</p>
+</div>
+</div>
 </div>
 
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
+<div class="col-md-3">
 <div class="card shadow">
-
 <div class="card-body text-center">
-
-<h1>🎓</h1>
-
-<h3>{{ stats.workshops }}</h3>
-
-<p>Workshops</p>
-
+<h1>💧</h1>
+<h5>Irrigation</h5>
+<p>{{ data.irrigation }}</p>
+</div>
+</div>
 </div>
 
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
+<div class="col-md-3">
 <div class="card shadow">
-
 <div class="card-body text-center">
-
-<h1>🤖</h1>
-
-<h3>{{ stats.predictions }}</h3>
-
-<p>AI Predictions</p>
-
+<h1>📈</h1>
+<h5>Market</h5>
+<p>{{ data.market }}</p>
+</div>
+</div>
 </div>
 
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
+<div class="col-md-3">
 <div class="card shadow">
-
 <div class="card-body text-center">
-
-<h1>🦠</h1>
-
-<h3>{{ stats.diseases }}</h3>
-
-<p>Disease Detections</p>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
-<div class="card shadow">
-
-<div class="card-body text-center">
-
-<h1>🔔</h1>
-
-<h3>{{ stats.notifications }}</h3>
-
-<p>Notifications</p>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="col-lg-3">
-
-<div class="card shadow">
-
-<div class="card-body text-center">
-
 <h1>💰</h1>
-
-<h3>{{ stats.profit }}</h3>
-
-<p>Total Profit</p>
-
+<h5>Profit</h5>
+<p>{{ data.profit }}</p>
+</div>
+</div>
 </div>
 
+<div class="col-md-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h1>🔔</h1>
+<h5>Notification</h5>
+<p>{{ data.notification }}</p>
+</div>
+</div>
 </div>
 
+<div class="col-md-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h1>📅</h1>
+<h5>Today's Task</h5>
+<p>{{ data.task }}</p>
+</div>
+</div>
 </div>
 
 </div>

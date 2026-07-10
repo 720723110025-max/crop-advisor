@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="mb-4">📊 Analytics Dashboard</h2>
+
+<div class="row">
+
+<div class="col-md-4 mb-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h4>Total Farmers</h4>
+<h2>{{ stats.farmers }}</h2>
+</div>
+</div>
+</div>
+
+<div class="col-md-4 mb-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h4>Total Lands</h4>
+<h2>{{ stats.lands }}</h2>
+</div>
+</div>
+</div>
+
+<div class="col-md-4 mb-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h4>Total Crops</h4>
+<h2>{{ stats.crops }}</h2>
+</div>
+</div>
+</div>
+
+<div class="col-md-6 mb-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h4>Total Profit</h4>
+<h2>₹ {{ stats.profit }}</h2>
+</div>
+</div>
+</div>
+
+<div class="col-md-6 mb-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h4>Appointments</h4>
+<h2>{{ stats.appointments }}</h2>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="card shadow mt-4">
+
+<div class="card-body">
+
+<canvas id="analyticsChart"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('analyticsChart');
+
+new Chart(ctx, {
+
+type: 'bar',
+
+data: {
+
+labels: ['Farmers','Lands','Crops','Appointments'],
+
+datasets: [{
+
+label: 'Statistics',
+
+data: [
+
+{{ stats.farmers }},
+
+{{ stats.lands }},
+
+{{ stats.crops }},
+
+{{ stats.appointments }}
+
+]
+
+}]
+
+}
+
+});
+
+</script>
+
+{% endblock %}

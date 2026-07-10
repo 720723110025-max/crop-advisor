@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+Appointments
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>
+
+📅 My Appointments
+
+</h2>
+
+<table class="table table-striped">
+
+<thead>
+
+<tr>
+
+<th>Farmer</th>
+
+<th>Date</th>
+
+<th>Time</th>
+
+<th>Reason</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for a in appointments %}
+
+<tr>
+
+<td>{{ a.farmer }}</td>
+
+<td>{{ a.date }}</td>
+
+<td>{{ a.time }}</td>
+
+<td>{{ a.reason }}</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="4" class="text-center">
+
+No Appointments
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

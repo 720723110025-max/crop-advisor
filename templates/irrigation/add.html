@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+Smart Irrigation
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h3>
+
+💧 Smart Irrigation
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label>Crop Name</label>
+
+<input
+type="text"
+name="crop"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Soil Moisture (%)</label>
+
+<input
+type="number"
+name="moisture"
+class="form-control"
+required>
+
+</div>
+
+<button
+class="btn btn-primary">
+
+Analyze
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

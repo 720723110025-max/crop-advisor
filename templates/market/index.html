@@ -1,19 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}Market Prices{% endblock %}
+{% block title %}
+Market Prices
+{% endblock %}
 
 {% block content %}
 
 <div class="container mt-5">
 
-<h2>💰 Market Prices</h2>
+<h2 class="text-success">
 
-<input
-id="searchCrop"
-class="form-control mb-3"
-placeholder="Search Crop">
+📈 Live Market Prices
 
-<table class="table table-striped">
+</h2>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-hover">
 
 <thead class="table-success">
 
@@ -23,13 +28,13 @@ placeholder="Search Crop">
 
 <th>Market</th>
 
-<th>Price</th>
+<th>Today's Price</th>
 
 </tr>
 
 </thead>
 
-<tbody id="marketTable">
+<tbody>
 
 {% for item in prices %}
 
@@ -51,26 +56,8 @@ placeholder="Search Crop">
 
 </div>
 
-<script>
+</div>
 
-document.getElementById("searchCrop")
-.onkeyup=function(){
-
-let value=this.value.toLowerCase();
-
-document.querySelectorAll("#marketTable tr")
-.forEach(row=>{
-
-row.style.display=row.innerText
-.toLowerCase()
-.includes(value)
-? ""
-: "none";
-
-});
-
-};
-
-</script>
+</div>
 
 {% endblock %}

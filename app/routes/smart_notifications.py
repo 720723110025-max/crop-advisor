@@ -1,42 +1,45 @@
-from flask import Blueprint, render_template, jsonify
-from datetime import datetime
+from flask import Blueprint, render_template
 
 smart_bp = Blueprint(
     "smart",
     __name__,
-    url_prefix="/smart"
+    url_prefix="/notifications"
 )
+
 
 @smart_bp.route("/")
 def index():
-    return render_template("smart_notifications.html")
 
+    notifications = [
 
-@smart_bp.route("/today")
-def today():
+        {
+            "title":"🌧 Weather Alert",
+            "message":"Heavy rainfall expected tomorrow."
+        },
 
-    month = datetime.now().month
+        {
+            "title":"💧 Irrigation",
+            "message":"No irrigation required for next 2 days."
+        },
 
-    notifications = []
+        {
+            "title":"🌾 Harvest",
+            "message":"Paddy harvesting starts next week."
+        },
 
-    if month in [6,7]:
-        notifications.append(
-            "🌾 Best time to sow Paddy."
-        )
+        {
+            "title":"💰 Market",
+            "message":"Rice price increased by ₹250 per quintal."
+        },
 
-    if month in [10,11]:
-        notifications.append(
-            "🌽 Harvest Maize this month."
-        )
+        {
+            "title":"🎓 Workshop",
+            "message":"Organic Farming Workshop on Sunday."
+        }
 
-    notifications.append(
-        "💧 Check irrigation before evening."
+    ]
+
+    return render_template(
+        "notifications/index.html",
+        notifications=notifications
     )
-
-    notifications.append(
-        "🌦 Check weather forecast daily."
-    )
-
-    return jsonify({
-        "notifications": notifications
-    })

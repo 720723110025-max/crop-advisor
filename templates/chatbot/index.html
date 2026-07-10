@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}
+AI Chatbot
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h3>
+
+🤖 AI Chatbot
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<div id="chatbox" class="border p-3 mb-3" style="height:300px;overflow-y:auto;">
+
+</div>
+
+<form id="chatForm">
+
+<input
+
+type="text"
+
+class="form-control"
+
+id="message"
+
+placeholder="Ask your farming question..."
+
+required>
+
+<br>
+
+<button
+
+class="btn btn-success">
+
+Send
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("chatForm").onsubmit=function(e){
+
+e.preventDefault();
+
+let msg=document.getElementById("message").value;
+
+fetch("/chatbot/ask",{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/x-www-form-urlencoded"
+
+},
+
+body:"message="+encodeURIComponent(msg)
+
+})
+
+.then(r=>r.json())
+
+.then(data=>{
+
+document.getElementById("chatbox").innerHTML+=
+
+"<p><b>You:</b> "+msg+"</p>";
+
+document.getElementById("chatbox").innerHTML+=
+
+"<p><b>Bot:</b> "+data.answer+"</p><hr>";
+
+document.getElementById("message").value="";
+
+});
+
+};
+
+</script>
+
+{% endblock %}
