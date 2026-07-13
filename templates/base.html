@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Krushak Saathi{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+    </head>
+<body>
+ <button
+class="btn btn-success d-lg-none m-2"
+onclick="toggleSidebar()">
+
+☰ Menu
+
+</button>
+    <div class="d-flex">
+
+<div id="sidebar"
+     class="bg-dark text-white p-3"
+     style="width:260px;min-height:100vh;">
+
+<h3 class="text-center mb-4">
+
+🌾 Krushak Saathi
+
+</h3>
+
+<a href="/dashboard"
+class="btn btn-success w-100 mb-2">
+
+<i class="fas fa-home"></i>
+
+Dashboard
+
+</a>
+
+<a href="/crop"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-seedling"></i>
+
+Crop AI
+
+</a>
+<a href="/notifications" class="btn btn-light position-relative">
+
+<i class="fas fa-bell"></i>
+
+<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+
+{{ notification_count|default(0) }}
+
+</span>
+
+</a>
+
+<a href="/disease/detect"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-virus"></i>
+
+Disease Detection
+
+</a>
+
+<a href="/soil"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-mountain"></i>
+
+Soil Analysis
+
+</a>
+
+<a href="/weather"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-cloud-sun"></i>
+
+Weather
+
+</a>
+
+<a href="/market"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-chart-line"></i>
+
+Market
+
+</a>
+
+<a href="/reports"
+class="btn btn-dark w-100 mb-2">
+
+<i class="fas fa-chart-pie"></i>
+
+Export
+
+</a>
+
+<a href="/auth/logout"
+class="btn btn-danger w-100">
+
+<i class="fas fa-sign-out-alt"></i>
+
+Logout
+
+</a>
+
+</div>
+
+<div class="flex-grow-1 p-4">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('dashboard.index') if current_user.is_authenticated else url_for('auth.login') }}">
+                <i class="fas fa-leaf me-2"></i>Krushak Saathi
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                {% if current_user.is_authenticated %}
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'dashboard.index' %}active{% endif %}" 
+                           href="{{ url_for('dashboard.index') }}">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'crop.recommend' %}active{% endif %}" 
+                           href="{{ url_for('crop.recommend') }}">
+                            <i class="fas fa-seedling"></i> Crops
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'disease.detect' %}active{% endif %}" 
+                           href="{{ url_for('disease.detect') }}">
+                            <i class="fas fa-stethoscope"></i> Diseases
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'fertilizer.recommend' %}active{% endif %}" 
+                           href="{{ url_for('fertilizer.recommend') }}">
+                            <i class="fas fa-flask"></i> Fertilizer
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'irrigation.schedule' %}active{% endif %}" 
+                           href="{{ url_for('irrigation.schedule') }}">
+                            <i class="fas fa-tint"></i> Irrigation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'weather.advisory' %}active{% endif %}" 
+                           href="{{ url_for('weather.advisory') }}">
+                            <i class="fas fa-cloud-sun"></i> Weather
+                        </a>
+                    </li>
+                    <div class="dropdown ms-3">
+    <button class="btn btn-light dropdown-toggle"
+            data-bs-toggle="dropdown">
+        🌍 Language
+    </button>
+
+    <ul class="dropdown-menu">
+        <li>
+            <a class="dropdown-item" href="/language/set/en">
+                English
+            </a>
+        </li>
+
+        <li>
+            <a class="dropdown-item" href="/language/set/or">
+                ଓଡ଼ିଆ (Odia)
+            </a>
+        </li>
+    </ul>
+</div>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'yield.predict' %}active{% endif %}" 
+                           href="{{ url_for('yield.predict') }}">
+                            <i class="fas fa-chart-line"></i> Yield
+                        </a>
+                    </li>
+                    <li class="nav-item">
+    <a class="nav-link" href="/about">
+        About
+    </a>
+</li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+                           data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle fa-lg"></i>
+                            {{ current_user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ url_for('auth.profile') }}"><i class="fas fa-user"></i> Profile</a></li>
+                            {% if current_user.is_admin %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.dashboard') }}"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                {% else %}
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}"><i class="fas fa-user-plus"></i> Register</a></li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'danger' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-success text-white py-4 mt-5">
+    <div class="container text-center">
+        <h5>🌾 Krushak Saathi</h5>
+        <p class="mb-1">
+            Smart Agriculture Advisory System
+        </p>
+
+        <small>
+            © 2026 Krushak Saathi | Developed using Flask, MongoDB & AI
+        </small>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+    <script>
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+const input=document.getElementById("searchUser");
+
+if(input){
+
+input.addEventListener("keyup",function(){
+
+let value=this.value.toLowerCase();
+
+let rows=document.querySelectorAll("#userTable tr");
+
+rows.forEach(row=>{
+
+row.style.display=row.innerText.toLowerCase().includes(value)
+? ""
+: "none";
+
+});
+
+});
+
+}
+
+});
+
+</script>
+</div>
+
+</div>
+<script>
+
+function toggleSidebar(){
+
+const sidebar=document.getElementById("sidebar");
+
+if(sidebar.style.display==="none"){
+
+sidebar.style.display="block";
+
+}else{
+
+sidebar.style.display="none";
+
+}
+
+}
+
+</script>
+<script>
+
+document.querySelector("form")?.addEventListener("submit",function(){
+
+let btn=document.querySelector(".btn-login");
+
+btn.innerHTML="Logging in...";
+
+btn.disabled=true;
+
+});
+
+</script>
+<script>
+
+window.addEventListener("scroll",()=>{
+
+document.querySelectorAll(".card,.service-box").forEach(card=>{
+
+card.style.opacity="1";
+
+card.style.transform="translateY(0)";
+
+});
+
+});
+
+</script>
+</body>
+<footer class="bg-dark text-white py-5">
+
+<div class="container text-center">
+
+<h3>
+
+🌾 Krushak Saathi
+
+</h3>
+
+<p>
+
+Smart Agriculture Advisory System
+
+</p>
+
+<div>
+
+<i class="fab fa-facebook fa-2x m-2"></i>
+
+<i class="fab fa-instagram fa-2x m-2"></i>
+
+<i class="fab fa-linkedin fa-2x m-2"></i>
+
+<i class="fab fa-github fa-2x m-2"></i>
+
+</div>
+
+<p class="mt-4">
+
+© 2026 Krushak Saathi
+
+</p>
+
+</div>
+
+</footer>
+
+</html>

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Crop Diary{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>🌱 Crop Diary</h2>
+
+<a
+href="{{ url_for('diary.add') }}"
+class="btn btn-success mb-3">
+
++ Add Entry
+
+</a>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Crop</th>
+
+<th>Date</th>
+
+<th>Fertilizer</th>
+
+<th>Irrigation</th>
+
+<th>Notes</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for d in entries %}
+
+<tr>
+
+<td>{{ d.crop }}</td>
+
+<td>{{ d.date }}</td>
+
+<td>{{ d.fertilizer }}</td>
+
+<td>{{ d.irrigation }}</td>
+
+<td>{{ d.notes }}</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="5" class="text-center">
+
+No Records
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

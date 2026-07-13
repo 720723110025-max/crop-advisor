@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Profit Calculator{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h2>💰 Profit Calculator</h2>
+
+</div>
+
+<div class="card-body">
+
+<form id="profitForm">
+
+<label>Land Area (Acres)</label>
+<input class="form-control" name="area" required>
+
+<br>
+
+<label>Yield per Acre (kg)</label>
+<input class="form-control" name="yield" required>
+
+<br>
+
+<label>Market Price (₹/kg)</label>
+<input class="form-control" name="price" required>
+
+<br>
+
+<label>Total Cost (₹)</label>
+<input class="form-control" name="cost" required>
+
+<br>
+
+<button class="btn btn-success">
+
+Calculate
+
+</button>
+
+</form>
+
+<hr>
+
+<h4 id="income"></h4>
+
+<h4 id="profit"></h4>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("profitForm").onsubmit=function(e){
+
+e.preventDefault();
+
+fetch("/profit/calculate",{
+
+method:"POST",
+
+body:new FormData(this)
+
+})
+
+.then(r=>r.json())
+
+.then(data=>{
+
+document.getElementById("income").innerHTML=
+"Income : ₹"+data.income.toFixed(2);
+
+document.getElementById("profit").innerHTML=
+"Profit : ₹"+data.profit.toFixed(2);
+
+});
+
+}
+
+</script>
+
+{% endblock %}

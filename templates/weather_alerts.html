@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>🌤 Weather Alerts</h2>
+
+{% for alert in alerts %}
+
+<div class="alert alert-warning">
+
+<h4>{{ alert.type }}</h4>
+
+<p>{{ alert.message }}</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

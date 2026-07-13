@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Yield Analytics{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="d-flex justify-content-between mb-3">
+
+<h2>🌾 Yield History</h2>
+
+<a href="{{ url_for('yield.add') }}" class="btn btn-success">
+
++ Add Yield
+
+</a>
+
+</div>
+
+<div class="alert alert-success">
+
+<h4>Total Profit : ₹ {{ total_profit }}</h4>
+
+</div>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Crop</th>
+
+<th>Yield</th>
+
+<th>Price</th>
+
+<th>Expense</th>
+
+<th>Profit</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in history %}
+
+<tr>
+
+<td>{{ item.crop }}</td>
+
+<td>{{ item.quantity }}</td>
+
+<td>₹ {{ item.price }}</td>
+
+<td>₹ {{ item.expense }}</td>
+
+<td class="text-success">
+
+₹ {{ item.profit }}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

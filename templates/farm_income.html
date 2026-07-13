@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>💰 Farm Income Tracker</h2>
+
+<form action="/income/add" method="POST">
+
+<input
+class="form-control mb-2"
+name="crop"
+placeholder="Crop Name"
+required>
+
+<input
+class="form-control mb-2"
+type="number"
+name="income"
+placeholder="Income"
+required>
+
+<input
+class="form-control mb-2"
+type="number"
+name="expense"
+placeholder="Expense"
+required>
+
+<button class="btn btn-success">
+Save
+</button>
+
+</form>
+
+<hr>
+
+<div class="alert alert-info">
+
+<h5>Total Income : ₹{{ total_income }}</h5>
+
+<h5>Total Expense : ₹{{ total_expense }}</h5>
+
+<h3>Profit : ₹{{ profit }}</h3>
+
+</div>
+
+<table class="table table-bordered">
+
+<tr>
+
+<th>Crop</th>
+
+<th>Income</th>
+
+<th>Expense</th>
+
+</tr>
+
+{% for row in records %}
+
+<tr>
+
+<td>{{ row.crop }}</td>
+
+<td>{{ row.income }}</td>
+
+<td>{{ row.expense }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

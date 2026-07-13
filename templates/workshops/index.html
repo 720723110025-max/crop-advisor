@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}
+Workshops
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2 class="text-success">
+
+🎓 Agricultural Workshops
+
+</h2>
+
+{% if current_user.role == "admin" %}
+
+<a href="{{ url_for('workshops.add') }}"
+class="btn btn-success">
+
+➕ Create Workshop
+
+</a>
+
+{% endif %}
+
+</div>
+
+<div class="row">
+
+{% for workshop in workshops %}
+
+<div class="col-lg-4 mb-4">
+
+<div class="card shadow h-100">
+
+<div class="card-header bg-success text-white">
+
+<h5 class="mb-0">
+
+{{ workshop.title }}
+
+</h5>
+
+</div>
+
+<div class="card-body">
+
+<p>
+
+{{ workshop.description }}
+
+</p>
+
+<hr>
+
+<p>
+
+📍 <strong>District:</strong>
+
+{{ workshop.district }}
+
+</p>
+
+<p>
+
+👨‍🏫 <strong>Speaker:</strong>
+
+{{ workshop.speaker }}
+
+</p>
+
+<p>
+
+🗓 <strong>Date:</strong>
+
+{{ workshop.date }}
+
+</p>
+
+<p>
+
+🕒 <strong>Time:</strong>
+
+{{ workshop.time }}
+
+</p>
+
+<p>
+
+💻 <strong>Mode:</strong>
+
+{{ workshop.mode }}
+
+</p>
+
+<p>
+
+📍 <strong>Location:</strong>
+
+{{ workshop.location }}
+
+</p>
+
+<p>
+
+👥 <strong>Seats:</strong>
+
+{{ workshop.registered }}/{{ workshop.capacity }}
+
+</p>
+
+<p>
+
+{% if workshop.status=="Upcoming" %}
+
+<span class="badge bg-success">
+
+Upcoming
+
+</span>
+
+{% elif workshop.status=="Completed" %}
+
+<span class="badge bg-secondary">
+
+Completed
+
+</span>
+
+{% else %}
+
+<span class="badge bg-warning">
+
+Ongoing
+
+</span>
+
+{% endif %}
+
+</p>
+
+{% if current_user.role=="farmer" %}
+
+<a
+href="{{ url_for('workshops.register', id=workshop._id) }}"
+class="btn btn-primary w-100 mb-2">
+
+📝 Register
+
+</a>
+
+{% endif %}
+
+{% if workshop.resource %}
+
+<a
+href="/static/uploads/{{ workshop.resource }}"
+class="btn btn-info w-100 mb-2"
+target="_blank">
+
+📄 Download Notes
+
+</a>
+
+{% endif %}
+
+{% if current_user.role=="admin" %}
+
+<div class="d-grid gap-2">
+
+<a
+href="/workshops/edit/{{ workshop._id }}"
+class="btn btn-warning">
+
+✏ Edit
+
+</a>
+
+<a
+href="/workshops/delete/{{ workshop._id }}"
+class="btn btn-danger"
+onclick="return confirm('Delete this workshop?')">
+
+🗑 Delete
+
+</a>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+{% else %}
+
+<div class="col-12">
+
+<div class="alert alert-warning text-center">
+
+No Workshops Available
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

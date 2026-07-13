@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}
+Send Notification
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h3>🔔 Send Notification</h3>
+
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label class="form-label">Title</label>
+
+<input
+type="text"
+name="title"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">District</label>
+
+<input
+type="text"
+name="district"
+class="form-control"
+placeholder="All or District Name"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">Notification Type</label>
+
+<select
+name="type"
+class="form-select"
+required>
+
+<option value="General">General</option>
+
+<option value="Weather">🌧 Weather Alert</option>
+
+<option value="Disease">🦠 Disease Alert</option>
+
+<option value="Market">📈 Market Price</option>
+
+<option value="Workshop">🎓 Workshop</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">Message</label>
+
+<textarea
+name="message"
+class="form-control"
+rows="5"
+required></textarea>
+
+</div>
+
+<button
+type="submit"
+class="btn btn-success">
+
+📤 Send Notification
+
+</button>
+
+<a href="/notifications"
+class="btn btn-secondary">
+
+Cancel
+
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

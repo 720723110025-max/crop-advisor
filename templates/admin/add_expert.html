@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>Add Expert</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+<label>Full Name</label>
+<input class="form-control" name="full_name" required>
+</div>
+
+<div class="mb-3">
+<label>Username</label>
+<input class="form-control" name="username" required>
+</div>
+
+<div class="mb-3">
+<label>Email</label>
+<input class="form-control" name="email" required>
+</div>
+
+<div class="mb-3">
+<label>Password</label>
+<input class="form-control" type="password" name="password" required>
+</div>
+
+<div class="mb-3">
+<label>Phone</label>
+<input class="form-control" name="phone">
+</div>
+
+<div class="mb-3">
+<label>District</label>
+<input class="form-control" name="district">
+</div>
+
+<button class="btn btn-success">
+Add Expert
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

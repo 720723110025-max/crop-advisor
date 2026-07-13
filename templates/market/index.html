@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}
+Market Intelligence
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2 class="text-success">
+
+📈 Market Intelligence Dashboard
+
+</h2>
+
+{% if current_user.role == "admin" %}
+
+<a href="{{ url_for('market.add') }}"
+class="btn btn-success">
+
+➕ Add Market Price
+
+</a>
+
+{% endif %}
+
+</div>
+
+
+<!-- Statistics -->
+
+<div class="row mb-4">
+
+<div class="col-md-3">
+
+<div class="card shadow border-0">
+
+<div class="card-body text-center">
+
+<h5>Total Crops</h5>
+
+<h2 class="text-success">
+
+{{ prices|length }}
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow border-0">
+
+<div class="card-body text-center">
+
+<h5>Markets</h5>
+
+<h2 class="text-primary">
+
+{{ prices|map(attribute='market')|list|length }}
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow border-0">
+
+<div class="card-body text-center">
+
+<h5>Districts</h5>
+
+<h2 class="text-warning">
+
+{{ prices|map(attribute='district')|list|length }}
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow border-0">
+
+<div class="card-body text-center">
+
+<h5>Today's Updates</h5>
+
+<h2 class="text-danger">
+
+{{ prices|length }}
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Search -->
+
+<div class="card shadow mb-3">
+
+<div class="card-body">
+
+<input
+type="text"
+id="searchInput"
+class="form-control"
+placeholder="Search Crop / District / Market">
+
+</div>
+
+</div>
+
+
+<!-- Table -->
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<div class="table-responsive">
+
+<table
+class="table table-hover align-middle"
+id="marketTable">
+
+<thead class="table-success">
+
+<tr>
+
+<th>🌾 Crop</th>
+
+<th>📍 District</th>
+
+<th>🏪 Market</th>
+
+<th>💰 Price</th>
+
+<th>📦 Unit</th>
+
+<th>📈 Trend</th>
+
+{% if current_user.role=="admin" %}
+
+<th>Action</th>
+
+{% endif %}
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in prices %}
+
+<tr>
+
+<td>{{ item.crop }}</td>
+
+<td>{{ item.district }}</td>
+
+<td>{{ item.market }}</td>
+
+<td>
+
+₹ {{ item.price }}
+
+</td>
+
+<td>
+
+{{ item.unit }}
+
+</td>
+
+<td>
+
+{% if item.trend=="⬆ Rising" %}
+
+<span class="badge bg-success">
+
+{{ item.trend }}
+
+</span>
+
+{% elif item.trend=="⬇ Falling" %}
+
+<span class="badge bg-danger">
+
+{{ item.trend }}
+
+</span>
+
+{% else %}
+
+<span class="badge bg-primary">
+
+{{ item.trend }}
+
+</span>
+
+{% endif %}
+
+</td>
+
+{% if current_user.role=="admin" %}
+
+<td>
+
+<a
+href="#"
+class="btn btn-warning btn-sm">
+
+Edit
+
+</a>
+
+<a
+href="#"
+class="btn btn-danger btn-sm">
+
+Delete
+
+</a>
+
+</td>
+
+{% endif %}
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="7" class="text-center">
+
+No Market Prices Available
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("searchInput").addEventListener("keyup", function() {
+
+let value=this.value.toLowerCase();
+
+let rows=document.querySelectorAll("#marketTable tbody tr");
+
+rows.forEach(function(row){
+
+row.style.display=row.innerText.toLowerCase().includes(value)?"":"none";
+
+});
+
+});
+
+</script>
+
+{% endblock %}

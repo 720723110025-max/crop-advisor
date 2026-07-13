@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Workshop
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-warning text-dark">
+
+<h3>✏ Edit Workshop</h3>
+
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label>Workshop Title</label>
+
+<input
+type="text"
+name="title"
+class="form-control"
+value="{{ workshop.title }}"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>District</label>
+
+<input
+type="text"
+name="district"
+class="form-control"
+value="{{ workshop.district }}"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Date</label>
+
+<input
+type="date"
+name="date"
+class="form-control"
+value="{{ workshop.date }}"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Time</label>
+
+<input
+type="time"
+name="time"
+class="form-control"
+value="{{ workshop.time }}"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Mode</label>
+
+<select
+name="mode"
+class="form-select">
+
+<option value="Offline"
+{% if workshop.mode=="Offline" %}selected{% endif %}>
+
+Offline
+
+</option>
+
+<option value="Online"
+{% if workshop.mode=="Online" %}selected{% endif %}>
+
+Online
+
+</option>
+
+</select>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Location / Meeting Link</label>
+
+<input
+type="text"
+name="location"
+class="form-control"
+value="{{ workshop.location }}"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Speaker</label>
+
+<input
+type="text"
+name="speaker"
+class="form-control"
+value="{{ workshop.speaker }}">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Capacity</label>
+
+<input
+type="number"
+name="capacity"
+class="form-control"
+value="{{ workshop.capacity }}"
+required>
+
+</div>
+
+<div class="col-md-12 mb-3">
+
+<label>Description</label>
+
+<textarea
+name="description"
+rows="5"
+class="form-control">{{ workshop.description }}</textarea>
+
+</div>
+
+<div class="col-md-12 mb-3">
+
+<label>PDF Resource Link</label>
+
+<input
+type="text"
+name="resource"
+class="form-control"
+value="{{ workshop.resource }}">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Status</label>
+
+<select
+name="status"
+class="form-select">
+
+<option value="Upcoming"
+{% if workshop.status=="Upcoming" %}selected{% endif %}>
+
+Upcoming
+
+</option>
+
+<option value="Ongoing"
+{% if workshop.status=="Ongoing" %}selected{% endif %}>
+
+Ongoing
+
+</option>
+
+<option value="Completed"
+{% if workshop.status=="Completed" %}selected{% endif %}>
+
+Completed
+
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<button
+type="submit"
+class="btn btn-warning">
+
+💾 Update Workshop
+
+</button>
+
+<a
+href="{{ url_for('workshops.index') }}"
+class="btn btn-secondary">
+
+Cancel
+
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

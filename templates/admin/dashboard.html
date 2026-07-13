@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="row mb-4">
+
+    <div class="col-md-8">
+
+        <h2 class="fw-bold text-success">
+            🌾 Krushak Saathi Admin Dashboard
+        </h2>
+
+        <p class="text-muted">
+            Welcome Administrator! Manage Farmers, Experts, Workshops and AI Services.
+        </p>
+
+    </div>
+
+    <div class="col-md-4 text-end">
+
+        <a href="/admin/add-expert" class="btn btn-success">
+            ➕ Add Expert
+        </a>
+
+        <a href="/auth/logout" class="btn btn-danger">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+<div class="row g-4">
+
+<div class="col-lg-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h1>👨‍🌾</h1>
+
+<h3>{{ stats.farmers }}</h3>
+
+<p>Total Farmers</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h1>🌾</h1>
+
+<h3>{{ stats.lands }}</h3>
+
+<p>Total Lands</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h1>👨‍🔬</h1>
+
+<h3>{{ stats.experts }}</h3>
+
+<p>Experts</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h1>🎓</h1>
+
+<h3>{{ stats.workshops }}</h3>
+
+<p>Workshops</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h1>🤖</h1>
+
+<h3>{{ stats.predictions }}</h3>
+
+<p>AI Predictions</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h1>🦠</h1>
+
+<h3>{{ stats.diseases }}</h3>
+
+<p>Disease Detections</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h1>🔔</h1>
+
+<h3>{{ stats.notifications }}</h3>
+
+<p>Notifications</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h1>💰</h1>
+
+<h3>{{ stats.profit }}</h3>
+
+<p>Total Profit</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<hr class="my-5">
+
+<h3 class="mb-4">
+
+⚡ Quick Actions
+
+</h3>
+
+<div class="row">
+
+<div class="col-md-3 mb-3">
+
+<a href="/admin/farmers" class="btn btn-outline-success w-100 p-3">
+
+👨‍🌾
+
+<br>
+
+Manage Farmers
+
+</a>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<a href="/admin/experts" class="btn btn-outline-primary w-100 p-3">
+
+👨‍🏫
+
+<br>
+
+Manage Experts
+
+</a>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<a href="#" class="btn btn-outline-warning w-100 p-3">
+
+📅
+
+<br>
+
+Workshops
+
+</a>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<a href="#" class="btn btn-outline-danger w-100 p-3">
+
+🔔
+
+<br>
+
+Notifications
+
+</a>
+
+</div>
+
+</div>
+
+{% endblock %}

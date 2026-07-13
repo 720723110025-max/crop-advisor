@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Disease History{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="mb-4">
+🦠 Disease Prediction History
+</h2>
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Image</th>
+<th>Crop</th>
+<th>Disease</th>
+<th>Confidence</th>
+<th>Date</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for report in reports %}
+
+<tr>
+
+<td>
+
+<img
+src="{{ url_for('static', filename='uploads/' + report.image_filename) }}"
+width="80"
+class="rounded">
+
+</td>
+
+<td>{{ report.crop_type }}</td>
+
+<td>{{ report.disease_name }}</td>
+
+<td>{{ report.confidence }}</td>
+
+<td>{{ report.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
+
+<td>
+
+<a
+href="{{ url_for('disease.report', report_id=report._id) }}"
+class="btn btn-success btn-sm">
+
+View
+
+</a>
+
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="5" class="text-center">
+No history found
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

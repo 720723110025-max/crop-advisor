@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}AI Chatbot{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-8">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h3>🤖 Krushak AI Assistant</h3>
+
+</div>
+
+<div class="card-body">
+
+<div id="chatBox"
+style="height:350px;
+overflow-y:auto;
+border:1px solid #ddd;
+padding:15px;
+border-radius:10px;
+background:#f8f9fa;">
+
+<div class="alert alert-success">
+
+👋 Hello Farmer! Ask me about crops, diseases,
+weather, fertilizers or irrigation.
+
+</div>
+
+</div>
+
+<div class="input-group mt-3">
+
+<input
+id="message"
+class="form-control"
+placeholder="Ask your farming question...">
+
+<button
+class="btn btn-success"
+onclick="sendMessage()">
+
+Send
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function sendMessage(){
+
+let msg=document.getElementById("message").value;
+
+if(msg==="") return;
+
+let chat=document.getElementById("chatBox");
+
+chat.innerHTML+=`
+<div class="text-end mb-2">
+
+<span class="badge bg-primary">
+
+${msg}
+
+</span>
+
+</div>
+`;
+
+let data=new FormData();
+
+data.append("message",msg);
+
+fetch("/chatbot/ask",{
+
+method:"POST",
+
+body:data
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+chat.innerHTML+=`
+<div class="mb-3">
+
+<span class="badge bg-success">
+
+${data.reply}
+
+</span>
+
+</div>
+`;
+
+chat.scrollTop=chat.scrollHeight;
+
+});
+
+document.getElementById("message").value="";
+
+}
+
+</script>
+
+{% endblock %}

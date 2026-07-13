@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}
+Soil Reports
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2 class="text-success">
+
+🌱 Soil Analysis Reports
+
+</h2>
+
+<a
+href="{{ url_for('soil.upload') }}"
+class="btn btn-success">
+
+➕ New Analysis
+
+</a>
+
+</div>
+
+<div class="row">
+
+{% for report in reports %}
+
+<div class="col-lg-4 mb-4">
+
+<div class="card shadow h-100">
+
+{% if report.soil_image %}
+
+<img
+src="{{ url_for('static', filename='uploads/' + report.soil_image) }}"
+class="card-img-top"
+style="height:220px;object-fit:cover;">
+
+{% endif %}
+
+<div class="card-body">
+
+<h5>
+
+🌱 {{ report.soil_type }}
+
+</h5>
+
+<hr>
+
+<p><strong>pH:</strong> {{ report.ph }}</p>
+
+<p><strong>N:</strong> {{ report.nitrogen }}</p>
+
+<p><strong>P:</strong> {{ report.phosphorus }}</p>
+
+<p><strong>K:</strong> {{ report.potassium }}</p>
+
+<hr>
+
+<p>
+
+🌾 <strong>Recommended Crop</strong><br>
+
+{{ report.crop_recommendation }}
+
+</p>
+
+<p>
+
+🧪 <strong>Fertilizer</strong><br>
+
+{{ report.fertilizer }}
+
+</p>
+
+<p>
+
+💧 <strong>Irrigation</strong><br>
+
+{{ report.irrigation }}
+
+</p>
+
+<p>
+
+💚 <strong>Soil Health</strong><br>
+
+{{ report.soil_health }}
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+{% else %}
+
+<div class="col-12">
+
+<div class="alert alert-warning">
+
+No Soil Reports Available
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

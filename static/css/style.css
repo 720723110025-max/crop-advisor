@@ -1,0 +1,170 @@
+/* ==========================
+   Krushak Saathi Theme
+========================== */
+
+body{
+    font-family: 'Inter', sans-serif;
+    background:#f4f7f6;
+    color:#333;
+}
+
+/* Navbar */
+
+.navbar{
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+
+.navbar-brand{
+    font-weight:700;
+    font-size:22px;
+}
+
+/* Cards */
+
+.card{
+    border:none;
+    border-radius:15px;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+/* Buttons */
+
+.btn{
+    border-radius:10px;
+    font-weight:600;
+}
+
+.btn:hover{
+    transform:scale(1.03);
+}
+
+/* Dashboard Cards */
+
+.dashboard-card{
+
+    background:white;
+
+    border-left:5px solid #198754;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+/* Tables */
+
+.table{
+
+    background:white;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+}
+
+/* Forms */
+
+.form-control{
+
+    border-radius:10px;
+
+}
+
+.form-control:focus{
+
+    border-color:#198754;
+
+    box-shadow:0 0 5px rgba(25,135,84,.3);
+
+}
+
+/* Footer */
+
+footer{
+
+    margin-top:50px;
+
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.dashboard-card{
+
+margin-bottom:20px;
+
+}
+
+}
+.card{
+
+border:none;
+
+border-radius:18px;
+
+transition:.3s;
+
+}
+
+.card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 12px 25px rgba(0,0,0,.15);
+
+}
+
+.card h3{
+
+font-size:45px;
+
+}
+
+.card h5{
+
+font-weight:700;
+
+color:#198754;
+
+}
+.card{
+
+border:none;
+
+border-radius:18px;
+
+transition:.3s;
+
+}
+
+.card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 12px 25px rgba(0,0,0,.15);
+
+}
+
+.card h3{
+
+font-size:45px;
+
+}
+
+.card h5{
+
+font-weight:700;
+
+color:#198754;
+
+}

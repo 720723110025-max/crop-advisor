@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>Edit Land</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+<label>Land Name</label>
+<input class="form-control" name="land_name" value="{{ land.land_name }}">
+</div>
+
+<div class="mb-3">
+<label>District</label>
+<input class="form-control" name="district" value="{{ land.district }}">
+</div>
+
+<div class="mb-3">
+<label>Village</label>
+<input class="form-control" name="village" value="{{ land.village }}">
+</div>
+
+<div class="mb-3">
+<label>Area</label>
+<input class="form-control" name="area" value="{{ land.area }}">
+</div>
+
+<div class="mb-3">
+<label>Soil Type</label>
+<input class="form-control" name="soil_type" value="{{ land.soil_type }}">
+</div>
+
+<div class="mb-3">
+<label>Previous Crop</label>
+<input class="form-control" name="previous_crop" value="{{ land.previous_crop }}">
+</div>
+
+<div class="mb-3">
+<label>Current Crop</label>
+<input class="form-control" name="current_crop" value="{{ land.current_crop }}">
+</div>
+
+<button class="btn btn-primary">
+Update
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,428 @@
+{% extends "base.html" %}
+
+{% block title %}Farmer Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="p-4 mb-4 bg-success text-white rounded shadow">
+        <h2>🌾 Welcome to Krushak Saathi</h2>
+        <p class="mb-0">
+            Smart Agriculture Advisory System powered by AI.
+        </p>
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="row">
+
+        <div class="col-md-3 mb-4">
+            <div class="card shadow border-0 bg-success text-white">
+                <div class="card-body text-center">
+                    <h1>{{ dashboard.lands }}</h1>
+                    <h5>🌱 My Lands</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card shadow border-0 bg-primary text-white">
+                <div class="card-body text-center">
+                    <h1>{{ dashboard.crop_predictions }}</h1>
+                    <h5>🌾 Crop AI</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card shadow border-0 bg-danger text-white">
+                <div class="card-body text-center">
+                    <h1>{{ dashboard.disease_reports }}</h1>
+                    <h5>🦠 Diseases</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card shadow border-0 bg-warning">
+                <div class="card-body text-center">
+                    <h1>{{ dashboard.workshops }}</h1>
+                    <h5>📅 Workshops</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- Quick Actions -->
+
+    <h3 class="mb-3">⚡ Quick Actions</h3>
+
+    <div class="row">
+
+        <div class="col-md-3 mb-3">
+            <a href="/lands/" class="btn btn-success w-100">
+                🌱 My Lands
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/crop/recommend" class="btn btn-primary w-100">
+                🌾 Crop Recommendation
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/disease/detect" class="btn btn-danger w-100">
+                🦠 Disease Detection
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/weather" class="btn btn-info w-100">
+                ☁ Weather
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/soil" class="btn btn-secondary w-100">
+                🌱 Soil Analysis
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/market/" class="btn btn-warning w-100">
+                💰 Market Prices
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/yield/" class="btn btn-success w-100">
+                 💰 Yield & Profit
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/expert/" class="btn btn-dark w-100">
+                👨‍🌾 Experts
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/chatbot/" class="btn btn-dark w-100">
+                🤖 AI Chatbot
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/fertilizer"class="btn btn-success w-100">
+                🧪 Fertilizer AI
+
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <a href="/analytics"class="btn btn-info w-100">
+                📈 Analytics
+            </a>
+        </div>
+  
+        <div class="col-md-3 mb-3">
+
+            <a href="/assistant"class="btn btn-primary w-100">
+                🎤 Voice Assistant
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/notifications/" class="btn btn-secondary w-100">
+                🔔 Notifications
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/workshops/" class="btn btn-warning w-100">
+                📅 Workshops
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/feedback/" class="btn btn-primary w-100">
+                💬 Feedback
+            </a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <a href="/farmer/profile" class="btn btn-success w-100">
+                👤 My Profile
+            </a>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- Analytics -->
+
+    <h3 class="mb-3">📊 Farm Analytics</h3>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    Crop Recommendation Statistics
+                </div>
+                <div class="card-body">
+                    <canvas id="cropChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    Disease Reports
+                </div>
+                <div class="card-body">
+                    <canvas id="diseaseChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Weather -->
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header bg-primary text-white">
+            ☁ Weather Summary
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-3">
+                    <h5>🌡 Temperature</h5>
+                    <p>{{ weather.temperature }}</p>
+                </div>
+
+                <div class="col-md-3">
+                    <h5>💧 Humidity</h5>
+                    <p>{{ weather.humidity }}</p>
+                </div>
+
+                <div class="col-md-3">
+                    <h5>🌧 Rainfall</h5>
+                    <p>{{ weather.rainfall }}</p>
+                </div>
+
+                <div class="col-md-3">
+                    <h5>🌬 Wind</h5>
+                    <p>{{ weather.wind }}</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow mb-4">
+
+<div class="card-header bg-warning">
+
+💰 Estimated Profit
+
+</div>
+
+<div class="card-body">
+
+<h2 class="text-success">
+
+₹1,45,000
+
+</h2>
+
+<p>
+
+Estimated profit for this season.
+
+</p>
+
+</div>
+
+</div>
+
+    <!-- Recent Activity -->
+
+    <div class="card shadow">
+
+        <div class="card-header bg-dark text-white">
+            📋 Recent Activities
+        </div>
+
+        <div class="card-body">
+
+            <ul class="list-group">
+
+                <li class="list-group-item">
+                    ✔ Crop Recommendation Completed
+                </li>
+
+                <li class="list-group-item">
+                    ✔ Disease Detection Completed
+                </li>
+
+                <li class="list-group-item">
+                    ✔ Soil Analysis Completed
+                </li>
+
+                <li class="list-group-item">
+                    ✔ Weather Updated
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+   
+</div>
+
+<div class="card shadow mb-4">
+
+<div class="card-header bg-success text-white">
+
+🌾 Today's AI Advice
+
+</div>
+
+<div class="card-body">
+
+<ul>
+
+<li>Apply irrigation in the evening.</li>
+
+<li>No fertilizer required today.</li>
+
+<li>Rain expected tomorrow.</li>
+
+<li>Monitor crop for fungal infection.</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="card shadow mt-4">
+
+<div class="card-header bg-info text-white">
+
+🔔 Latest Notifications
+
+</div>
+
+<div class="card-body">
+
+{% if notifications %}
+
+<ul class="list-group">
+
+{% for note in notifications %}
+
+<li class="list-group-item">
+
+{{ note.message }}
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+{% else %}
+
+<p>No notifications available.</p>
+
+{% endif %}
+
+</div>
+
+</div>
+
+<script>
+
+
+new Chart(document.getElementById("cropChart"),{
+
+type:"pie",
+
+data:{
+
+labels:["Rice","Maize","Cotton","Groundnut"],
+
+datasets:[{
+
+data:[40,25,20,15]
+
+}]
+
+}
+
+});
+
+new Chart(document.getElementById("diseaseChart"),{
+
+type:"doughnut",
+
+data:{
+
+labels:["Healthy","Diseased"],
+
+datasets:[{
+
+data:[80,20]
+
+}]
+
+}
+
+});
+
+</script>
+<div class="col-md-3 mb-4">
+<div class="card shadow border-0 bg-info text-white">
+<div class="card-body text-center">
+<h1>{{ dashboard.experts }}</h1>
+<h5>👨‍🌾 Experts</h5>
+</div>
+</div>
+</div>
+
+<div class="col-md-3 mb-4">
+<div class="card shadow border-0 bg-secondary text-white">
+<div class="card-body text-center">
+<h1>{{ dashboard.notifications }}</h1>
+<h5>🔔 Notifications</h5>
+</div>
+</div>
+</div>
+
+<div class="col-md-3 mb-4">
+<div class="card shadow border-0 bg-dark text-white">
+<div class="card-body text-center">
+<h1>{{ dashboard.market }}</h1>
+<h5>💹 Market</h5>
+</div>
+</div>
+</div>
+
+{% endblock %}

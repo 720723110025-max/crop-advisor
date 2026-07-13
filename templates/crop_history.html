@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Crop History{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="mb-4">🌾 Crop Recommendation History</h2>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Crop</th>
+<th>N</th>
+<th>P</th>
+<th>K</th>
+<th>Temperature</th>
+<th>Humidity</th>
+<th>pH</th>
+<th>Rainfall</th>
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in history %}
+
+<tr>
+
+<td>{{ item.recommended_crop }}</td>
+<td>{{ item.nitrogen }}</td>
+<td>{{ item.phosphorus }}</td>
+<td>{{ item.potassium }}</td>
+<td>{{ item.temperature }}</td>
+<td>{{ item.humidity }}</td>
+<td>{{ item.ph }}</td>
+<td>{{ item.rainfall }}</td>
+<td>{% if item.created_at %}
+{{ item.created_at.strftime('%d-%m-%Y %H:%M') }}
+{% else %}
+-
+{% endif %}</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="9" class="text-center">
+No Crop History Found
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="mb-4">
+📊 Farmer Analytics
+</h2>
+
+<div class="row">
+
+<div class="col-md-3">
+
+<div class="card bg-success text-white">
+
+<div class="card-body text-center">
+
+<h1>{{ crop_count }}</h1>
+
+Crop Predictions
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card bg-danger text-white">
+
+<div class="card-body text-center">
+
+<h1>{{ disease_count }}</h1>
+
+Disease Reports
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card bg-primary text-white">
+
+<div class="card-body text-center">
+
+<h1>{{ land_count }}</h1>
+
+Lands
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card bg-warning">
+
+<div class="card-body text-center">
+
+<h1>₹{{ income }}</h1>
+
+Estimated Income
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<canvas id="chart"></canvas>
+
+<script>
+
+new Chart(
+
+document.getElementById("chart"),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:[
+
+"Crops",
+
+"Diseases",
+
+"Lands"
+
+],
+
+datasets:[{
+
+label:"Statistics",
+
+data:[
+
+{{ crop_count }},
+
+{{ disease_count }},
+
+{{ land_count }}
+
+]
+
+}]
+
+}
+
+}
+
+);
+
+</script>
+
+{% endblock %}

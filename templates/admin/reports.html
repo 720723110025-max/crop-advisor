@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Disease Reports{% endblock %}
+
+{% block content %}
+
+{% include "admin/sidebar.html" %}
+
+<div style="margin-left:270px;">
+
+<div class="container-fluid mt-4">
+
+<h2 class="mb-4">
+🦠 Disease Reports
+</h2>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Image</th>
+
+<th>Crop</th>
+
+<th>Disease</th>
+
+<th>Confidence</th>
+
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for report in reports %}
+
+<tr>
+
+<td>
+{% if report.image_filename %}
+<img src="{{ url_for('static', filename='uploads/' + report.image_filename) }}"
+     width="70"
+     class="rounded">
+{% else %}
+No Image
+{% endif %}
+</td>
+
+<td>{{ report.crop_type }}</td>
+
+<td>{{ report.disease_name }}</td>
+
+<td>{{ report.confidence }}</td>
+
+<td>{{ report.created_at }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

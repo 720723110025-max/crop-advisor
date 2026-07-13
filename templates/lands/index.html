@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Lands
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2 class="text-success">
+🌾 My Lands
+</h2>
+
+<div>
+
+<a href="{{ url_for('lands.add') }}" class="btn btn-success">
+➕ Add Land
+</a>
+
+</div>
+
+</div>
+
+<!-- Search -->
+
+<form method="GET" class="mb-4">
+
+<div class="input-group">
+
+<input
+type="text"
+name="search"
+class="form-control"
+placeholder="Search by Land / Village / District">
+
+<button class="btn btn-primary">
+
+🔍 Search
+
+</button>
+
+</div>
+
+</form>
+
+<!-- Dashboard Cards -->
+
+<div class="row mb-4">
+
+<div class="col-md-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h5>Total Lands</h5>
+
+<h2 class="text-success">
+
+{{ lands|length }}
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h5>Total Area</h5>
+
+<h2 class="text-primary">
+
+{% set total = namespace(area=0) %}
+{% for land in lands %}
+{% set total.area = total.area + (land.area|float) %}
+{% endfor %}
+
+{{ total.area }} Acres
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h5>Districts</h5>
+
+<h2 class="text-warning">
+
+{{ lands|map(attribute='district')|list|length }}
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h5>Total Profit</h5>
+
+<h2 class="text-success">
+
+₹
+
+{% set profit = namespace(total=0) %}
+{% for land in lands %}
+{% set profit.total = profit.total + (land.estimated_profit|default(0)|float) %}
+{% endfor %}
+
+{{ profit.total }}
+
+</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Land Table -->
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Land</th>
+
+<th>District</th>
+
+<th>Village</th>
+
+<th>Area</th>
+
+<th>Soil</th>
+
+<th>Current Crop</th>
+
+<th>Recommended Crop</th>
+
+<th>Fertilizer</th>
+
+<th>Profit</th>
+
+<th>Map</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for land in lands %}
+
+<tr>
+
+<td>
+
+<strong>{{ land.land_name }}</strong>
+
+</td>
+
+<td>
+
+{{ land.district }}
+
+</td>
+
+<td>
+
+{{ land.village }}
+
+</td>
+
+<td>
+
+{{ land.area }} Acres
+
+</td>
+
+<td>
+
+{{ land.soil_type }}
+
+</td>
+
+<td>
+
+{{ land.current_crop }}
+
+</td>
+
+<td>
+
+{{ land.recommended_crop|default("Not Predicted") }}
+
+</td>
+
+<td>
+
+{{ land.recommended_fertilizer|default("Not Available") }}
+
+</td>
+
+<td>
+
+₹ {{ land.estimated_profit|default(0) }}
+
+</td>
+
+<td>
+
+{% if land.gps_latitude and land.gps_longitude %}
+
+<a
+
+target="_blank"
+
+href="https://maps.google.com/?q={{ land.gps_latitude }},{{ land.gps_longitude }}">
+
+📍 View
+
+</a>
+
+{% else %}
+
+--
+
+{% endif %}
+
+</td>
+
+<td>
+
+<a
+href="{{ url_for('lands.edit', land_id=land._id) }}"
+class="btn btn-warning btn-sm">
+
+Edit
+
+</a>
+
+<a
+href="{{ url_for('lands.delete', land_id=land._id) }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Delete this land?')">
+
+Delete
+
+</a>
+
+</td>
+
+</tr>
+
+{% if land.soil_image %}
+
+<tr>
+
+<td colspan="11">
+
+<b>Soil Image</b>
+
+<br>
+
+<img
+
+src="/static/uploads/{{ land.soil_image }}"
+
+class="img-fluid rounded"
+
+style="max-height:200px;">
+
+</td>
+
+</tr>
+
+{% endif %}
+
+{% else %}
+
+<tr>
+
+<td colspan="11" class="text-center text-muted">
+
+No lands added yet.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

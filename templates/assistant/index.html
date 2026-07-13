@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}AI Assistant{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="mb-4">
+
+🤖 AI Farmer Assistant
+
+</h2>
+
+<div class="row g-4">
+
+<div class="col-md-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h1>🌦</h1>
+<h5>Weather</h5>
+<p>{{ data.weather }}</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h1>🌾</h1>
+<h5>Crop</h5>
+<p>{{ data.crop }}</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h1>🌱</h1>
+<h5>Soil</h5>
+<p>{{ data.soil }}</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h1>💧</h1>
+<h5>Irrigation</h5>
+<p>{{ data.irrigation }}</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h1>📈</h1>
+<h5>Market</h5>
+<p>{{ data.market }}</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h1>💰</h1>
+<h5>Profit</h5>
+<p>{{ data.profit }}</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h1>🔔</h1>
+<h5>Notification</h5>
+<p>{{ data.notification }}</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow">
+<div class="card-body text-center">
+<h1>📅</h1>
+<h5>Today's Task</h5>
+<p>{{ data.task }}</p>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

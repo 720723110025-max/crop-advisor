@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Profit Report{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>
+
+💰 Profit Analysis
+
+</h2>
+
+<a
+href="{{ url_for('profit.add') }}"
+class="btn btn-success mb-3">
+
++ Add Record
+
+</a>
+
+<table class="table table-bordered">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Crop</th>
+
+<th>Production</th>
+
+<th>Expense</th>
+
+<th>Income</th>
+
+<th>Profit</th>
+
+</tr>
+
+</thead>
+<a
+href="/report/profit"
+class="btn btn-primary mb-3">
+
+📄 Download PDF
+
+</a>
+
+<tbody>
+
+{% for r in records %}
+
+<tr>
+
+<td>{{ r.crop }}</td>
+
+<td>{{ r.quantity }}</td>
+
+<td>₹{{ r.expense }}</td>
+
+<td>₹{{ r.income }}</td>
+
+<td>
+
+{% if r.profit >= 0 %}
+
+<span class="text-success">
+
+₹{{ r.profit }}
+
+</span>
+
+{% else %}
+
+<span class="text-danger">
+
+₹{{ r.profit }}
+
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="5" class="text-center">
+
+No Records Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

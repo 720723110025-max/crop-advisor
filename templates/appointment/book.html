@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}
+Book Appointment
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h3>
+
+📅 Book Expert Consultation
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label>Farmer Name</label>
+
+<input
+type="text"
+name="farmer"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Date</label>
+
+<input
+type="date"
+name="date"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Time</label>
+
+<input
+type="time"
+name="time"
+class="form-control"
+required>
+
+</div>
+
+<div class="mb-3">
+
+<label>Reason</label>
+
+<textarea
+name="reason"
+class="form-control"
+rows="4"></textarea>
+
+</div>
+
+<button
+class="btn btn-success">
+
+Book Appointment
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

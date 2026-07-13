@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}
+Agricultural Experts
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2 class="text-success">
+
+👨‍🌾 Agricultural Experts
+
+</h2>
+
+{% if current_user.role == "admin" %}
+
+<a href="{{ url_for('expert.add') }}" class="btn btn-success">
+
+➕ Add Expert
+
+</a>
+
+{% endif %}
+
+</div>
+
+<div class="row">
+
+{% for expert in experts %}
+
+<div class="col-lg-4 mb-4">
+
+<div class="card shadow h-100">
+
+<div class="card-body text-center">
+
+{% if expert.photo %}
+
+<img
+src="/static/uploads/{{ expert.photo }}"
+class="rounded-circle mb-3"
+width="120"
+height="120">
+
+{% else %}
+
+<img
+src="{{ url_for('static', filename='images/default-user.png') }}"
+class="rounded-circle mb-3"
+width="120"
+height="120">
+
+{% endif %}
+
+<h4>
+
+{{ expert.name }}
+
+</h4>
+
+<p>
+
+<span class="badge bg-success">
+
+⭐ {{ expert.rating }}
+
+</span>
+
+</p>
+
+<hr>
+
+<p>
+
+<strong>🌍 District</strong><br>
+
+{{ expert.district }}
+
+</p>
+
+<p>
+
+<strong>🌾 Specialization</strong><br>
+
+{{ expert.specialization }}
+
+</p>
+
+<p>
+
+<strong>🗣 Languages</strong><br>
+
+{{ expert.languages }}
+
+</p>
+
+<p>
+
+<strong>📅 Experience</strong><br>
+
+{{ expert.experience }} Years
+
+</p>
+
+<p>
+
+<strong>📞 Phone</strong><br>
+
+{{ expert.phone }}
+
+</p>
+
+<p>
+
+<strong>📧 Email</strong><br>
+
+{{ expert.email }}
+
+</p>
+
+<p>
+
+<strong>Status</strong><br>
+
+<span class="badge bg-primary">
+
+{{ expert.availability }}
+
+</span>
+
+</p>
+
+{% if current_user.role == "farmer" %}
+
+<a
+href="{{ url_for('appointment.book', expert_id=expert._id) }}"
+class="btn btn-success w-100 mb-2">
+
+📅 Book Appointment
+
+</a>
+
+{% endif %}
+
+{% if current_user.role == "admin" %}
+
+<a
+href="{{ url_for('expert.edit', expert_id=expert._id) }}"
+class="btn btn-warning w-100 mb-2">
+
+✏ Edit
+
+</a>
+
+<a
+href="{{ url_for('expert.delete', expert_id=expert._id) }}"
+class="btn btn-danger w-100"
+onclick="return confirm('Delete this expert?')">
+
+🗑 Delete
+
+</a>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+{% else %}
+
+<div class="col-12">
+
+<div class="alert alert-warning text-center">
+
+No Experts Available
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

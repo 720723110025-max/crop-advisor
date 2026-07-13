@@ -1,0 +1,266 @@
+<!-- Sidebar -->
+
+<style>
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:250px;
+    height:100%;
+    background:#198754;
+    overflow-y:auto;
+    box-shadow:0 0 15px rgba(0,0,0,.2);
+    z-index:1000;
+}
+
+.sidebar-header{
+    text-align:center;
+    color:white;
+    padding:25px 15px;
+    border-bottom:1px solid rgba(255,255,255,.2);
+}
+
+.sidebar-header h3{
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:0;
+    margin:20px 0;
+}
+
+.sidebar ul li{
+    margin:6px 10px;
+}
+
+.sidebar ul li a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:12px 18px;
+    border-radius:10px;
+    transition:.3s;
+    font-size:16px;
+}
+
+.sidebar ul li a:hover{
+    background:white;
+    color:#198754;
+    transform:translateX(8px);
+}
+
+.sidebar ul li a i{
+    width:30px;
+}
+
+.logout{
+    background:#dc3545;
+}
+
+.logout:hover{
+    background:#bb2d3b !important;
+    color:white !important;
+}
+
+.version{
+    position:absolute;
+    bottom:10px;
+    width:100%;
+    text-align:center;
+    color:white;
+    font-size:13px;
+}
+
+</style>
+
+<div class="sidebar">
+
+<div class="sidebar-header">
+
+<img
+src="https://ui-avatars.com/api/?background=ffffff&color=198754&name=Admin"
+class="rounded-circle"
+width="80">
+
+<h3>
+
+🌿 Crop Advisor
+
+</h3>
+
+<p>
+
+Admin Panel
+
+</p>
+
+</div>
+
+<ul>
+
+<li>
+
+<a href="/admin/dashboard">
+
+<i class="fas fa-home"></i>
+
+Dashboard
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/crop/recommend">
+
+<i class="fas fa-seedling"></i>
+
+Crop Recommendation
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/crop/history">
+
+<i class="fas fa-history"></i>
+
+Crop History
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/disease/detect">
+
+<i class="fas fa-virus"></i>
+
+Disease Detection
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/admin/reports">
+
+<i class="fas fa-file-medical"></i>
+
+Disease Reports
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/fertilizer/recommend">
+
+<i class="fas fa-leaf"></i>
+
+Fertilizer
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/irrigation/schedule">
+
+<i class="fas fa-tint"></i>
+
+Irrigation
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/weather/advisory">
+
+<i class="fas fa-cloud-sun"></i>
+
+Weather
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/yield/predict">
+
+<i class="fas fa-chart-line"></i>
+
+Yield Prediction
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/admin/users">
+
+<i class="fas fa-users"></i>
+
+Users
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/export/users">
+
+<i class="fas fa-download"></i>
+
+Export Users
+
+</a>
+
+</li>
+
+<li>
+
+<a href="/auth/logout" class="logout">
+
+<i class="fas fa-sign-out-alt"></i>
+
+Logout
+
+</a>
+
+<li class="nav-item">
+    <a class="nav-link" href="/workshops/">
+        📅 Workshop Management
+    </a>
+</li>
+
+</li>
+
+</ul>
+
+<div class="version">
+
+Crop Advisory System
+
+<br>
+
+Version 1.0
+
+</div>
+
+</div>

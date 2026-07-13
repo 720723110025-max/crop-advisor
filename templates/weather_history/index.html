@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Weather History{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>🌦 Weather History</h2>
+
+<table class="table table-striped">
+
+<thead>
+
+<tr>
+
+<th>Day</th>
+<th>Temperature</th>
+<th>Humidity</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for w in history %}
+
+<tr>
+
+<td>{{ w.day }}</td>
+<td>{{ w.temp }} °C</td>
+<td>{{ w.humidity }} %</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Smart Notifications{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h2>🔔 Smart Farming Notifications</h2>
+
+</div>
+
+<div class="card-body">
+
+<button
+class="btn btn-success"
+onclick="loadNotifications()">
+
+Load Notifications
+
+</button>
+
+<hr>
+
+<ul id="list"></ul>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function loadNotifications(){
+
+fetch("/smart/today")
+
+.then(r=>r.json())
+
+.then(data=>{
+
+let html="";
+
+data.notifications.forEach(function(item){
+
+html+="<li>"+item+"</li>";
+
+});
+
+document.getElementById("list").innerHTML=html;
+
+});
+
+}
+
+</script>
+
+{% endblock %}

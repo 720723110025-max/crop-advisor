@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}
+Krushak Saathi
+{% endblock %}
+
+{% block title %}Krushak Saathi{% endblock %}
+
+{% block content %}
+
+<section class="hero py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold text-success">
+
+🌾 Krushak Saathi
+
+</h1>
+
+<h3>
+
+AI Powered Agriculture Platform
+
+</h3>
+
+<p class="lead">
+
+Empowering Odisha Farmers through
+
+Artificial Intelligence,
+
+Expert Guidance,
+
+Market Intelligence,
+
+Workshops,
+
+and Smart Farming.
+
+</p>
+
+                <a href="{{ url_for('auth.register') }}"
+                   class="btn btn-success btn-lg me-2">
+                    Get Started
+                </a>
+
+                <a href="{{ url_for('auth.login') }}"
+class="btn btn-success btn-lg me-3">
+
+Login
+
+</a>
+
+<a href="{{ url_for('auth.register') }}"
+class="btn btn-outline-success btn-lg">
+
+Register
+
+</a>
+            </div>
+
+            <div class="col-lg-6 text-center">
+                <img src="{{ url_for('static', filename='images/farmer.png') }}"
+                     class="img-fluid"
+                     style="max-height:500px;">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

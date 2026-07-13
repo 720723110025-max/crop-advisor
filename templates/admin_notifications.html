@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>📢 Admin Notifications</h2>
+
+<form action="/admin/notifications/send" method="POST">
+
+<input
+class="form-control mb-2"
+name="title"
+placeholder="Title"
+required>
+
+<input
+class="form-control mb-2"
+name="district"
+placeholder="District (or ALL)"
+required>
+
+<textarea
+class="form-control mb-3"
+name="message"
+placeholder="Notification"
+required></textarea>
+
+<button class="btn btn-success">
+
+Send Notification
+
+</button>
+
+</form>
+
+<hr>
+
+{% for n in notifications %}
+
+<div class="alert alert-info">
+
+<h5>{{ n.title }}</h5>
+
+<p>{{ n.message }}</p>
+
+<small>{{ n.district }}</small>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

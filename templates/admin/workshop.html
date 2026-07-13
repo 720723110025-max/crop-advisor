@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="d-flex justify-content-between">
+
+<h2>Workshop Management</h2>
+
+<a
+href="/admin/workshops/add"
+class="btn btn-success">
+
+Add Workshop
+
+</a>
+
+</div>
+
+<table class="table table-bordered mt-4">
+
+<thead>
+
+<tr>
+
+<th>Title</th>
+
+<th>District</th>
+
+<th>Date</th>
+
+<th>Time</th>
+
+<th>Speaker</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for workshop in workshops %}
+
+<tr>
+
+<td>{{ workshop.title }}</td>
+
+<td>{{ workshop.district }}</td>
+
+<td>{{ workshop.date }}</td>
+
+<td>{{ workshop.time }}</td>
+
+<td>{{ workshop.speaker }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

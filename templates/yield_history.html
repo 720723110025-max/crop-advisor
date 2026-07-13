@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Yield History{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="mb-4">
+📈 Yield Prediction History
+</h2>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-warning">
+
+<tr>
+
+<th>Crop</th>
+<th>Area</th>
+<th>Yield</th>
+<th>Income</th>
+<th>Confidence</th>
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in history %}
+
+<tr>
+
+<td>{{ item.crop_type }}</td>
+
+<td>{{ item.area }}</td>
+
+<td>{{ item.predicted_yield }} tons/acre</td>
+
+<td>₹ {{ item.estimated_income }}</td>
+
+<td>{{ (item.confidence_score * 100)|round(2) }}%</td>
+
+<td>{{ item.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="6" class="text-center">
+
+No Yield History Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

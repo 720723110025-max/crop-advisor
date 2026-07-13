@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Yield History
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>
+
+🌾 Crop Yield History
+
+</h2>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Year</th>
+
+<th>Crop</th>
+
+<th>Yield</th>
+
+<th>Income</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for h in history %}
+
+<tr>
+
+<td>{{ h.year }}</td>
+
+<td>{{ h.crop }}</td>
+
+<td>{{ h.yield }}</td>
+
+<td>{{ h.income }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

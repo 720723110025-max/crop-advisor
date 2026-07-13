@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Weather Advisory{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-8">
+
+<div class="card shadow-lg border-0">
+
+<div class="card-header bg-primary text-white text-center">
+
+<h2>🌦 Weather Advisory</h2>
+
+<p class="mb-0">Current Weather Information</p>
+
+</div>
+
+<div class="card-body">
+
+<div class="row text-center">
+
+<div class="col-md-3">
+
+<div class="card border-success shadow">
+
+<div class="card-body">
+
+<h1>🌡</h1>
+
+<h4>{{ weather.temperature }}°C</h4>
+
+<p>Temperature</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card border-info shadow">
+
+<div class="card-body">
+
+<h1>💧</h1>
+
+<h4>{{ weather.humidity }}%</h4>
+
+<p>Humidity</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card border-warning shadow">
+
+<div class="card-body">
+
+<h1>☁</h1>
+
+<h4>{{ weather.condition }}</h4>
+
+<p>Condition</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card border-danger shadow">
+
+<div class="card-body">
+
+<h1>🌬</h1>
+
+<h4>{{ weather.wind }} km/h</h4>
+
+<p>Wind</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<hr>
+
+<h4>🌱 Smart Farming Advice</h4>
+
+<button
+class="btn btn-success"
+onclick="getAdvice()">
+
+Get AI Advice
+
+</button>
+
+<ul id="adviceList" class="mt-3"></ul>
+<hr>
+
+<div class="alert alert-success">
+
+<h4>🌱 Farming Advisory</h4>
+
+<ul>
+
+<li>Maintain proper irrigation.</li>
+
+<li>Monitor rainfall before fertilizer application.</li>
+
+<li>Protect crops if heavy rain is expected.</li>
+
+<li>Use disease-resistant seeds during humid weather.</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<script>
+
+function getAdvice(){
+
+let form=new FormData();
+
+form.append("temperature","{{ weather.temperature }}");
+form.append("humidity","{{ weather.humidity }}");
+form.append("rainfall","50");
+
+fetch("/weather-ai/advice",{
+
+method:"POST",
+
+body:form
+
+})
+
+.then(r=>r.json())
+
+.then(data=>{
+
+let html="";
+
+data.advice.forEach(function(item){
+
+html+="<li>"+item+"</li>";
+
+});
+
+document.getElementById("adviceList").innerHTML=html;
+
+});
+
+}
+
+</script>
+
+{% endblock %}

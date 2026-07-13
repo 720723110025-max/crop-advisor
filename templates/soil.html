@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Soil Analysis{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>🌱 Soil Analysis</h2>
+
+<form method="POST">
+
+<div class="row">
+
+<div class="col-md-3">
+<label>pH</label>
+<input class="form-control" type="number" step="0.1" name="ph" required>
+</div>
+
+<div class="col-md-3">
+<label>Nitrogen</label>
+<input class="form-control" type="number" name="nitrogen" required>
+</div>
+
+<div class="col-md-3">
+<label>Phosphorus</label>
+<input class="form-control" type="number" name="phosphorus" required>
+</div>
+
+<div class="col-md-3">
+<label>Potassium</label>
+<input class="form-control" type="number" name="potassium" required>
+</div>
+
+</div>
+
+<br>
+
+<button class="btn btn-success">
+Analyze Soil
+</button>
+
+</form>
+
+{% if result %}
+
+<hr>
+
+<div class="alert alert-success">
+
+<h4>Soil Status</h4>
+
+<p>{{ result.status }}</p>
+
+<h4>Recommended Fertilizers</h4>
+
+<ul>
+
+{% for item in result.fertilizer %}
+<li>{{ item }}</li>
+{% endfor %}
+
+</ul>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Fertilizer History{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="mb-4">
+🌱 Fertilizer Recommendation History
+</h2>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Crop</th>
+<th>Fertilizer</th>
+<th>Quantity</th>
+<th>Method</th>
+<th>Schedule</th>
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in history %}
+
+<tr>
+
+<td>{{ item.crop_type }}</td>
+
+<td>{{ item.recommended_fertilizer }}</td>
+
+<td>{{ item.quantity }} {{ item.unit }}</td>
+
+<td>{{ item.application_method }}</td>
+
+<td>{{ item.application_schedule }}</td>
+
+<td>{{ item.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="6" class="text-center">
+
+No Fertilizer History Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

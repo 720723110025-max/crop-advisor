@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-success text-white">
+
+<h3>
+
+🌾 AI Crop Recommendation
+
+</h3>
+
+</div>
+
+<div class="card-body">
+
+<form
+method="POST"
+action="{{ url_for('crop_ai.predict') }}">
+
+<div class="row">
+
+<div class="col-md-4">
+
+<label>District</label>
+
+<input
+type="text"
+class="form-control"
+name="district"
+required>
+
+</div>
+
+<div class="col-md-4">
+
+<label>Soil Type</label>
+
+<select
+class="form-select"
+name="soil">
+
+<option>Loamy</option>
+
+<option>Clay</option>
+
+<option>Sandy</option>
+
+<option>Red</option>
+
+<option>Black</option>
+
+</select>
+
+</div>
+
+<div class="col-md-4">
+
+<label>Season</label>
+
+<select
+class="form-select"
+name="season">
+
+<option>Kharif</option>
+
+<option>Rabi</option>
+
+<option>Zaid</option>
+
+</select>
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn btn-success">
+
+Predict Best Crop
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

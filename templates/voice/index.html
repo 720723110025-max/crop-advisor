@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Voice Assistant{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h3>
+
+🎙 AI Voice Assistant
+
+</h3>
+
+</div>
+
+<div class="card-body text-center">
+
+<h4 id="status">
+
+Press the button and speak.
+
+</h4>
+
+<button
+class="btn btn-primary btn-lg mt-3"
+onclick="startListening()">
+
+🎤 Start Speaking
+
+</button>
+
+<hr>
+
+<h5>You Said</h5>
+
+<p id="speech"></p>
+
+<h5>Assistant Reply</h5>
+
+<p id="reply"></p>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function startListening(){
+
+const recognition =
+new(window.SpeechRecognition ||
+window.webkitSpeechRecognition)();
+
+recognition.lang="en-IN";
+
+recognition.start();
+
+recognition.onresult=function(event){
+
+let text=event.results[0][0].transcript;
+
+document.getElementById("speech").innerHTML=text;
+
+let reply="";
+
+text=text.toLowerCase();
+
+if(text.includes("weather")){
+
+reply="Today's weather is cloudy with chances of rain.";
+
+}
+
+else if(text.includes("crop")){
+
+reply="Paddy is recommended for loamy soil.";
+
+}
+
+else if(text.includes("market")){
+
+reply="Today's paddy price is ₹2450 per quintal.";
+
+}
+
+else if(text.includes("soil")){
+
+reply="Loamy soil is best for rice cultivation.";
+
+}
+
+else{
+
+reply="Sorry, I don't understand.";
+
+}
+
+document.getElementById("reply").innerHTML=reply;
+
+};
+
+}
+
+</script>
+
+{% endblock %}

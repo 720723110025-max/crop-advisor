@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Farmer Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+        👨‍🌾 Welcome {{ current_user.full_name }}
+    </h2>
+
+    <div class="row g-4">
+
+        <!-- Weather -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h1>🌦</h1>
+                    <h5>Weather</h5>
+                    <p>Today's Weather Advisory</p>
+                    <a href="/weather" class="btn btn-success">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crop Recommendation -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h1>🌱</h1>
+                    <h5>Crop Recommendation</h5>
+                    <p>AI Crop Suggestion</p>
+                    <a href="/crop" class="btn btn-success">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Soil Analysis -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h1>🌍</h1>
+                    <h5>Soil Analysis</h5>
+                    <p>Upload Soil Image</p>
+                    <a href="/soil" class="btn btn-success">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Disease Detection -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h1>🦠</h1>
+                    <h5>Disease Detection</h5>
+                    <p>Detect Crop Diseases</p>
+                    <a href="/disease" class="btn btn-success">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Prices -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h1>📈</h1>
+                    <h5>Market Prices</h5>
+                    <p>Today's Mandi Rates</p>
+                    <a href="/market" class="btn btn-success">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profit Analysis -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h1>💰</h1>
+                    <h5>Profit Analysis</h5>
+                    <p>View Income</p>
+                    <a href="/profit" class="btn btn-success">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h1>🔔</h1>
+                    <h5>Notifications</h5>
+                    <p>Weather, Irrigation & Market Alerts</p>
+                    <a href="/notifications" class="btn btn-success">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Experts -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h1>👨‍🔬</h1>
+                    <h5>Experts</h5>
+                    <p>Consult Agriculture Experts</p>
+                    <a href="/experts" class="btn btn-success">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workshops -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h1>🎓</h1>
+                    <h5>Workshops</h5>
+                    <p>Training & Awareness Programs</p>
+                    <a href="/workshops" class="btn btn-success">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="col-lg-4 col-md-6">
+
+    <div class="card shadow h-100">
+
+        <div class="card-body text-center">
+
+            <h1>📖</h1>
+
+            <h5>Crop Diary</h5>
+
+            <p>Maintain Farm Records</p>
+
+            <a href="/diary" class="btn btn-success">
+
+                Open
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="col-lg-4 col-md-6">
+
+<div class="card shadow h-100">
+
+<div class="card-body text-center">
+
+<h1>💧</h1>
+
+<h5>Smart Irrigation</h5>
+
+<p>
+
+Water Management
+
+</p>
+
+<a
+href="/irrigation"
+class="btn btn-primary">
+
+Open
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+{% endblock %}

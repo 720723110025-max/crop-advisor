@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}
+Weather Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="text-primary mb-4">
+
+🌦 Smart Weather Dashboard
+
+</h2>
+
+<div class="row">
+
+<div class="col-md-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h3>🌡</h3>
+
+<h2>{{ weather.temperature }}°C</h2>
+
+Temperature
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h3>💧</h3>
+
+<h2>{{ weather.humidity }}%</h2>
+
+Humidity
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h3>🌧</h3>
+
+<h2>{{ weather.rainfall }}%</h2>
+
+Rain Chance
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h3>🌬</h3>
+
+<h2>{{ weather.wind_speed }}</h2>
+
+km/h
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card shadow mt-4">
+
+<div class="card-header bg-success text-white">
+
+🌱 Irrigation Recommendation
+
+</div>
+
+<div class="card-body">
+
+<h4>
+
+{{ advice }}
+
+</h4>
+
+</div>
+
+</div>
+
+<div class="card shadow mt-4">
+
+<div class="card-header bg-warning">
+
+Today's Weather
+
+</div>
+
+<div class="card-body">
+
+<h5>
+
+{{ weather.condition }}
+
+</h5>
+
+<p>
+
+Location :
+{{ weather.location }}
+
+</p>
+
+<p>
+
+Last Updated :
+
+{{ weather.updated_at }}
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
