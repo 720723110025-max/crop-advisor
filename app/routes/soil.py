@@ -49,7 +49,7 @@ def upload():
 
         data = {
 
-    `           "farmer": current_user.username,
+               "farmer": current_user.username,
 
                 "soil_image": filename,
 

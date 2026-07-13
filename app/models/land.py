@@ -1,5 +1,3 @@
-from urllib import request
-
 from app.utils.database import get_collection
 from bson import ObjectId
 from datetime import datetime
@@ -71,101 +69,83 @@ class LandModel:
     def get(self, land_id):
 
         return self.collection.find_one(
-            {
-                "_id": ObjectId(land_id)
-            }
+            {"_id": ObjectId(land_id)}
         )
 
     def update(self, land_id, data):
 
         data["updated_at"] = datetime.utcnow()
 
-        "irrigation_type": request.form.get("irrigation_type"),
+        return self.collection.update_one(
 
-        "soil_ph": request.form.get("soil_ph"),
+            {"_id": ObjectId(land_id)},
 
-        "organic_carbon": request.form.get("organic_carbon"),
+            {"$set": data}
+
+        )
+
+    def add_yield(self, land_id, season, crop, production, profit):
 
         return self.collection.update_one(
 
-            {
-                "_id": ObjectId(land_id)
-            },
+            {"_id": ObjectId(land_id)},
 
             {
-                "$set": data
-            }
 
-        )
-    def add_yield(self, land_id, season, crop, production, profit):
+                "$push": {
 
-    return self.collection.update_one(
+                    "yield_history": {
 
-        {"_id": ObjectId(land_id)},
+                        "season": season,
 
-        {
+                        "crop": crop,
 
-            "$push": {
+                        "production": production,
 
-                "yield_history": {
+                        "profit": profit,
 
-                    "season": season,
+                        "date": datetime.utcnow()
 
-                    "crop": crop,
-
-                    "production": production,
-
-                    "profit": profit,
-
-                    "date": datetime.utcnow()
+                    }
 
                 }
 
             }
 
-        }
+        )
 
-    )
     def save_ai_prediction(
+        self,
+        land_id,
+        crop,
+        fertilizer,
+        confidence
+    ):
 
-    self,
+        return self.collection.update_one(
 
-    land_id,
+            {"_id": ObjectId(land_id)},
 
-    crop,
+            {
 
-    fertilizer,
+                "$set": {
 
-    confidence
+                    "recommended_crop": crop,
 
-):
+                    "recommended_fertilizer": fertilizer,
 
-    return self.collection.update_one(
+                    "confidence": confidence
 
-        {"_id": ObjectId(land_id)},
-
-        {
-
-            "$set": {
-
-                "recommended_crop": crop,
-
-                "recommended_fertilizer": fertilizer,
-
-                "confidence": confidence
+                }
 
             }
 
-        }
-
-    )
+        )
 
     def delete(self, land_id):
 
         return self.collection.delete_one(
-            {
-                "_id": ObjectId(land_id)
-            }
+            {"_id": ObjectId(land_id)}
         )
 
     def count(self):
@@ -178,9 +158,7 @@ class LandModel:
 
             self.collection.find(
 
-                {
-                    "district": district
-                }
+                {"district": district}
 
             )
 
@@ -197,24 +175,39 @@ class LandModel:
                     "$or": [
 
                         {
+
                             "land_name": {
+
                                 "$regex": keyword,
+
                                 "$options": "i"
+
                             }
+
                         },
 
                         {
+
                             "village": {
+
                                 "$regex": keyword,
+
                                 "$options": "i"
+
                             }
+
                         },
 
                         {
+
                             "district": {
+
                                 "$regex": keyword,
+
                                 "$options": "i"
+
                             }
+
                         }
 
                     ]

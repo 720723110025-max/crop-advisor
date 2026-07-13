@@ -19,61 +19,68 @@ def dashboard():
 
     dashboard = {
 
-    "lands": db_instance.get_collection("lands").count_documents({}),
+        "lands": db_instance.get_collection("lands").count_documents({}),
 
-    "crop_predictions": db_instance.get_collection(
-        "crop_predictions"
-    ).count_documents({}),
+        "crop_predictions": db_instance.get_collection(
+            "crop_predictions"
+        ).count_documents({}),
 
-    "disease_reports": db_instance.get_collection(
-        "disease_reports"
-    ).count_documents({}),
+        "disease_reports": db_instance.get_collection(
+            "disease_reports"
+        ).count_documents({}),
 
-    "workshops": db_instance.get_collection(
-        "workshops"
-    ).count_documents({}),
+        "workshops": db_instance.get_collection(
+            "workshops"
+        ).count_documents({}),
 
-    "experts": db_instance.get_collection(
-        "users"
-    ).count_documents({"role":"expert"}),
+        "experts": db_instance.get_collection(
+            "users"
+        ).count_documents({"role": "expert"}),
 
-    "notifications": db_instance.get_collection(
-        "notifications"
-    ).count_documents({}),
+        "notifications": db_instance.get_collection(
+            "notifications"
+        ).count_documents({}),
 
-    "market": db_instance.get_collection(
-        "market_prices"
-    ).count_documents({})
+        "market": db_instance.get_collection(
+            "market_prices"
+        ).count_documents({})
 
-}
+    }
 
-weather = {
+    weather = {
 
-    "temperature":"29°C",
+        "temperature": "29°C",
 
-    "humidity":"72%",
+        "humidity": "72%",
 
-    "rainfall":"35%",
+        "rainfall": "35%",
 
-    "wind":"10 km/h",
+        "wind": "10 km/h",
 
-    "condition":"Cloudy"
+        "condition": "Cloudy"
 
-}
+    }
 
-recent_notifications = list(
+    recent_notifications = list(
+
         db_instance.get_collection("notifications")
         .find()
         .sort("created_at", -1)
         .limit(5)
+
     )
 
     return render_template(
+
         "farmer/dashboard.html",
+
         dashboard=dashboard,
+
         notifications=recent_notifications,
+
         weather=weather
-)
+
+    )
 @farmer_bp.route("/profile", methods=["GET", "POST"])
 def profile():
 
