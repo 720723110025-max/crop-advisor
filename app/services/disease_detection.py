@@ -2,6 +2,7 @@
 Disease detection service using computer vision and deep learning.
 """
 
+from operator import index
 import os
 import cv2
 import numpy as np
@@ -19,7 +20,18 @@ class DiseaseDetectionService:
     def __init__(self):
         """Initialize disease detection service."""
         self.ml_service = MLService()
-        self.image_size = (128, 128)
+        self.image_size = (224, 224)
+
+        import tensorflow as tf
+
+        self.model = tf.keras.models.load_model(
+        "models/disease_model.keras"
+    )
+
+        self.class_names = [
+        "blast",
+        "blight"
+    ]
     
     def preprocess_image(self, image_array):
         """
@@ -71,7 +83,25 @@ class DiseaseDetectionService:
             # In production, this would use the actual deep learning model
             
             # Simulate disease detection based on image characteristics
-            disease_result = self._simulate_disease_detection(processed_image, crop_type)
+            image = np.expand_dims(processed_image, axis=0)
+
+            prediction = self.model.predict(image)
+
+            index = np.argmax(prediction)
+
+            confidence = float(np.max(prediction))
+
+            disease = self.class_names[index]
+
+            disease_info = self._get_disease_information(disease)
+
+            return {
+            "disease": disease,
+            "confidence": round(confidence * 100, 2),
+            "severity": self._get_severity(confidence),
+            "crop_type": crop_type,
+            **disease_info
+}
             
             return disease_result
             
@@ -201,7 +231,20 @@ class DiseaseDetectionService:
                 'causes': 'Fungal infection, often during wet weather.',
                 'prevention': 'Use resistant varieties. Ensure good drainage.',
                 'treatment': 'Apply fungicides. Remove infected plant parts.'
-            }
+            },
+            "blast": {
+                "symptoms": "Diamond-shaped lesions on rice leaves.",
+                "causes": "Magnaporthe oryzae fungus.",
+                "prevention": "Use resistant varieties and balanced fertilizer.",
+                "treatment": "Spray Tricyclazole or recommended fungicide."
+},
+
+"blight": {
+    "symptoms": "Yellowing and drying from leaf tips.",
+    "causes": "Bacterial infection (Xanthomonas).",
+    "prevention": "Use disease-free seeds and avoid excess nitrogen.",
+    "treatment": "Copper bactericide and field sanitation."
+},
         }
         
         return disease_info.get(disease_name, {

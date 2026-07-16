@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from app.services.market_service import MarketService
 
 market_bp = Blueprint(
     "market",
@@ -11,31 +12,8 @@ market_bp = Blueprint(
 def index():
 
     prices = [
-
-        {
-            "crop": "Paddy",
-            "market": "Bhubaneswar",
-            "price": "₹2450 / Quintal"
-        },
-
-        {
-            "crop": "Maize",
-            "market": "Cuttack",
-            "price": "₹2250 / Quintal"
-        },
-
-        {
-            "crop": "Cotton",
-            "market": "Sambalpur",
-            "price": "₹7200 / Quintal"
-        },
-
-        {
-            "crop": "Groundnut",
-            "market": "Balasore",
-            "price": "₹6100 / Quintal"
-        }
-
+        service = MarketService()
+        prices = service.get_prices()
     ]
 
     return render_template(

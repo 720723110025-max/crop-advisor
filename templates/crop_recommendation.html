@@ -232,45 +232,63 @@ body:data
 
 .then(res=>res.json())
 
-.then(data=>{
+.then(data => {
 
-document.getElementById("loading").style.display="none";
+    console.log(data);
 
-document.getElementById("result").style.display="block";
+    document.getElementById("loading").style.display = "none";
 
-document.getElementById("cropName").innerHTML=data.crop;
+    if (!data.success) {
+        alert(data.error || "Prediction failed");
+        return;
+    }
 
-document.getElementById("confidence").innerHTML=
-(data.confidence*100).toFixed(1)+"%";
+    document.getElementById("result").style.display = "block";
 
-document.getElementById("suggestions").innerHTML=
-data.suggestions.join("<br>");
+    document.getElementById("cropName").textContent = data.crop;
 
-document.getElementById("seedVarieties").innerHTML=
-data.seed_info.varieties.join(", ");
+    document.getElementById("confidence").textContent =
+        (data.confidence * 100).toFixed(2) + "%";
 
-document.getElementById("seedSeason").innerHTML=
-data.seed_info.season;
+    document.getElementById("suggestions").innerHTML =
+        (data.suggestions || []).join("<br>");
 
-document.getElementById("seedDuration").innerHTML=
-data.seed_info.duration;
+    if (data.seed_info) {
+        document.getElementById("seedVarieties").textContent =
+            data.seed_info.varieties.join(", ");
 
-document.getElementById("seedYield").innerHTML=
-data.seed_info.yield;
+        document.getElementById("seedSeason").textContent =
+            data.seed_info.season;
 
-document.getElementById("cost").innerHTML =
-data.profit_info.cost;
+        document.getElementById("seedDuration").textContent =
+            data.seed_info.duration;
 
-document.getElementById("yield").innerHTML =
-data.profit_info.yield;
+        document.getElementById("seedYield").textContent =
+            data.seed_info.yield;
+    }
 
-document.getElementById("marketPrice").innerHTML =
-data.profit_info.market_price;
+    if (data.profit_info) {
+        document.getElementById("cost").textContent =
+            data.profit_info.cost;
 
-document.getElementById("profit").innerHTML =
-data.profit_info.profit;
+        document.getElementById("yield").textContent =
+            data.profit_info.yield;
+
+        document.getElementById("marketPrice").textContent =
+            data.profit_info.market_price;
+
+        document.getElementById("profit").textContent =
+            data.profit_info.profit;
+    }
+
+})
+.catch(err => {
+    console.error(err);
+    document.getElementById("loading").style.display = "none";
+    alert("Prediction failed");
 });
-}
+
+};   // Close the onsubmit function
 
 </script>
 

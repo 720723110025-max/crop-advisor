@@ -9,7 +9,9 @@ from flask import Flask, render_template
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_wtf.csrf import CSRFProtect
+from flask_mail import Mail
 
+mail = Mail()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
 csrf = CSRFProtect()
@@ -30,7 +32,6 @@ def create_app(config_name="default"):
         from app.expert.routes import expert_bp
         from app.lands.routes import lands_bp
         from app.workshops.routes import workshop_bp
-        from app.notifications.routes import notification_bp
         from app.market.routes import market_bp
         from app.feedback.routes import feedback_bp
         from app.crop_ai.routes import crop_ai_bp
@@ -68,6 +69,9 @@ def create_app(config_name="default"):
         from app.routes.smart_notifications import smart_bp
         from app.routes.expert_directory import expert_directory_bp
         from app.routes.disease_ai import disease_ai_bp
+        from app.routes.mail import mail_bp
+        from app.routes.expense import expense_bp
+        from app.routes.calendar import calendar_bp
 
         # Disable CSRF for AI APIs
         csrf.exempt(crop_bp)
@@ -86,13 +90,13 @@ def create_app(config_name="default"):
         app.register_blueprint(expert_bp)
         app.register_blueprint(lands_bp)
         app.register_blueprint(workshop_bp)
-        app.register_blueprint(notification_bp)
+        app.register_blueprint(smart_bp)
         app.register_blueprint(market_bp)
         app.register_blueprint(feedback_bp)
-        app.register_blueprint(crop_bp)
-        app.register_blueprint(disease_bp)
-        app.register_blueprint(weather_bp)
-        app.register_blueprint(yield_bp)
+        app.register_blueprint(crop_bp, url_prefix="/crop")
+        app.register_blueprint(disease_bp, url_prefix="/disease")
+        app.register_blueprint(weather_bp, url_prefix="/weather")
+        app.register_blueprint(yield_bp, url_prefix="/yield")
         app.register_blueprint(fertilizer_bp)
         app.register_blueprint(irrigation_bp)
         app.register_blueprint(seed_bp)
@@ -100,11 +104,11 @@ def create_app(config_name="default"):
         app.register_blueprint(weather_ai_bp)
         app.register_blueprint(crop_ai_bp)
         app.register_blueprint(disease_ai_bp)
-        app.register_blueprint(language_bp)
-        app.register_blueprint(voice_bp)
-        app.register_blueprint(location_bp)
+        app.register_blueprint(language_bp, url_prefix="/language")
+        app.register_blueprint(voice_bp, url_prefix="/voice")
+        app.register_blueprint(location_bp, url_prefix="/location")
         app.register_blueprint(appointment_bp)
-        app.register_blueprint(profit_bp)
+        app.register_blueprint(profit_bp, url_prefix="/profit")
         app.register_blueprint(report_bp)
         app.register_blueprint(ussd_bp)
         app.register_blueprint(settings_bp)
@@ -117,9 +121,12 @@ def create_app(config_name="default"):
         app.register_blueprint(yield_history_bp)
         app.register_blueprint(analytics_bp)
         app.register_blueprint(analytics_dashboard_bp)
-        app.register_blueprint(smart_bp)
         app.register_blueprint(schemes_bp)
         app.register_blueprint(expert_directory_bp)
+        app.register_blueprint(expense_bp)
+        app.register_blueprint(calendar_bp)
+
+
 
     logger.info("All blueprints registered")
 

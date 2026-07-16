@@ -58,14 +58,6 @@ style="max-height:250px;display:none;">
 
 </div>
 
-<div class="text-center mb-4">
-
-<img
-id="preview"
-src=""
-style="display:none;max-width:300px;border-radius:15px;"
-class="shadow">
-
 </div>
 
 <div class="d-grid">
@@ -169,6 +161,23 @@ Treatment
 
 </div>
 
+<a href="{{ url_for('disease.download_report') }}"
+   class="btn btn-danger mt-3">
+    📄 Download PDF Report
+</a>
+
+<input
+type="email"
+id="email"
+class="form-control"
+placeholder="Enter Email">
+
+<button
+class="btn btn-primary mt-2"
+onclick="sendMail()">
+📧 Send Report
+</button>
+
 </div>
 
 </div>
@@ -183,33 +192,66 @@ Treatment
 
 <script>
 
-function previewImage(event){
+function previewImage(event) {
 
-const img=document.getElementById("preview");
+    const file = event.target.files[0];
 
-img.src=URL.createObjectURL(event.target.files[0]);
+    if (!file) return;
 
-img.style.display="block";
+    const img = document.getElementById("previewImage");
 
+    img.src = URL.createObjectURL(file);
+
+    img.style.display = "block";
 }
 
-document.getElementById("uploadForm").onsubmit=function(e){
+document.getElementById("uploadForm").addEventListener("submit", async function (e) {
 
-e.preventDefault();
+    e.preventDefault();
 
-document.getElementById("loading").style.display="block";
+    document.getElementById("loading").style.display = "block";
+    document.getElementById("result").style.display = "none";
 
-document.getElementById("result").style.display="none";
+    const formData = new FormData(this);
 
-let formData=new FormData(this);
+    try {
 
-fetch("/disease/api/detect-disease",{
+        const response = await fetch("/disease/api/detect-disease", {
+            method: "POST",
+            body: formData
+        });
 
-method:"POST",
+        const data = await response.json();
 
-body:formData
+        document.getElementById("loading").style.display = "none";
 
-})
+        if (!data.success) {
+            alert(data.error || "Detection failed");
+            return;
+        }
+
+        document.getElementById("result").style.display = "block";
+
+        document.getElementById("diseaseName").textContent = data.disease;
+        document.getElementById("confidence").textContent = (data.confidence * 100).toFixed(2) + "%";
+        document.getElementById("severity").textContent = data.severity;
+        document.getElementById("symptoms").textContent = data.symptoms;
+        document.getElementById("causes").textContent = data.causes;
+        document.getElementById("prevention").textContent = data.prevention;
+        document.getElementById("treatment").textContent = data.treatment;
+        document.getElementById("organic").textContent = data.organic;
+        document.getElementById("chemical").textContent = data.chemical;
+
+    } catch (err) {
+
+        document.getElementById("loading").style.display = "none";
+
+        console.error(err);
+
+        alert("Something went wrong.");
+    }
+
+});
 
 .then(res=>res.json())
 
@@ -245,7 +287,25 @@ data.prevention;
 });
 
 }
+function sendMail(){
 
+let form=new FormData();
+
+form.append(
+    "email",
+    document.getElementById("email").value
+);
+
+fetch("/disease/send-email",{
+    method:"POST",
+    body:form
+})
+.then(r=>r.json())
+.then(()=>{
+    alert("Email Sent Successfully");
+});
+
+}
 </script>
 
 {% endblock %}

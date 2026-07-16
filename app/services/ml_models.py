@@ -87,12 +87,12 @@ class MLService:
 
         disease_model_path = os.path.join(
             self.models_dir,
-            "disease_detection_model.keras"
+            "disease_model.keras"
         )
 
         if os.path.exists(disease_model_path):
             self.disease_model = keras.models.load_model(disease_model_path)
-            logger.info("Disease model loaded successfully")
+            logger.info("Custom disease_model.keras loaded successfully")
         else:
             logger.warning("Disease model not found")
 

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>💰 Farm Expense Tracker</h2>
+
+<form method="POST" action="/expense/add">
+
+<input
+name="title"
+class="form-control mb-2"
+placeholder="Expense Name">
+
+<input
+name="amount"
+class="form-control mb-2"
+placeholder="Amount">
+
+<button class="btn btn-success">
+
+Add Expense
+
+</button>
+
+</form>
+
+<hr>
+
+<h4>
+
+Total Expense
+
+₹ {{ total }}
+
+</h4>
+
+<table class="table">
+
+{% for e in expenses %}
+
+<tr>
+
+<td>{{ e.title }}</td>
+
+<td>₹ {{ e.amount }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

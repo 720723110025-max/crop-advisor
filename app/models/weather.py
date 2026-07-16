@@ -1,41 +1,38 @@
-from datetime import datetime
+import requests
+import os
 
 class WeatherModel:
 
-    def get_weather(self):
+    def get_weather(self, city="Coimbatore"):
 
-        return {
+        api=os.getenv("288df0f1b431343c7b5ef0cc59a53cfe")
 
-            "location":"Coimbatore",
+        url=f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api}&units=metric"
 
-            "temperature":30,
+        response=requests.get(url).json()
 
-            "humidity":74,
+        return{
 
-            "rainfall":20,
+            "temperature":response["main"]["temp"],
 
-            "wind_speed":12,
+            "humidity":response["main"]["humidity"],
 
-            "condition":"Partly Cloudy",
+            "wind":response["wind"]["speed"],
 
-            "updated_at":datetime.utcnow()
+            "condition":response["weather"][0]["main"]
 
         }
 
-    def irrigation_advice(self, weather):
+    def irrigation_advice(self,weather):
 
-        if weather["rainfall"] > 60:
+        if weather["temperature"]>35:
 
-            return "🌧 Heavy rainfall expected. Do not irrigate."
+            return "Water your crops in morning."
 
-        elif weather["humidity"] > 80:
+        elif weather["humidity"]>80:
 
-            return "💧 Soil moisture is high. Irrigation not required."
-
-        elif weather["temperature"] > 35:
-
-            return "☀ High temperature. Irrigate early morning."
+            return "Avoid over irrigation."
 
         else:
 
-            return "✅ Irrigate once every 3-5 days."
+            return "Weather is suitable."

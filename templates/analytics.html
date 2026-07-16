@@ -82,49 +82,43 @@ Estimated Income
 
 <canvas id="chart"></canvas>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 
-new Chart(
+const ctx = document.getElementById("chart");
 
-document.getElementById("chart"),
-
-{
-
-type:"bar",
-
-data:{
-
-labels:[
-
-"Crops",
-
-"Diseases",
-
-"Lands"
-
-],
-
-datasets:[{
-
-label:"Statistics",
-
-data:[
-
-{{ crop_count }},
-
-{{ disease_count }},
-
-{{ land_count }}
-
-]
-
-}]
-
-}
-
-}
-
-);
+new Chart(ctx,{
+    type:"bar",
+    data:{
+        labels:[
+            "Crop Predictions",
+            "Disease Reports",
+            "Lands"
+        ],
+        datasets:[{
+            label:"Total Records",
+            data:[
+                {{ crop_count }},
+                {{ disease_count }},
+                {{ land_count }}
+            ],
+            backgroundColor:[
+                "#28a745",
+                "#dc3545",
+                "#007bff"
+            ]
+        }]
+    },
+    options:{
+        responsive:true,
+        scales:{
+            y:{
+                beginAtZero:true
+            }
+        }
+    }
+});
 
 </script>
 

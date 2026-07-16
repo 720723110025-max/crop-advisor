@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
+import joblib
+import pandas as pd
 
 fertilizer_bp = Blueprint(
     "fertilizer",
@@ -6,33 +8,70 @@ fertilizer_bp = Blueprint(
     url_prefix="/fertilizer"
 )
 
+# Load trained model
+fertilizer_model = joblib.load("models/fertilizer_model.pkl")
 
-@fertilizer_bp.route("/", methods=["GET", "POST"])
+
+@fertilizer_bp.route("/")
 def index():
+    return render_template("fertilizer.html")
 
-    recommendation = None
 
-    if request.method == "POST":
+@fertilizer_bp.route("/api/recommend-fertilizer", methods=["POST"])
+def recommend_fertilizer():
 
-        crop = request.form.get("crop")
+    try:
 
-        n = int(request.form.get("nitrogen"))
-        p = int(request.form.get("phosphorus"))
-        k = int(request.form.get("potassium"))
+        crop = request.form["crop_type"]
 
-        if n < 50:
-            recommendation = "Use Urea"
+        organic = float(request.form["organic_matter"])
 
-        elif p < 40:
-            recommendation = "Use DAP"
+        nitrogen = float(request.form["nitrogen"])
 
-        elif k < 40:
-            recommendation = "Use MOP"
+        phosphorus = float(request.form["phosphorus"])
 
-        else:
-            recommendation = "NPK levels are balanced."
+        potassium = float(request.form["potassium"])
 
-    return render_template(
-        "fertilizer/index.html",
-        recommendation=recommendation
-    )
+        ph = float(request.form["ph"])
+
+        # Dummy values because the dataset requires them
+        sample = pd.DataFrame([{
+            "Temparature": 30,
+            "Humidity ": 60,
+            "Moisture": organic,
+            "Soil Type": "Loamy",
+            "Crop Type": crop,
+            "Nitrogen": nitrogen,
+            "Potassium": potassium,
+            "Phosphorous": phosphorus
+        }])
+
+        fertilizer = fertilizer_model.predict(sample)[0]
+
+        return jsonify({
+
+            "success": True,
+
+            "fertilizer_name": fertilizer,
+
+            "quantity": "50",
+
+            "unit": "kg/acre",
+
+            "application_method": "Apply evenly around the crop.",
+
+            "application_schedule": "Every 30 days",
+
+            "expected_improvement": "Improves crop growth and yield."
+
+        })
+
+    except Exception as e:
+
+        return jsonify({
+
+            "success": False,
+
+            "error": str(e)
+
+        }), 500

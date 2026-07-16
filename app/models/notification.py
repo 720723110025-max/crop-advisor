@@ -40,3 +40,12 @@ class NotificationModel:
         {"_id": ObjectId(id)}
 
     )
+    def get(self, id):
+
+        from bson import ObjectId
+
+        return self.collection.find_one(
+
+        {"_id": ObjectId(id)}
+
+    )

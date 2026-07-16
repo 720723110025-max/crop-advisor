@@ -9,9 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     {% block extra_css %}{% endblock %}
     </head>
 <body>
+    <div id="loader">
+
+<div class="spinner-border text-success"></div>
+
+</div>
  <button
 class="btn btn-success d-lg-none m-2"
 onclick="toggleSidebar()">
@@ -21,9 +27,7 @@ onclick="toggleSidebar()">
 </button>
     <div class="d-flex">
 
-<div id="sidebar"
-     class="bg-dark text-white p-3"
-     style="width:260px;min-height:100vh;">
+<div id="sidebar" class="bg-dark text-white p-3" style="width:260px;min-height:100vh;">
 
 <h3 class="text-center mb-4">
 
@@ -31,88 +35,107 @@ onclick="toggleSidebar()">
 
 </h3>
 
-<a href="/dashboard"
-class="btn btn-success w-100 mb-2">
+<ul class="nav flex-column">
 
-<i class="fas fa-home"></i>
+<li class="nav-item">
 
-Dashboard
+<a class="nav-link text-white"
 
-</a>
+href="/maps">
 
-<a href="/crop"
-class="btn btn-dark w-100 mb-2">
+<i class="bi bi-geo-alt-fill"></i>
 
-<i class="fas fa-seedling"></i>
-
-Crop AI
-
-</a>
-<a href="/notifications" class="btn btn-light position-relative">
-
-<i class="fas fa-bell"></i>
-
-<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-
-{{ notification_count|default(0) }}
-
-</span>
+Maps
 
 </a>
 
-<a href="/disease/detect"
-class="btn btn-dark w-100 mb-2">
+</li>
 
-<i class="fas fa-virus"></i>
+<li class="nav-item">
 
-Disease Detection
+<a class="nav-link text-white"
 
-</a>
+href="/expense">
 
-<a href="/soil"
-class="btn btn-dark w-100 mb-2">
+<i class="bi bi-cash-stack"></i>
 
-<i class="fas fa-mountain"></i>
-
-Soil Analysis
+Expense
 
 </a>
 
-<a href="/weather"
-class="btn btn-dark w-100 mb-2">
+</li>
 
-<i class="fas fa-cloud-sun"></i>
+<li class="nav-item">
 
-Weather
+<a class="nav-link text-white"
 
-</a>
+href="/calendar">
 
-<a href="/market"
-class="btn btn-dark w-100 mb-2">
+<i class="bi bi-calendar-event"></i>
 
-<i class="fas fa-chart-line"></i>
-
-Market
+Calendar
 
 </a>
 
-<a href="/reports"
-class="btn btn-dark w-100 mb-2">
+</li>
 
-<i class="fas fa-chart-pie"></i>
-
-Export
-
+<li class="nav-item">
+<a class="nav-link text-white" href="/dashboard">
+<i class="bi bi-speedometer2"></i>
+ Dashboard
 </a>
+</li>
 
-<a href="/auth/logout"
-class="btn btn-danger w-100">
-
-<i class="fas fa-sign-out-alt"></i>
-
-Logout
-
+<li class="nav-item">
+<a class="nav-link text-white" href="/crop">
+<i class="bi bi-tree-fill"></i>
+ Crop AI
 </a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="/soil">
+<i class="bi bi-globe"></i>
+ Soil Analysis
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="/disease">
+<i class="bi bi-bug-fill"></i>
+ Disease Detection
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="/weather">
+<i class="bi bi-cloud-sun-fill"></i>
+ Weather
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="/market">
+<i class="bi bi-graph-up-arrow"></i>
+ Market
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-white" href="/chatbot">
+<i class="bi bi-robot"></i>
+ AI Chatbot
+</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link text-danger" href="/auth/logout">
+<i class="bi bi-box-arrow-right"></i>
+ Logout
+</a>
+</li>
+
+</ul>
 
 </div>
 
@@ -148,20 +171,26 @@ Logout
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'fertilizer.recommend' %}active{% endif %}" 
-                           href="{{ url_for('fertilizer.recommend') }}">
+                        <a class="nav-link"
+                            href="{{ url_for('notifications.index') }}">
+                             🔔 Notifications
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'fertilizer.index' %}active{% endif %}"
+                           href="{{ url_for('fertilizer.index') }}">
                             <i class="fas fa-flask"></i> Fertilizer
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'irrigation.schedule' %}active{% endif %}" 
-                           href="{{ url_for('irrigation.schedule') }}">
+                        <a class="nav-link {% if request.endpoint == 'irrigation.index' %}active{% endif %}" 
+                           href="{{ url_for('irrigation.index') }}">
                             <i class="fas fa-tint"></i> Irrigation
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'weather.advisory' %}active{% endif %}" 
-                           href="{{ url_for('weather.advisory') }}">
+                        <a class="nav-link {% if request.endpoint == 'weather.dashboard' %}active{% endif %}" 
+                           href="{{ url_for('weather.dashboard') }}">
                             <i class="fas fa-cloud-sun"></i> Weather
                         </a>
                     </li>
@@ -170,6 +199,14 @@ Logout
             data-bs-toggle="dropdown">
         🌍 Language
     </button>
+    <form class="d-flex">
+
+<input
+id="searchUser"
+class="form-control"
+placeholder="Search...">
+
+</form>
 
     <ul class="dropdown-menu">
         <li>
@@ -258,34 +295,33 @@ Logout
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block extra_js %}{% endblock %}
     <script>
 
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded", function () {
 
-const input=document.getElementById("searchUser");
+    const input = document.getElementById("searchUser");
 
-if(input){
+    if (input) {
 
-input.addEventListener("keyup",function(){
+        input.addEventListener("keyup", function () {
 
-let value=this.value.toLowerCase();
+            let value = this.value.toLowerCase();
 
-let rows=document.querySelectorAll("#userTable tr");
+            let rows = document.querySelectorAll("#userTable tr");
 
-rows.forEach(row=>{
+            rows.forEach(function (row) {
 
-row.style.display=row.innerText.toLowerCase().includes(value)
-? ""
-: "none";
+                row.style.display = row.innerText.toLowerCase().includes(value)
+                    ? ""
+                    : "none";
 
-});
+            });
 
-});
+        });
 
-}
+    }
 
 });
 
@@ -340,43 +376,17 @@ card.style.transform="translateY(0)";
 });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<a href="/chatbot" class="ai-button">
+🤖
+</a>
+
+<button
+class="btn btn-outline-dark"
+onclick="toggleTheme()">
+🌙
+</button>
+
 </body>
-<footer class="bg-dark text-white py-5">
-
-<div class="container text-center">
-
-<h3>
-
-🌾 Krushak Saathi
-
-</h3>
-
-<p>
-
-Smart Agriculture Advisory System
-
-</p>
-
-<div>
-
-<i class="fab fa-facebook fa-2x m-2"></i>
-
-<i class="fab fa-instagram fa-2x m-2"></i>
-
-<i class="fab fa-linkedin fa-2x m-2"></i>
-
-<i class="fab fa-github fa-2x m-2"></i>
-
-</div>
-
-<p class="mt-4">
-
-© 2026 Krushak Saathi
-
-</p>
-
-</div>
-
-</footer>
-
+</body>
 </html>

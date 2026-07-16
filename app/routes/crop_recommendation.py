@@ -6,6 +6,7 @@ from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user
 from app.utils.database import db_instance
 from datetime import datetime
+from app.utils.logger import logger
 
 crop_bp = Blueprint('crop', __name__)
 
@@ -32,6 +33,9 @@ def predict_crop():
         crop, confidence, all_recommendations = _predict(
             nitrogen, phosphorus, potassium, temperature, humidity, ph, rainfall
         )
+        logger.info(
+            f"{current_user.username} predicted {crop} with confidence {confidence}"
+)
         
         seed_info = get_seed_info(crop)
         profit_info = get_profit_info(crop)
@@ -89,9 +93,23 @@ def predict_crop():
         return jsonify({
             "success": True,
             "crop": crop,
-            "confidence": confidence,
+            "confidence": float(confidence),
             "suggestions": suggestions,
-            "all_recommendations": all_recommendations
+            "all_recommendations": all_recommendations,
+
+            "seed_info": seed_info if seed_info else {
+                "varieties": ["Unknown"],
+                "season": "Unknown",
+                "duration": "Unknown",
+                "yield": "Unknown"
+            },
+
+            "profit_info": profit_info if profit_info else {
+                "cost": "Unknown",
+                "yield": "Unknown",
+                "market_price": "Unknown",
+                "profit": "Unknown"
+            }
         })
 
     except Exception as e:

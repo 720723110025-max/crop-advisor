@@ -1,33 +1,35 @@
 {% extends "base.html" %}
 
-{% block title %}
-
-Government Schemes
-
-{% endblock %}
+{% block title %}Government Schemes{% endblock %}
 
 {% block content %}
 
 <div class="container mt-5">
 
-<h2 class="mb-4">
-
+<h2 class="text-success mb-4">
 🌾 Government Schemes
-
 </h2>
 
-<table class="table table-bordered table-hover">
+<div class="mb-3">
+<input
+type="text"
+id="search"
+class="form-control"
+placeholder="Search Scheme">
+</div>
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover" id="schemeTable">
 
 <thead class="table-success">
 
 <tr>
-
 <th>Scheme</th>
-
+<th>Eligibility</th>
 <th>Benefit</th>
-
 <th>Description</th>
-
+<th>Apply</th>
 </tr>
 
 </thead>
@@ -40,9 +42,24 @@ Government Schemes
 
 <td>{{ s.name }}</td>
 
+<td>{{ s.eligibility }}</td>
+
 <td>{{ s.benefit }}</td>
 
 <td>{{ s.description }}</td>
+
+<td>
+
+<a
+href="{{ s.apply }}"
+target="_blank"
+class="btn btn-success btn-sm">
+
+Apply
+
+</a>
+
+</td>
 
 </tr>
 
@@ -53,5 +70,23 @@ Government Schemes
 </table>
 
 </div>
+
+</div>
+
+<script>
+
+document.getElementById("search").addEventListener("keyup",function(){
+
+let value=this.value.toLowerCase();
+
+document.querySelectorAll("#schemeTable tbody tr").forEach(function(row){
+
+row.style.display=row.innerText.toLowerCase().includes(value)?"":"none";
+
+});
+
+});
+
+</script>
 
 {% endblock %}

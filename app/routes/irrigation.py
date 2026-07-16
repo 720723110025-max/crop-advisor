@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify
 
 irrigation_bp = Blueprint(
     "irrigation",
@@ -6,50 +6,66 @@ irrigation_bp = Blueprint(
     url_prefix="/irrigation"
 )
 
-records = []
-
 
 @irrigation_bp.route("/")
 def index():
-
-    return render_template(
-        "irrigation/index.html",
-        records=records
-    )
+    return render_template("irrigation.html")
 
 
-@irrigation_bp.route("/add", methods=["GET", "POST"])
-def add():
+@irrigation_bp.route("/api/irrigation-advice", methods=["POST"])
+def irrigation_advice():
 
-    if request.method == "POST":
+    crop = request.form.get("crop_type")
 
-        moisture = float(request.form.get("moisture"))
+    moisture = float(request.form.get("soil_moisture"))
 
-        crop = request.form.get("crop")
+    temperature = float(request.form.get("temperature"))
 
-        if moisture < 30:
-            recommendation = "Irrigation Required"
+    humidity = float(request.form.get("humidity"))
 
-        elif moisture < 60:
-            recommendation = "Monitor Soil Moisture"
+    rainfall = float(request.form.get("rainfall"))
 
-        else:
-            recommendation = "No Irrigation Needed"
+    if moisture < 30:
 
-        records.append({
+        water = 1200
+        method = "Drip Irrigation"
+        duration = 3
+        timing = "Morning"
+        notes = "Soil is dry. Irrigate immediately."
 
-            "crop": crop,
+    elif moisture < 60:
 
-            "moisture": moisture,
+        water = 700
+        method = "Sprinkler Irrigation"
+        duration = 2
+        timing = "Evening"
+        notes = "Monitor moisture regularly."
 
-            "recommendation": recommendation
+    else:
 
-        })
+        water = 300
+        method = "No Irrigation Needed"
+        duration = 0
+        timing = "None"
+        notes = "Enough moisture is available."
 
-        return redirect(
-            url_for("irrigation.index")
-        )
+    if rainfall > 20:
+        notes += " Rain is expected. Reduce irrigation."
 
-    return render_template(
-        "irrigation/add.html"
-    )
+    return jsonify({
+
+        "success": True,
+
+        "crop": crop,
+
+        "water_requirement": water,
+
+        "method": method,
+
+        "duration": duration,
+
+        "timing": timing,
+
+        "notes": notes
+
+    })

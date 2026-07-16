@@ -1,83 +1,165 @@
-// Main JavaScript file for Crop Advisory System
+// ===============================
+// Sidebar Toggle
+// ===============================
 
-$(document).ready(function() {
-    // Initialize tooltips
-    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
+function toggleSidebar() {
+
+    const sidebar = document.getElementById("sidebar");
+
+    sidebar.classList.toggle("collapsed");
+
+}
+
+// ===============================
+// Dark Mode
+// ===============================
+
+function toggleTheme() {
+
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+
+        localStorage.setItem("theme", "dark");
+
+    } else {
+
+        localStorage.setItem("theme", "light");
+
     }
-    
-    // Auto-hide alerts
-    $('.alert:not(.alert-permanent)').delay(5000).slideUp(300);
-    
-    // Form loading state
-    $('form[data-loading]').on('submit', function() {
-        const btn = $(this).find('button[type="submit"]');
-        btn.prop('disabled', true);
-        btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Processing...');
+
+}
+
+window.onload = function () {
+
+    if (localStorage.getItem("theme") === "dark") {
+
+        document.body.classList.add("dark-mode");
+
+    }
+
+};
+
+// ===============================
+// Auto Close Alerts
+// ===============================
+
+setTimeout(function () {
+
+    document.querySelectorAll(".alert").forEach(function (alert) {
+
+        alert.classList.remove("show");
+
     });
-    
-    // Confirm delete
-    $('.delete-confirm').on('click', function(e) {
-        if (!confirm('Are you sure you want to delete this item?')) {
-            e.preventDefault();
-            return false;
+
+}, 4000);
+
+// ===============================
+// Counter Animation
+// ===============================
+
+document.querySelectorAll(".counter").forEach(counter => {
+
+    const update = () => {
+
+        const target = +counter.getAttribute("data-target");
+
+        const count = +counter.innerText;
+
+        const increment = Math.ceil(target / 50);
+
+        if (count < target) {
+
+            counter.innerText = count + increment;
+
+            setTimeout(update, 30);
+
+        } else {
+
+            counter.innerText = target;
+
         }
-    });
+
+    };
+
+    update();
+
 });
 
-// Utility Functions
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+// ===============================
+// Scroll To Top Button
+// ===============================
+
+const scrollBtn = document.createElement("button");
+
+scrollBtn.innerHTML = "⬆";
+
+scrollBtn.className = "scroll-top";
+
+document.body.appendChild(scrollBtn);
+
+window.addEventListener("scroll", function () {
+
+    if (window.scrollY > 300) {
+
+        scrollBtn.style.display = "block";
+
+    } else {
+
+        scrollBtn.style.display = "none";
+
+    }
+
+});
+
+scrollBtn.onclick = function () {
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
     });
-}
 
-function showToast(message, type = 'info') {
-    const toastContainer = document.getElementById('toastContainer') || createToastContainer();
-    const icons = {
-        'success': 'check-circle',
-        'danger': 'exclamation-circle',
-        'warning': 'exclamation-triangle',
-        'info': 'info-circle'
-    };
-    
-    const toast = document.createElement('div');
-    toast.className = `toast align-items-center text-white bg-${type} border-0 show`;
-    toast.role = 'alert';
-    toast.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">
-                <i class="fas fa-${icons[type] || 'info-circle'} me-2"></i>
-                ${message}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
-    `;
-    
-    toastContainer.appendChild(toast);
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 5000);
-}
-
-function createToastContainer() {
-    const container = document.createElement('div');
-    container.id = 'toastContainer';
-    container.className = 'toast-container position-fixed bottom-0 end-0 p-3';
-    document.body.appendChild(container);
-    return container;
-}
-
-window.CropAdvisory = {
-    formatDate,
-    showToast
 };
+
+// ===============================
+// Fade Animation
+// ===============================
+
+const observer = new IntersectionObserver(entries => {
+
+    entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+
+            entry.target.classList.add("show");
+
+        }
+
+    });
+
+});
+
+document.querySelectorAll(".fade-card").forEach(card => {
+
+    observer.observe(card);
+
+});
+
+// ===============================
+// Loading Spinner
+// ===============================
+
+window.addEventListener("load", function () {
+
+    const loader = document.getElementById("loader");
+
+    if (loader) {
+
+        loader.style.display = "none";
+
+    }
+
+}); 

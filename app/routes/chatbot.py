@@ -1,4 +1,9 @@
 from flask import Blueprint, render_template, request, jsonify
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 chatbot_bp = Blueprint(
     "chatbot",
@@ -6,38 +11,44 @@ chatbot_bp = Blueprint(
     url_prefix="/chatbot"
 )
 
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+model = genai.GenerativeModel("gemini-2.5-flash")
+
 
 @chatbot_bp.route("/")
 def index():
-    return render_template("chatbot/index.html")
+    return render_template("chatbot.html")
 
 
 @chatbot_bp.route("/ask", methods=["POST"])
 def ask():
 
-    question = request.form.get("message", "").lower()
+    prompt = f"""
+You are an expert agricultural AI assistant.
 
-    answer = "Sorry, I don't understand."
+Answer only agriculture-related questions.
 
-    if "rice" in question or "paddy" in question:
-        answer = "Paddy grows well in loamy soil with adequate water."
+Reply only in {language}.
 
-    elif "soil" in question:
-        answer = "Loamy soil is suitable for most crops."
+If the question is not related to agriculture,
+politely say:
+"I can only answer agriculture-related questions."
 
-    elif "fertilizer" in question:
-        answer = "Use NPK fertilizer according to soil test."
+Question:
+{question}
+"""
 
-    elif "weather" in question:
-        answer = "Today's weather is cloudy with chances of rain."
+    try:
+        response = model.generate_content(prompt)
 
-    elif "market" in question:
-        answer = "Today's paddy market price is ₹2450 per quintal."
+        return jsonify({
+            "success": True,
+            "reply": response.text
+        })
 
-    return jsonify({
-
-        "question": question,
-
-        "answer": answer
-
-    })
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "reply": str(e)
+        }), 500

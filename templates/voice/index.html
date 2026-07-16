@@ -52,59 +52,70 @@ onclick="startListening()">
 
 <script>
 
-function startListening(){
+function startListening() {
 
-const recognition =
-new(window.SpeechRecognition ||
-window.webkitSpeechRecognition)();
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+        alert("Speech Recognition is not supported in this browser.");
+        return;
+    }
 
-recognition.lang="en-IN";
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
-recognition.start();
+    recognition.lang = "en-IN";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
 
-recognition.onresult=function(event){
+    recognition.start();
 
-let text=event.results[0][0].transcript;
+    document.getElementById("status").innerHTML = "🎤 Listening...";
 
-document.getElementById("speech").innerHTML=text;
+    recognition.onresult = function(event) {
 
-let reply="";
+        let text = event.results[0][0].transcript;
 
-text=text.toLowerCase();
+        document.getElementById("speech").innerHTML = text;
 
-if(text.includes("weather")){
+        let reply = "Sorry, I don't understand.";
 
-reply="Today's weather is cloudy with chances of rain.";
+        text = text.toLowerCase();
 
-}
+        if (text.includes("weather")) {
+            reply = "Today's weather is cloudy with chances of rain.";
+        }
+        else if (text.includes("crop")) {
+            reply = "Rice is recommended for loamy soil with proper irrigation.";
+        }
+        else if (text.includes("disease")) {
+            reply = "Please upload a leaf image in Disease Detection to identify crop disease.";
+        }
+        else if (text.includes("fertilizer")) {
+            reply = "Use fertilizer based on your soil analysis report.";
+        }
+        else if (text.includes("soil")) {
+            reply = "Loamy soil is suitable for most crops.";
+        }
+        else if (text.includes("market")) {
+            reply = "Current paddy market price is around ₹2450 per quintal.";
+        }
+        else if (text.includes("yield")) {
+            reply = "Use the Yield Prediction module to estimate crop production.";
+        }
+        else if (text.includes("hello") || text.includes("hi")) {
+            reply = "Hello! How can I help you today?";
+        }
 
-else if(text.includes("crop")){
+        document.getElementById("reply").innerHTML = reply;
 
-reply="Paddy is recommended for loamy soil.";
+        const speech = new SpeechSynthesisUtterance(reply);
+        speech.lang = "en-IN";
+        window.speechSynthesis.speak(speech);
 
-}
+        document.getElementById("status").innerHTML = "✅ Completed";
+    };
 
-else if(text.includes("market")){
-
-reply="Today's paddy price is ₹2450 per quintal.";
-
-}
-
-else if(text.includes("soil")){
-
-reply="Loamy soil is best for rice cultivation.";
-
-}
-
-else{
-
-reply="Sorry, I don't understand.";
-
-}
-
-document.getElementById("reply").innerHTML=reply;
-
-};
+    recognition.onerror = function() {
+        document.getElementById("status").innerHTML = "❌ Voice recognition failed.";
+    };
 
 }
 

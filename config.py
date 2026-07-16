@@ -29,6 +29,8 @@ class Config:
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     WTF_CSRF_ENABLED = True
 
+    
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
@@ -50,3 +52,9 @@ config = {
     'testing': TestingConfig,
     'default': DevelopmentConfig
 }
+MAIL_SERVER = "smtp.gmail.com"
+MAIL_PORT = 587
+MAIL_USE_TLS = True
+MAIL_USERNAME = "dineshsenthil32@gmail.com"
+MAIL_PASSWORD = "zzxn gatb lwfg terx"
+MAIL_DEFAULT_SENDER = "dineshsenthil32@gmail.com"

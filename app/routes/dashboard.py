@@ -63,11 +63,23 @@ def index():
 def api_stats():
 
     stats = {
-        "farmers": db_instance.get_collection("farmers").count_documents({}),
-        "lands": db_instance.get_collection("lands").count_documents({}),
-        "crops": db_instance.get_collection("crop_predictions").count_documents({}),
-        "diseases": db_instance.get_collection("disease_reports").count_documents({})
-    }
+
+    "farmers": db_instance.get_collection("farmers").count_documents({}),
+
+    "lands": db_instance.get_collection("lands").count_documents({}),
+
+    "crops": db_instance.get_collection("crop_predictions").count_documents({}),
+
+    "diseases": db_instance.get_collection("disease_reports").count_documents({}),
+
+    "soil": db_instance.get_collection("soil_reports").count_documents({}),
+
+    "fertilizer": db_instance.get_collection("fertilizer_reports").count_documents({}),
+
+    "irrigation": db_instance.get_collection("irrigation_reports").count_documents({}),
+
+    "yield": db_instance.get_collection("yield_predictions").count_documents({})
+}
 
     return jsonify(stats)
 

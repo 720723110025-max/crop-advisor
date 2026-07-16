@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+Notifications
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="text-success">
+🔔 Notifications
+</h2>
+
+{% for item in notifications %}
+
+<div class="alert alert-info">
+
+<h5>{{ item.type }}</h5>
+
+<p>{{ item.message }}</p>
+
+<small>{{ item.created_at }}</small>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-warning">
+
+No Notifications Available
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

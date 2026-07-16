@@ -39,18 +39,36 @@ weather, fertilizers or irrigation.
 
 <div class="input-group mt-3">
 
-<input
-id="message"
-class="form-control"
-placeholder="Ask your farming question...">
+<div class="mb-3">
+    <label><b>Select Language</b></label>
+
+    <select id="language" class="form-control">
+        <option value="English">English</option>
+        <option value="Tamil">Tamil</option>
+        <option value="Hindi">Hindi</option>
+    </select>
+</div>
+
+<div class="input-group mt-3">
+
+    <input
+        id="message"
+        class="form-control"
+        placeholder="Ask your farming question...">
+
+    <button
+    class="btn btn-success"
+    onclick="sendMessage()">
+    Send
+</button>
 
 <button
-class="btn btn-success"
-onclick="sendMessage()">
-
-Send
-
+    class="btn btn-primary ms-2"
+    onclick="startVoice()">
+    🎤 Speak
 </button>
+
+</div>
 
 </div>
 
@@ -66,59 +84,107 @@ Send
 
 <script>
 
-function sendMessage(){
+function sendMessage() {
 
-let msg=document.getElementById("message").value;
+    let msg = document.getElementById("message").value;
 
-if(msg==="") return;
+    if (msg === "") return;
 
-let chat=document.getElementById("chatBox");
+    let chat = document.getElementById("chatBox");
 
-chat.innerHTML+=`
-<div class="text-end mb-2">
+    chat.innerHTML += `
+    <div class="text-end mb-2">
+        <span class="badge bg-primary">
+            ${msg}
+        </span>
+    </div>
+    `;
 
-<span class="badge bg-primary">
+    let data = new FormData();
 
-${msg}
+    data.append("message", msg);
 
-</span>
+    data.append(
+        "language",
+        document.getElementById("language").value
+    );
 
-</div>
-`;
+    fetch("/chatbot/ask", {
 
-let data=new FormData();
+        method: "POST",
 
-data.append("message",msg);
+        body: data
 
-fetch("/chatbot/ask",{
+    })
 
-method:"POST",
+    .then(res => res.json())
 
-body:data
+    .then(data => {
 
-})
+        chat.innerHTML += `
+        <div class="mb-3">
+            <span class="badge bg-success">
+                ${data.reply}
+            </span>
+        </div>
+        `;
 
-.then(res=>res.json())
+        chat.scrollTop = chat.scrollHeight;
 
-.then(data=>{
+        // Speak the reply
+        const speech = new SpeechSynthesisUtterance(data.reply);
 
-chat.innerHTML+=`
-<div class="mb-3">
+        const lang = document.getElementById("language").value;
 
-<span class="badge bg-success">
+        if (lang === "Tamil") {
+            speech.lang = "ta-IN";
+        } else if (lang === "Hindi") {
+            speech.lang = "hi-IN";
+        } else {
+            speech.lang = "en-IN";
+        }
 
-${data.reply}
+        window.speechSynthesis.speak(speech);
 
-</span>
+    })
 
-</div>
-`;
+    .catch(err => {
+        console.error(err);
+        alert("Chatbot Error");
+    });
 
-chat.scrollTop=chat.scrollHeight;
+    document.getElementById("message").value = "";
 
-});
+}
 
-document.getElementById("message").value="";
+function startVoice() {
+
+    const recognition = new (
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition
+    )();
+
+    const lang = document.getElementById("language").value;
+
+    if (lang === "Tamil") {
+        recognition.lang = "ta-IN";
+    } else if (lang === "Hindi") {
+        recognition.lang = "hi-IN";
+    } else {
+        recognition.lang = "en-IN";
+    }
+
+    recognition.start();
+
+    recognition.onresult = function(event) {
+
+        let text = event.results[0][0].transcript;
+
+        document.getElementById("message").value = text;
+
+        sendMessage();
+
+    };
 
 }
 

@@ -21,19 +21,28 @@ def index():
     disease_count = db_instance.get_collection(
         "disease_reports"
     ).count_documents({
-        "user_id": current_user.id
+        "user_id": str(current_user.id)
     })
 
     land_count = db_instance.get_collection(
         "lands"
-    ).count_documents({})
+    ).count_documents({
+        "user_id": str(current_user.id)
+    })
 
-    income = crop_count * 5000
+    yield_count = db_instance.get_collection(
+        "yield_predictions"
+    ).count_documents({
+        "user_id": str(current_user.id)
+    })
+
+    income = yield_count * 25000
 
     return render_template(
         "analytics.html",
         crop_count=crop_count,
         disease_count=disease_count,
         land_count=land_count,
+        yield_count=yield_count,
         income=income
     )
