@@ -10,6 +10,7 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_wtf.csrf import CSRFProtect
 from flask_mail import Mail
+from app.routes.notifications import notifications_bp
 
 mail = Mail()
 login_manager = LoginManager()
@@ -66,7 +67,6 @@ def create_app(config_name="default"):
         from app.routes.seed import seed_bp
         from app.routes.soil import soil_bp
         from app.routes.export import export_bp
-        from app.routes.smart_notifications import smart_bp
         from app.routes.expert_directory import expert_directory_bp
         from app.routes.disease_ai import disease_ai_bp
         from app.routes.mail import mail_bp
@@ -90,7 +90,6 @@ def create_app(config_name="default"):
         app.register_blueprint(expert_bp)
         app.register_blueprint(lands_bp)
         app.register_blueprint(workshop_bp)
-        app.register_blueprint(smart_bp)
         app.register_blueprint(market_bp)
         app.register_blueprint(feedback_bp)
         app.register_blueprint(crop_bp, url_prefix="/crop")
@@ -125,6 +124,7 @@ def create_app(config_name="default"):
         app.register_blueprint(expert_directory_bp)
         app.register_blueprint(expense_bp)
         app.register_blueprint(calendar_bp)
+        app.register_blueprint(notifications_bp)
 
 
 
