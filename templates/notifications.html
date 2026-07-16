@@ -1,38 +1,78 @@
 {% extends "base.html" %}
 
-{% block title %}
-Notifications
-{% endblock %}
+{% block title %}Notifications{% endblock %}
 
 {% block content %}
 
 <div class="container mt-5">
 
-<h2 class="text-success">
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h3>
+
 🔔 Notifications
-</h2>
 
-{% for item in notifications %}
+</h3>
 
-<div class="alert alert-info">
+<p>
 
-<h5>{{ item.type }}</h5>
+Unread :
 
-<p>{{ item.message }}</p>
+{{ unread }}
 
-<small>{{ item.created_at }}</small>
+</p>
 
 </div>
+
+<div class="card-body">
+
+{% if notifications %}
+
+<ul class="list-group">
+
+{% for n in notifications %}
+
+<li class="list-group-item">
+
+<strong>
+
+{{ n.type }}
+
+</strong>
+
+<br>
+
+{{ n.message }}
+
+<br>
+
+<small>
+
+{{ n.created_at }}
+
+</small>
+
+</li>
+
+{% endfor %}
+
+</ul>
 
 {% else %}
 
-<div class="alert alert-warning">
+<p>
 
-No Notifications Available
+No Notifications
+
+</p>
+
+{% endif %}
 
 </div>
 
-{% endfor %}
+</div>
 
 </div>
 

@@ -1,0 +1,39 @@
+body{
+    background:#f5f7fb;
+}
+
+.dashboard-card{
+    border:none;
+    border-radius:20px;
+    transition:.3s;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.dashboard-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 12px 30px rgba(0,0,0,.15);
+}
+
+.stat-icon{
+    font-size:40px;
+}
+
+.gradient1{
+    background:linear-gradient(135deg,#00b09b,#96c93d);
+    color:white;
+}
+
+.gradient2{
+    background:linear-gradient(135deg,#4776E6,#8E54E9);
+    color:white;
+}
+
+.gradient3{
+    background:linear-gradient(135deg,#ff512f,#dd2476);
+    color:white;
+}
+
+.gradient4{
+    background:linear-gradient(135deg,#11998e,#38ef7d);
+    color:white;
+}

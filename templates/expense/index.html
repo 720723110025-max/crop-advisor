@@ -18,6 +18,34 @@ name="amount"
 class="form-control mb-2"
 placeholder="Amount">
 
+<select
+name="category"
+class="form-control mb-2">
+
+<option value="Seeds">🌱 Seeds</option>
+
+<option value="Fertilizer">🧪 Fertilizer</option>
+
+<option value="Pesticide">🦠 Pesticide</option>
+
+<option value="Labor">👨‍🌾 Labor</option>
+
+<option value="Machinery">🚜 Machinery</option>
+
+<option value="Transport">🚚 Transport</option>
+
+<option value="Irrigation">💧 Irrigation</option>
+
+<option value="Other">📦 Other</option>
+
+</select>
+
+<input
+type="date"
+name="date"
+class="form-control mb-2"
+required>
+
 <button class="btn btn-success">
 
 Add Expense
@@ -28,21 +56,103 @@ Add Expense
 
 <hr>
 
-<h4>
+<div class="row">
 
-Total Expense
+    <div class="col-md-4 mb-3">
 
-₹ {{ total }}
+        <div class="card bg-danger text-white shadow">
 
-</h4>
+            <div class="card-body text-center">
 
-<table class="table">
+                <h5>Total Expense</h5>
+
+                <h2>₹ {{ total }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card bg-success text-white shadow">
+
+            <div class="card-body text-center">
+
+                <h5>Total Records</h5>
+
+                <h2>{{ expenses|length }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card bg-primary text-white shadow">
+
+            <div class="card-body text-center">
+
+                <h5>Average Expense</h5>
+
+                <h2>
+
+                    {% if expenses %}
+
+                        ₹ {{ (total / expenses|length)|round(2) }}
+
+                    {% else %}
+
+                        ₹ 0
+
+                    {% endif %}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>#</th>
+
+<th>Expense</th>
+
+<th>Category</th>
+
+<th>Date</th>
+
+<th>Amount</th>
+
+</tr>
+
+</thead>
+
+<tbody>
 
 {% for e in expenses %}
 
 <tr>
 
+<td>{{ loop.index }}</td>
+
 <td>{{ e.title }}</td>
+
+<td>{{ e.category }}</td>
+
+<td>{{ e.date }}</td>
 
 <td>₹ {{ e.amount }}</td>
 
@@ -50,8 +160,54 @@ Total Expense
 
 {% endfor %}
 
+</tbody>
+
 </table>
+<hr>
+
+<div class="card shadow mt-4">
+
+    <div class="card-header bg-dark text-white">
+
+        <h5>
+            📊 Expense Overview
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="expenseChart"></canvas>
+
+    </div>
 
 </div>
 
+</div>
+
+labels: [
+
+{% for category in category_totals.keys() %}
+
+"{{ category }}",
+
+{% endfor %}
+
+],
+
+datasets:[{
+
+label:"Expense",
+
+data:[
+
+{% for amount in category_totals.values() %}
+
+{{ amount }},
+
+{% endfor %}
+
+]
+
+}]
 {% endblock %}

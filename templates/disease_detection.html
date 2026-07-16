@@ -34,6 +34,16 @@ Upload a crop leaf image to detect diseases
 Select Leaf Image
 
 </label>
+<div class="mt-3 text-center">
+
+    <img
+        id="previewImage"
+        src=""
+        alt="Image Preview"
+        class="img-fluid rounded shadow"
+        style="display:none; max-height:300px;">
+
+</div>
 
 <input
 type="file"
@@ -44,17 +54,6 @@ accept="image/*"
 onchange="previewImage(event)"
 required>
 
-<div class="text-center mt-3">
-
-<img
-
-id="previewImage"
-
-class="img-fluid rounded shadow"
-
-style="max-height:250px;display:none;">
-
-</div>
 
 </div>
 
@@ -89,6 +88,17 @@ Analyzing Image...
 </p>
 
 </div>
+<div class="text-center mb-3">
+
+<img
+
+id="diseaseImage"
+
+class="img-fluid rounded shadow"
+
+style="display:none;max-height:250px;">
+
+</div>
 
 <div
 id="result"
@@ -113,11 +123,28 @@ Confidence
 </h5>
 
 <h3 id="confidence"></h3>
+<div class="progress mb-3">
+
+    <div
+        id="confidenceBar"
+        class="progress-bar bg-success"
+        role="progressbar"
+        style="width:0%;">
+
+    </div>
+
+</div>
 <hr>
 
 <h5>⚠ Severity</h5>
 
-<h4 id="severity"></h4>
+<span
+    id="severity"
+    class="badge fs-5 bg-secondary">
+
+    Unknown
+
+</span>
 
 <hr>
 
@@ -139,31 +166,72 @@ Confidence
 <hr>
 
 
-<h5>
+<div class="card border-success mt-3">
 
-Treatment
+<div class="card-header bg-success text-white">
 
-</h5>
+💊 Recommended Treatment
+
+</div>
+
+<div class="card-body">
 
 <p id="treatment"></p>
+
+</div>
+
+</div>
 
 <hr>
 
 <h5>🌿 Organic Treatment</h5>
 
+<div class="card mt-3">
+
+<div class="card-header bg-success text-white">
+
+🌿 Organic Treatment
+
+</div>
+
+<div class="card-body">
+
 <p id="organic"></p>
+
+</div>
+
+</div>
 
 <hr>
 
 <h5>💊 Chemical Treatment</h5>
 
+<div class="card mt-3">
+
+<div class="card-header bg-danger text-white">
+
+🧪 Chemical Treatment
+
+</div>
+
+<div class="card-body">
+
 <p id="chemical"></p>
+
+</div>
+
+</div>
 
 </div>
 
 <a href="{{ url_for('disease.download_report') }}"
    class="btn btn-danger mt-3">
     📄 Download PDF Report
+</a>
+
+<a href="{{ url_for('disease.export_excel') }}"
+   class="btn btn-success mt-3">
+    📊 Export Excel
 </a>
 
 <input
@@ -233,8 +301,40 @@ document.getElementById("uploadForm").addEventListener("submit", async function 
         document.getElementById("result").style.display = "block";
 
         document.getElementById("diseaseName").textContent = data.disease;
-        document.getElementById("confidence").textContent = (data.confidence * 100).toFixed(2) + "%";
-        document.getElementById("severity").textContent = data.severity;
+const diseaseImage = document.getElementById("diseaseImage");
+
+diseaseImage.src = data.image;
+
+diseaseImage.style.display = "block";
+        document.getElementById("confidence").textContent = data.confidence + "%";
+        document.getElementById("confidenceBar").style.width = data.confidence + "%";
+        document.getElementById("confidenceBar").textContent = data.confidence + "%";
+const severity = document.getElementById("severity");
+
+severity.textContent = data.severity;
+
+severity.classList.remove(
+    "bg-success",
+    "bg-warning",
+    "bg-danger",
+    "bg-secondary"
+);
+
+if (data.severity === "Low") {
+
+    severity.classList.add("bg-success");
+
+}
+else if (data.severity === "Medium") {
+
+    severity.classList.add("bg-warning");
+
+}
+else {
+
+    severity.classList.add("bg-danger");
+
+}
         document.getElementById("symptoms").textContent = data.symptoms;
         document.getElementById("causes").textContent = data.causes;
         document.getElementById("prevention").textContent = data.prevention;
@@ -253,40 +353,6 @@ document.getElementById("uploadForm").addEventListener("submit", async function 
 
 });
 
-.then(res=>res.json())
-
-.then(data=>{
-
-document.getElementById("loading").style.display="none";
-
-document.getElementById("result").style.display="block";
-
-document.getElementById("diseaseName").innerHTML=data.disease;
-
-document.getElementById("confidence").innerHTML=data.confidence+"%";
-
-document.getElementById("treatment").innerHTML=data.treatment;
-
-document.getElementById("organic").innerHTML =
-data.organic;
-
-document.getElementById("chemical").innerHTML =
-data.chemical;
-
-document.getElementById("severity").innerHTML =
-data.severity;
-
-document.getElementById("symptoms").innerHTML =
-data.symptoms;
-
-document.getElementById("causes").innerHTML =
-data.causes;
-
-document.getElementById("prevention").innerHTML =
-data.prevention;
-});
-
-}
 function sendMail(){
 
 let form=new FormData();
@@ -307,5 +373,6 @@ fetch("/disease/send-email",{
 
 }
 </script>
+
 
 {% endblock %}

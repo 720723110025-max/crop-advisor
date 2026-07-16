@@ -11,10 +11,9 @@ market_bp = Blueprint(
 @market_bp.route("/")
 def index():
 
-    prices = [
-        service = MarketService()
-        prices = service.get_prices()
-    ]
+    service = MarketService()
+
+    prices = service.get_prices()
 
     return render_template(
         "market/index.html",

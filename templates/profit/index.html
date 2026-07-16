@@ -20,6 +20,58 @@ class="btn btn-success mb-3">
 
 </a>
 
+<div class="row mb-4">
+
+    <div class="col-md-4">
+
+        <div class="card bg-success text-white shadow">
+
+            <div class="card-body text-center">
+
+                <h5>Total Income</h5>
+
+                <h2>₹ {{ total_income }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card bg-danger text-white shadow">
+
+            <div class="card-body text-center">
+
+                <h5>Total Expense</h5>
+
+                <h2>₹ {{ total_expense }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card bg-primary text-white shadow">
+
+            <div class="card-body text-center">
+
+                <h5>Total Profit</h5>
+
+                <h2>₹ {{ total_profit }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 <table class="table table-bordered">
 
 <thead class="table-success">
@@ -103,6 +155,106 @@ No Records Found
 
 </table>
 
+<hr>
+
+<div class="card shadow mt-4">
+
+    <div class="card-header bg-dark text-white">
+
+        <h5>
+
+            📊 Profit Analytics
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="profitChart"></canvas>
+
+    </div>
+
 </div>
+
+</div>
+
+<script>
+
+const ctx = document.getElementById("profitChart");
+
+new Chart(ctx,{
+
+type:"bar",
+
+data:{
+
+labels:[
+
+{% for r in records %}
+
+"{{ r.crop }}",
+
+{% endfor %}
+
+],
+
+datasets:[
+
+{
+
+label:"Income",
+
+data:[
+
+{% for r in records %}
+
+{{ r.income }},
+
+{% endfor %}
+
+]
+
+},
+
+{
+
+label:"Expense",
+
+data:[
+
+{% for r in records %}
+
+{{ r.expense }},
+
+{% endfor %}
+
+]
+
+},
+
+{
+
+label:"Profit",
+
+data:[
+
+{% for r in records %}
+
+{{ r.profit }},
+
+{% endfor %}
+
+]
+
+}
+
+]
+
+}
+
+});
+
+</script>
 
 {% endblock %}

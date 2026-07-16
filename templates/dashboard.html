@@ -4,27 +4,27 @@
 
 {% block content %}
 
-<div class="container-fluid">
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid mt-4">
 
 <div class="row mb-4">
 
-<div class="col-lg-12">
-
-<div class="hero-card p-5">
-
-<div class="row align-items-center">
-
 <div class="col-md-8">
 
-<h1>
+<h2 class="fw-bold">
 
-👋 Welcome {{ current_user.full_name }}
+👨‍🌾 Welcome {{ current_user.full_name }}
 
-</h1>
+</h2>
 
-<p>
+<p class="text-muted">
 
-AI Powered Smart Crop Advisory System
+AI Powered Smart Agriculture Dashboard
 
 </p>
 
@@ -32,336 +32,102 @@ AI Powered Smart Crop Advisory System
 
 <div class="col-md-4 text-end">
 
-<a href="/chatbot"
-class="btn btn-light">
+<a href="/chatbot" class="btn btn-success">
 
-🤖 Ask AI
+🤖 AI Assistant
 
 </a>
 
-</div>
 
 </div>
 
-</div>
 
 </div>
 
-</div>
-
-<!-- Statistics -->
 
 <div class="row">
 
 <div class="col-lg-3 col-md-6 mb-4">
 
-<div class="dashboard-card p-4 text-center">
+<div class="card dashboard-card gradient1">
 
-<i class="bi bi-tree-fill display-3 text-success"></i>
+<div class="card-body text-center">
 
-<h2 class="counter"
-data-target="{{ stats.crops }}">
+<i class="bi bi-cloud-sun stat-icon"></i>
 
-0
-
-</h2>
-
-Crop Predictions
-
-</div>
-
-</div>
-
-<div class="col-lg-3 col-md-6 mb-4">
-
-<div class="dashboard-card p-4 text-center">
-
-<i class="bi bi-bug-fill display-3 text-danger"></i>
-
-<h2 class="counter"
-data-target="{{ stats.diseases }}">
-
-0
-
-</h2>
-
-Disease Reports
-
-</div>
-
-</div>
-
-<div class="col-lg-3 col-md-6 mb-4">
-
-<div class="dashboard-card p-4 text-center">
-
-<i class="bi bi-globe display-3 text-warning"></i>
-
-<h2>
-
-{{ stats.lands }}
-
-</h2>
-
-Farm Lands
-
-</div>
-
-</div>
-
-<div class="col-lg-3 col-md-6 mb-4">
-
-<div class="dashboard-card p-4 text-center">
-
-<i class="bi bi-person-fill display-3 text-primary"></i>
-
-<h2>
-
-{{ stats.farmers }}
-
-</h2>
-
-Farmers
-
-</div>
-
-</div>
-
-</div>
-
-<!-- Charts -->
-
-<div class="row">
-
-<div class="col-lg-6 mb-4">
-
-<div class="dashboard-card p-4">
-
-<h4>
-
-📊 Statistics
-
-</h4>
-
-<canvas id="pieChart"></canvas>
-
-</div>
-
-</div>
-
-<div class="col-lg-6 mb-4">
-
-<div class="dashboard-card p-4">
-
-<h4>
-
-📈 Monthly Reports
-
-</h4>
-
-<canvas id="barChart"></canvas>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- Weather -->
-
-<div class="row">
-
-<div class="col-lg-4">
-
-<div class="dashboard-card p-4">
-
-<h4>
-
-🌦 Weather
-
-</h4>
-
-<h2>
+<h4 class="mt-3">
 
 {{ weather.temperature }}°C
 
-</h2>
+</h4>
 
-<p>
-
-{{ weather.condition }}
-
-</p>
-
-<p>
-
-Humidity
-
-{{ weather.humidity }}%
-
-</p>
-
-<p>
-
-Wind
-
-{{ weather.wind }} km/h
-
-</p>
+<p>{{ weather.condition }}</p>
 
 </div>
 
 </div>
 
-<div class="col-lg-4">
+</div>
 
-<div class="dashboard-card p-4">
+<div class="col-lg-3 col-md-6 mb-4">
+
+<div class="card dashboard-card gradient2">
+
+<div class="card-body text-center">
+
+<i class="bi bi-tree stat-icon"></i>
 
 <h4>
 
-🤖 AI Tip
+{{ stats.crops }}
 
 </h4>
 
-<p>
-
-Apply fertilizer after irrigation.
-
-</p>
+<p>Crop Predictions</p>
 
 </div>
 
 </div>
 
-<div class="col-lg-4">
+</div>
 
-<div class="dashboard-card p-4">
+<div class="col-lg-3 col-md-6 mb-4">
+
+<div class="card dashboard-card gradient3">
+
+<div class="card-body text-center">
+
+<i class="bi bi-bug stat-icon"></i>
 
 <h4>
 
-🔔 Notifications
+{{ stats.diseases }}
 
 </h4>
 
-<h2>
+<p>Disease Reports</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-3 col-md-6 mb-4">
+
+<div class="card dashboard-card gradient4">
+
+<div class="card-body text-center">
+
+<i class="bi bi-bell stat-icon"></i>
+
+<h4>
 
 {{ notification_count }}
 
-</h2>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- Recent Activity -->
-
-<div class="row mt-4">
-
-<div class="col-lg-6">
-
-<div class="dashboard-card p-4">
-
-<h4>
-
-Recent Crop Predictions
-
 </h4>
 
-<table class="table">
-
-<thead>
-
-<tr>
-
-<th>Crop</th>
-
-<th>Date</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-{% for crop in crop_predictions %}
-
-<tr>
-
-<td>
-
-{{ crop.crop_name }}
-
-</td>
-
-<td>
-
-{{ crop.created_at }}
-
-</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-<div class="col-lg-6">
-
-<div class="dashboard-card p-4">
-
-<h4>
-
-Disease Reports
-
-</h4>
-
-<table class="table">
-
-<thead>
-
-<tr>
-
-<th>Disease</th>
-
-<th>Confidence</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-{% for d in disease_reports %}
-
-<tr>
-
-<td>
-
-{{ d.disease_name }}
-
-</td>
-
-<td>
-
-{{ d.confidence }}%
-
-</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
+<p>Notifications</p>
 
 </div>
 
@@ -370,136 +136,221 @@ Disease Reports
 </div>
 
 </div>
-<div class="col-lg-3">
 
-<div class="dashboard-card p-4 text-center">
+<div class="row">
 
-<i class="bi bi-cash-stack display-4 text-success"></i>
+    <!-- AI Tip -->
+    <div class="col-lg-6 mb-4">
+
+        <div class="card dashboard-card">
+
+            <div class="card-header bg-success text-white">
+
+                <h5>
+                    🤖 AI Farming Tip
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <h5 class="text-success">
+
+                    🌱 Recommended Crop:
+                    Rice
+
+                </h5>
+
+                <p class="fs-5">
+                    {{ ai_tip }}
+                </p>
+
+                <button class="btn btn-success">
+
+                    View Details
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Weather Advisory -->
+
+    <div class="col-lg-6 mb-4">
+
+        <div class="card dashboard-card">
+
+            <div class="card-header bg-primary text-white">
+
+                <h5>
+
+                    🌦 Weather Advisory
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <h3>
+
+                    {{ weather.temperature }}°C
+
+                </h3>
+
+                <p>
+
+                    {{ weather.condition }}
+
+                </p>
+
+                <p>
+
+                    Humidity :
+                    {{ weather.humidity }} %
+
+                </p>
+
+                <p>
+
+                    Wind :
+                    {{ weather.wind }} km/h
+
+                </p>
+
+                <p>
+
+                    Rain Chance :
+                    {{ weather.rain }} %
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+<div class="col-12">
+
+<div class="card dashboard-card">
+
+<div class="card-header bg-dark text-white">
 
 <h5>
 
-Expense Tracker
+⚡ Quick Actions
 
 </h5>
 
-<a href="/expense"
-class="btn btn-success">
+</div>
 
-Open
+<div class="card-body text-center">
 
-</a>
-<a href="/report/pdf"
-class="btn btn-primary">
+<a href="/crop/recommend" class="btn btn-success m-2">
 
-<i class="bi bi-file-earmark-pdf-fill"></i>
-
-Download PDF
+🌱 Crop Recommendation
 
 </a>
-<a href="/email/send"
 
-class="btn btn-success">
+<a href="/disease/detect" class="btn btn-danger m-2">
 
-<i class="bi bi-envelope-fill"></i>
+🦠 Disease Detection
 
-Email Report
+</a>
+<a href="/location" class="btn btn-secondary m-2">
+
+📍 Farm Location
+
+</a>
+
+<a href="/soil" class="btn btn-warning m-2">
+
+🌍 Soil Analysis
+
+</a>
+
+<a href="/weather" class="btn btn-primary m-2">
+
+🌦 Weather
+
+</a>
+
+<a href="/market" class="btn btn-info m-2">
+
+📈 Market Prices
+
+</a>
+
+<a href="/chatbot" class="btn btn-dark m-2">
+
+🤖 AI Chatbot
 
 </a>
 
 </div>
 
 </div>
-<div class="card mt-4">
+
+</div>
+
+</div>
+
+<div class="row mt-4">
+
+<div class="col-lg-12">
+
+<div class="card dashboard-card">
 
 <div class="card-header">
 
-📍 Farm Location
+<h5>
+
+📊 Farm Analytics
+
+</h5>
 
 </div>
 
 <div class="card-body">
 
-<iframe
-
-width="100%"
-
-height="350"
-
-style="border:0"
-
-loading="lazy"
-
-allowfullscreen
-
-src="https://maps.google.com/maps?q=Coimbatore&t=&z=13&ie=UTF8&iwloc=&output=embed">
-
-</iframe>
+<canvas id="analyticsChart"></canvas>
 
 </div>
 
 </div>
-<div class="mt-4">
-
-<a href="/report/pdf"
-class="btn btn-danger">
-
-PDF
-
-</a>
-
-<a href="/email/send"
-class="btn btn-success">
-
-Email
-
-</a>
-
-<a href="/maps"
-class="btn btn-primary">
-
-Maps
-
-</a>
 
 </div>
 
+</div>
 <script>
 
-new Chart(document.getElementById("pieChart"),{
+const ctx = document.getElementById("analyticsChart");
 
-type:"pie",
-
-data:{
-
-labels:["Crop","Disease","Farmers","Lands"],
-
-datasets:[{
-
-data:[
-
-{{ stats.crops }},
-
-{{ stats.diseases }},
-
-{{ stats.farmers }},
-
-{{ stats.lands }}
-
-]
-
-}]
-
-}
-
-});
-
-new Chart(document.getElementById("barChart"),{
+new Chart(ctx,{
 
 type:"bar",
 
 data:{
 
-labels:["Crop","Disease","Farmers","Lands"],
+labels:[
+
+"Crops",
+
+"Diseases",
+
+"Notifications",
+
+"Farmers"
+
+],
 
 datasets:[{
 
@@ -511,9 +362,9 @@ data:[
 
 {{ stats.diseases }},
 
-{{ stats.farmers }},
+{{ notification_count }},
 
-{{ stats.lands }}
+{{ stats.farmers }}
 
 ]
 

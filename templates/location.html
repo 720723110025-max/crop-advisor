@@ -1,72 +1,72 @@
 {% extends "base.html" %}
 
-{% block title %}Location Recommendation{% endblock %}
+{% block title %}Farm Location{% endblock %}
 
 {% block content %}
 
-<div class="container mt-5">
+<div class="container mt-4">
 
-<div class="card shadow">
+<h2>📍 Farm Location</h2>
 
-<div class="card-header bg-success text-white">
+<div id="map"
+style="height:500px;border-radius:15px;"></div>
 
-<h2>📍 GPS Crop Recommendation</h2>
-
-</div>
-
-<div class="card-body text-center">
+<div class="mt-3">
 
 <button
 class="btn btn-success"
 onclick="getLocation()">
 
-📍 Detect My Location
+📍 Detect My Farm
 
 </button>
 
-<hr>
+</div>
 
-<h4 id="result"></h4>
+<div class="mt-3">
+
+Latitude :
+
+<span id="lat"></span>
+
+<br>
+
+Longitude :
+
+<span id="lon"></span>
 
 </div>
 
 </div>
-
-</div>
-
 <script>
+
+var map = L.map('map').setView([11.0168,76.9558],12);
+
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+maxZoom:19
+}).addTo(map);
+
+var marker;
 
 function getLocation(){
 
 navigator.geolocation.getCurrentPosition(function(pos){
 
-let form=new FormData();
+let lat=pos.coords.latitude;
+let lon=pos.coords.longitude;
 
-form.append("latitude",pos.coords.latitude);
+document.getElementById("lat").innerHTML=lat;
+document.getElementById("lon").innerHTML=lon;
 
-form.append("longitude",pos.coords.longitude);
+map.setView([lat,lon],15);
 
-fetch("/location/recommend",{
+if(marker){
+map.removeLayer(marker);
+}
 
-method:"POST",
-
-body:form
-
-})
-
-.then(r=>r.json())
-
-.then(data=>{
-
-document.getElementById("result").innerHTML=
-
-"Recommended Crop : "+data.crop+
-
-"<br>Latitude : "+data.latitude+
-
-"<br>Longitude : "+data.longitude;
-
-});
+marker=L.marker([lat,lon]).addTo(map);
 
 });
 

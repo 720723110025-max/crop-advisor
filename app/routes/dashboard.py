@@ -5,6 +5,8 @@ Dashboard routes for the main application dashboard.
 from flask import Blueprint, render_template, jsonify
 from flask_login import login_required, current_user
 from app.utils.database import db_instance
+from app.services.weather_service import get_weather
+from app.services.gemini_service import get_ai_tip
 
 dashboard_bp = Blueprint(
     "dashboard",
@@ -37,14 +39,17 @@ def index():
         "diseases": db_instance.get_collection("disease_reports").count_documents({})
     }
 
-    weather = {
+    try:
+        weather = get_weather("Coimbatore")
+        ai_tip = get_ai_tip(weather)
+    except Exception:
+        weather = {
         "temperature": 32,
         "condition": "Sunny",
         "humidity": 68,
         "wind": 12,
         "rain": 20
     }
-
     notification_count = db_instance.get_collection(
         "notifications"
     ).count_documents({})
@@ -52,9 +57,10 @@ def index():
     return render_template(
         "dashboard.html",
         stats=stats,
+        weather=weather,
+        ai_tip=ai_tip,
         crop_predictions=crop_predictions,
         disease_reports=disease_reports,
-        weather=weather,
         notification_count=notification_count
     )
 

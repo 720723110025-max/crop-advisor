@@ -8,18 +8,39 @@ notifications_bp = Blueprint(
     url_prefix="/notifications"
 )
 
+
 @notifications_bp.route("/")
 @login_required
 def index():
 
     notifications = list(
-        db_instance.get_collection("notifications")
-        .find()
-        .sort("created_at", -1)
-        .limit(20)
+
+        db_instance.get_collection(
+            "notifications"
+        ).find().sort(
+
+            "created_at",
+
+            -1
+
+        ).limit(50)
+
+    )
+
+    unread = sum(
+
+        1 for n in notifications
+
+        if not n.get("read", False)
+
     )
 
     return render_template(
+
         "notifications.html",
-        notifications=notifications
+
+        notifications=notifications,
+
+        unread=unread
+
     )

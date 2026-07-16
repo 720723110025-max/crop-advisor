@@ -1,101 +1,187 @@
 {% extends "base.html" %}
 
-{% block title %}AI Assistant{% endblock %}
+{% block title %}AI Farmer Assistant{% endblock %}
 
 {% block content %}
 
 <div class="container mt-5">
 
-<h2 class="mb-4">
+<div class="card shadow-lg">
 
-🤖 AI Farmer Assistant
+<div class="card-header bg-success text-white">
 
-</h2>
+<h2>🤖 AI Farmer Assistant</h2>
 
-<div class="row g-4">
+<p class="mb-0">
 
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h1>🌦</h1>
-<h5>Weather</h5>
-<p>{{ data.weather }}</p>
-</div>
-</div>
-</div>
+Ask anything about crops, diseases, fertilizer, irrigation or farming.
 
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h1>🌾</h1>
-<h5>Crop</h5>
-<p>{{ data.crop }}</p>
-</div>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h1>🌱</h1>
-<h5>Soil</h5>
-<p>{{ data.soil }}</p>
-</div>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h1>💧</h1>
-<h5>Irrigation</h5>
-<p>{{ data.irrigation }}</p>
-</div>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h1>📈</h1>
-<h5>Market</h5>
-<p>{{ data.market }}</p>
-</div>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h1>💰</h1>
-<h5>Profit</h5>
-<p>{{ data.profit }}</p>
-</div>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h1>🔔</h1>
-<h5>Notification</h5>
-<p>{{ data.notification }}</p>
-</div>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="card shadow">
-<div class="card-body text-center">
-<h1>📅</h1>
-<h5>Today's Task</h5>
-<p>{{ data.task }}</p>
-</div>
-</div>
-</div>
+</p>
 
 </div>
 
+<div class="card-body">
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Ask Your Question
+
+</label>
+
+<textarea
+
+id="question"
+
+class="form-control"
+
+rows="4"
+
+placeholder="Example: Which crop is suitable for black soil in Tamil Nadu?">
+
+</textarea>
+
 </div>
+
+<div class="d-grid">
+
+<button
+
+id="askBtn"
+
+class="btn btn-success">
+
+🤖 Ask AI
+
+</button>
+
+</div>
+
+<div
+
+id="loading"
+
+class="text-center mt-4"
+
+style="display:none;">
+
+<div class="spinner-border text-success"></div>
+
+<p class="mt-2">
+
+Thinking...
+
+</p>
+
+</div>
+
+<div
+
+id="answerCard"
+
+class="card mt-4"
+
+style="display:none;">
+
+<div class="card-header bg-primary text-white">
+
+AI Response
+
+</div>
+
+<div class="card-body">
+
+<p id="answer"></p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("askBtn").addEventListener(
+
+"click",
+
+async function(){
+
+const question = document.getElementById("question").value.trim();
+
+if(question===""){
+
+alert("Please enter a question.");
+
+return;
+
+}
+
+document.getElementById("loading").style.display="block";
+
+document.getElementById("answerCard").style.display="none";
+
+const form = new FormData();
+
+form.append("question",question);
+
+try{
+
+const response = await fetch(
+
+"/assistant/ask",
+
+{
+
+method:"POST",
+
+body:form
+
+}
+
+);
+
+const data = await response.json();
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("answerCard").style.display="block";
+
+if(data.success){
+
+document.getElementById("answer").innerText=data.answer;
+
+}
+
+else{
+
+document.getElementById("answer").innerText=data.error;
+
+}
+
+}
+
+catch(error){
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("answerCard").style.display="block";
+
+document.getElementById("answer").innerText=
+
+"Unable to connect to AI service.";
+
+}
+
+}
+
+);
+
+</script>
 
 {% endblock %}

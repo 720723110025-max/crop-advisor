@@ -12,9 +12,24 @@ records = []
 @profit_bp.route("/")
 def index():
 
+    total_income = sum(r["income"] for r in records)
+
+    total_expense = sum(r["expense"] for r in records)
+
+    total_profit = sum(r["profit"] for r in records)
+
     return render_template(
+
         "profit/index.html",
-        records=records
+
+        records=records,
+
+        total_income=total_income,
+
+        total_expense=total_expense,
+
+        total_profit=total_profit
+
     )
 
 
