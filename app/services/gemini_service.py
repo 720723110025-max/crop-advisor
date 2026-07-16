@@ -1,79 +1,37 @@
-"""
-Gemini AI Service
-"""
-
 import os
+import google.generativeai as genai
 
-genai.configure(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
+api_key = os.getenv("GEMINI_API_KEY")
 
-# Load Model
-model = genai.GenerativeModel(
-    "gemini-2.5-flash"
-)
-
-
-def ask_gemini(question):
-    """
-    General AI Assistant
-    """
-
-    prompt = f"""
-You are an expert agricultural assistant.
-
-Answer the following farmer question clearly.
-
-Question:
-{question}
-
-Rules:
-- Keep the answer practical.
-- Maximum 150 words.
-- Mention crops, fertilizer, irrigation, disease or weather whenever relevant.
-"""
-
-    try:
-
-        response = model.generate_content(prompt)
-
-        return response.text
-
-    except Exception as e:
-
-        return f"Gemini Error: {e}"
+if api_key:
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel("gemini-1.5-flash")
+else:
+    model = None
 
 
 def get_ai_tip(weather):
-    """
-    Weather-based AI Tip
-    """
+
+    if model is None:
+        return "Gemini API key is not configured."
 
     prompt = f"""
-You are an agriculture expert.
+You are an Agriculture Expert.
 
-Weather
+Weather:
+Temperature : {weather.get('temperature', 'N/A')}°C
+Humidity : {weather.get('humidity', 'N/A')}%
+Condition : {weather.get('condition', 'N/A')}
+Wind : {weather.get('wind', 'N/A')} km/h
+Rain : {weather.get('rain', 'N/A')}%
 
-Temperature : {weather.get("temperature")}
-
-Humidity : {weather.get("humidity")}
-
-Condition : {weather.get("condition")}
-
-Wind : {weather.get("wind")}
-
-Rain : {weather.get("rain")}
-
-Give one farming recommendation.
-Maximum 50 words.
+Give one short farming recommendation.
+Maximum 40 words.
 """
 
     try:
-
         response = model.generate_content(prompt)
-
         return response.text
 
     except Exception:
-
         return "Weather is suitable for normal farming activities."
